@@ -19,18 +19,41 @@ struct ContentView: View {
     // The "automatic" value causes the map to open at a standard location.
     // If based in The Netherlands, the map will show that country.
     @State private var mapCameraPosition: MapCameraPosition = .automatic
+    // This would show the user location and the map would follow it.
+    // @State private var mapCameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .automatic)
 
     @State private var tracking = false
 
+    @State private var showingAlert = false
+    
+    @State private var name = ""
+    
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack {
 
             HStack {
+               
+
+                Toggle(isOn: $tracking) {
+                    
+                }
+                .onChange(of: tracking) {
+                    if tracking {
+                        //showingAlert = true
+                    }
+                    else {
+                        //showingAlert = false
+                    }
+                }
+                .alert("Enter your name", isPresented: $showingAlert) {
+                    Button("OK", action: submit)
+                } message: {
+                    Text("Xcode will print whatever you type.")
+                }
                 Image(systemName: "figure.walk")
-                    .foregroundColor(.green)
-                    .opacity(tracking ? 1 : 0)
+                    .foregroundColor(tracking ? .green : .gray)
                 ProgressView()
                     .opacity(tracking ? 1 : 0)
 
@@ -90,21 +113,23 @@ struct ContentView: View {
         .onReceive(timer) { time in
             let location = locationDataManager.locationManager.location
             if (location != nil) {
-                let latitude = location?.coordinate.latitude ?? 0
-                let longitude = location?.coordinate.longitude ?? 0
-                let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let course = location?.course ?? 0
-                mapCameraPosition = MapCameraPosition.camera(
-                    MapCamera(
-                        centerCoordinate: coordinate,
-                        // The distance from the center point of the map to the camera, in meters.
-                        distance: 2000,
-                        // The heading of the camera, in degrees, relative to true north.
-                        heading: course,
-                        // The viewing angle of the camera, in degrees.
-                        pitch: 0
+                if (tracking) {
+                    let latitude = location?.coordinate.latitude ?? 0
+                    let longitude = location?.coordinate.longitude ?? 0
+                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    let course = location?.course ?? 0
+                    mapCameraPosition = MapCameraPosition.camera(
+                        MapCamera(
+                            centerCoordinate: coordinate,
+                            // The distance from the center point of the map to the camera, in meters.
+                            distance: 2000,
+                            // The heading of the camera, in degrees, relative to true north.
+                            heading: course,
+                            // The viewing angle of the camera, in degrees.
+                            pitch: 0
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -120,4 +145,8 @@ class MyClass {
     init(name: String) {
         self.name = name
     }
+}
+
+func submit() {
+    print("You entered")
 }
