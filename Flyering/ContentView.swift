@@ -16,8 +16,8 @@ struct ContentView: View {
     @StateObject var locationDataManager = LocationDataManager()
 
     // This contains the camera position above the map.
-    // The "automatic" value causes the map to open at a standard location,
-    // like showing an entire country like The Netherlandsn, or another entire region.
+    // The "automatic" value causes the map to open at a standard location.
+    // If based in The Netherlands, the map will show that country.
     @State private var mapCameraPosition: MapCameraPosition = .automatic
 
     @State private var tracking = false
