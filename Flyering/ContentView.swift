@@ -14,21 +14,12 @@ import CoreLocation
 struct ContentView: View {
 
     @StateObject var locationDataManager = LocationDataManager()
-    
-    @State private var cameraPosition: MapCameraPosition = .camera(
-        MapCamera(
-            centerCoordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            distance: 200000000,
-            heading: 0,
-            pitch: 0
-        )
-    )
 
-//    var annotations : [IdentifiableLocation] = [
-//        IdentifiableLocation(id: ObjectIdentifier(MyClass(name: "London eye")), location: CLLocationCoordinate2D(latitude: 51.503399, longitude: -0.119519))
-//    ]
+    // This contains the camera position above the map.
+    // The "automatic" value causes the map to open at a standard location,
+    // like showing an entire country like The Netherlandsn, or another entire region.
+    @State private var mapCameraPosition: MapCameraPosition = .automatic
 
-   
     @State private var tracking = false
 
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
@@ -37,22 +28,6 @@ struct ContentView: View {
         VStack {
 
             HStack {
-
-                switch locationDataManager.locationManager.authorizationStatus {
-                case .authorizedWhenInUse, .authorizedAlways:  // Location services are available.
-                    Text("Your current location is:")
-                    Text("Latitude: \(locationDataManager.locationManager.location?.coordinate.latitude.description ?? "Error loading")")
-                    Text("Longitude: \(locationDataManager.locationManager.location?.coordinate.longitude.description ?? "Error loading")")
-                    
-                case .restricted, .denied:  // Location services currently unavailable.
-                    Text("Current location data was restricted or denied.")
-                case .notDetermined:        // Authorization not determined yet.
-                    Text("Finding your location...")
-                    ProgressView()
-                default:
-                    ProgressView()
-                }
-
                 Image(systemName: "figure.walk")
                     .foregroundColor(.green)
                     .opacity(tracking ? 1 : 0)
@@ -63,13 +38,27 @@ struct ContentView: View {
                     Button("Park") {
                         print("Park")
                     }
-                    Toggle("Flyering", isOn: $tracking)
+                    Toggle("Tracking", isOn: $tracking)
                         .onChange(of: tracking) {
                             if tracking {
                             }
                             else {
                             }
                         }
+                    switch locationDataManager.locationManager.authorizationStatus {
+                    case .authorizedWhenInUse:
+                        Text("Using location when in use")
+                    case .authorizedAlways:
+                        Text("Using location always")
+                    case .restricted:
+                        Text("Current location restricted")
+                    case .denied:
+                        Text("Current location denied")
+                    case .notDetermined:
+                        Text("Locating...")
+                    default:
+                        Text("Locating...")
+                    }
                 } label: {
                     Circle()
                         .fill(.gray.opacity(0.15))
@@ -83,10 +72,14 @@ struct ContentView: View {
 
             }
 
-            Map(position: $cameraPosition) {
+            Map(position: $mapCameraPosition) {
+                
             }
             .mapStyle(.standard)
-
+            .mapControls {
+                MapUserLocationButton()
+                MapCompass()
+            }
             // Long press gesture changes the selected location randomly
             .onLongPressGesture {
                 
@@ -101,7 +94,7 @@ struct ContentView: View {
                 let longitude = location?.coordinate.longitude ?? 0
                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 let course = location?.course ?? 0
-                cameraPosition = MapCameraPosition.camera(
+                mapCameraPosition = MapCameraPosition.camera(
                     MapCamera(
                         centerCoordinate: coordinate,
                         // The distance from the center point of the map to the camera, in meters.

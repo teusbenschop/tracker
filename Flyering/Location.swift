@@ -6,6 +6,7 @@
 //
 
 
+import SwiftUI
 import MapKit
 import Combine
 import Foundation
@@ -71,7 +72,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
-        print ("didUpdateLocations")
+        //print ("didUpdateLocations")
     }
     
     func locationManager(_ manager: CLLocationManager,
@@ -79,4 +80,5 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         print("error: \(error.localizedDescription)")
     }
 }
+
 
