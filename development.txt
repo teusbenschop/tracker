@@ -1,0 +1,45 @@
+The "animate" app, transfer all functionality to the Tracker.
+
+
+Find example SwiftUI app that requests location services, then implement it here.
+
+
+
+xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
+
+Setting whether to follow user location.
+If off, it sets the map to the user location at startup.
+
+Use Map .onAppear to set the location properly, that is,, to the user's location.
+
+
+See if animating the map helps, make a setting for that too, as it may use more energy.
+
+
+https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
+
+See how to write a number of dots to indicate the walked track. That is, how to add basic annotations live. Likely have a container with annotatons, and update that container, so the Stete will write them onto the map. Or something like this.
+
+
+Start with writing annotations for the users' track.
+Annotations should be as cheap as possible for writing, no fancy stuff, for better performance.
+
+
+Ideas
+=====
+
+Once areas get covered, there's more and more annotations to draw.
+Will that affect performance?
+Mitigating measures:
+* Draw the covered areas only in the visible area.
+* Make a menu to call a procedure to join areas into one to reduce the number of areas.
+* If drawing a new covered area, and it entirely overlays existing areas, then those existing areas will be removed and effectually replaced by the larger area. This may significantly reduce the areas if used wisely.
+
+While drawing the track,
+intelligently decide whether to replace the last drawn annotation with the current annotation.
+This reduces the number of dots drawn.
+And improves, likely, the performance.
+
+Use MagSafe powerbank for extra power.
+
+Have a setting to keep the screen unlocked.

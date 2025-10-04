@@ -32,12 +32,17 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-
             HStack {
-               
+                Spacer()
+                Button(action: {
+                }) {
+                    Image(systemName: "ellipsis")
+                    Text("Dev")
+                }
+                .buttonStyle(.bordered)
 
+                
                 Toggle(isOn: $tracking) {
-                    
                 }
                 .onChange(of: tracking) {
                     if tracking {
@@ -56,7 +61,6 @@ struct ContentView: View {
                     .foregroundColor(tracking ? .green : .gray)
                 ProgressView()
                     .opacity(tracking ? 1 : 0)
-
                 Menu {
                     Button("Park") {
                         print("Park")
@@ -92,7 +96,7 @@ struct ContentView: View {
                                 .foregroundColor(.pink)
                         }
                 }
-
+                Spacer()
             }
 
             Map(position: $mapCameraPosition) {
@@ -100,53 +104,59 @@ struct ContentView: View {
             }
             .mapStyle(.standard)
             .mapControls {
-                MapUserLocationButton()
-                MapCompass()
+                MapUserLocationButton() // This makes location visible, to move to menu?
+                MapCompass() // Move to menu as a button?
             }
-            // Long press gesture changes the selected location randomly
+            .onAppear {
+                updateMapCameraPosition(animate: false)
+            }
             .onLongPressGesture {
-                
+                print("long press")
             }
-//            .onChange(of: selectedLocation) { _, newLocation in
-//            }
+            .onChange(of: mapCameraPosition) { _, newLocation in
+            }
         }
         .onReceive(timer) { time in
-            let location = locationDataManager.locationManager.location
-            if (location != nil) {
-                if (tracking) {
-                    let latitude = location?.coordinate.latitude ?? 0
-                    let longitude = location?.coordinate.longitude ?? 0
-                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                    let course = location?.course ?? 0
-                    mapCameraPosition = MapCameraPosition.camera(
-                        MapCamera(
-                            centerCoordinate: coordinate,
-                            // The distance from the center point of the map to the camera, in meters.
-                            distance: 2000,
-                            // The heading of the camera, in degrees, relative to true north.
-                            heading: course,
-                            // The viewing angle of the camera, in degrees.
-                            pitch: 0
-                        )
-                    )
-                }
+            if (tracking) {
+                updateMapCameraPosition(animate: true)
             }
         }
     }
-}
+    
 
-struct IdentifiableLocation: Identifiable {
-    var id: ObjectIdentifier
-    var location: CLLocationCoordinate2D
-}
-
-class MyClass {
-    var name: String
-    init(name: String) {
-        self.name = name
+    func submit() {
+        print("You entered")
     }
+    
+    
+    func updateMapCameraPosition(animate: Bool) {
+        let location = locationDataManager.locationManager.location
+        if (location != nil) {
+            let latitude = location?.coordinate.latitude ?? 0
+            let longitude = location?.coordinate.longitude ?? 0
+            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let course = location?.course ?? 0
+            let cameraPosition = MapCameraPosition.camera(
+                MapCamera(
+                    centerCoordinate: coordinate,
+                    // The distance from the center point of the map to the camera, in meters.
+                    distance: 2000,
+                    // The heading of the camera, in degrees, relative to true north.
+                    heading: course,
+                    // The viewing angle of the camera, in degrees.
+                    pitch: 0
+                )
+            )
+            if (animate) {
+                withAnimation {
+                    mapCameraPosition = cameraPosition
+                }
+            } else {
+                mapCameraPosition = cameraPosition
+            }
+        }
+    }
+
 }
 
-func submit() {
-    print("You entered")
-}
+

@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CAD7B8EA2E910D3B00AF06D1 /* development.txt in Resources */ = {isa = PBXBuildFile; fileRef = CAD7B8E92E910D3B00AF06D1 /* development.txt */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		CA9C5A872E8D91EB002D0C4D /* flyering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyering.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAD7B8E92E910D3B00AF06D1 /* development.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = development.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		CA9C5A7E2E8D91EB002D0C4D = {
 			isa = PBXGroup;
 			children = (
+				CAD7B8E92E910D3B00AF06D1 /* development.txt */,
 				CA9C5A892E8D91EB002D0C4D /* Flyering */,
 				CA9C5A882E8D91EB002D0C4D /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAD7B8EA2E910D3B00AF06D1 /* development.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
