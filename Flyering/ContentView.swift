@@ -99,8 +99,22 @@ struct ContentView: View {
                 Spacer()
             }
 
+//            if let coordinate = locationDataManager.lastKnownLocation {
+//                Text("Latitude: \(coordinate.latitude)")
+//                Text("Longitude: \(coordinate.longitude)")
+//            } else {
+//                Text("Unknown Location")
+//            }
+//            Button("Get location") {
+//                locationDataManager.checkLocationAuthorization()
+//            }
+//            .buttonStyle(.borderedProminent)
+
             Map(position: $mapCameraPosition) {
-                
+                let coordinates : [Coordinate] = createCoordinates()
+                ForEach(coordinates) { coordinate in
+                    Marker("", coordinate: coordinate.coordinate)
+                }
             }
             .mapStyle(.standard)
             .mapControls {
@@ -130,7 +144,7 @@ struct ContentView: View {
     
     
     func updateMapCameraPosition(animate: Bool) {
-        let location = locationDataManager.locationManager.location
+        let location = locationDataManager.lastKnownLocation
         if (location != nil) {
             let latitude = location?.coordinate.latitude ?? 0
             let longitude = location?.coordinate.longitude ?? 0
@@ -160,3 +174,25 @@ struct ContentView: View {
 }
 
 
+struct Coordinate : Identifiable {
+    let id = UUID()
+    let coordinate : CLLocationCoordinate2D
+    init(coordinate: CLLocationCoordinate2D) {
+        self.coordinate = coordinate
+    }
+}
+
+
+func createCoordinates() -> [Coordinate] {
+    let home = CLLocationCoordinate2D(latitude: 52.11041098408821, longitude: 6.06349499662067)
+    var coordinates : [Coordinate] = []
+    let count = 0...100
+    for number in count {
+        let d = Double(number)
+        let longitude = home.longitude + (d * 0.0001)
+        let c = CLLocationCoordinate2D(latitude: home.latitude, longitude: longitude)
+        let coordinate : Coordinate = Coordinate(coordinate: c)
+        coordinates.append(coordinate)
+    }
+    return coordinates
+}

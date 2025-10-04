@@ -265,7 +265,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Flyering;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app always requests access to your location even if the app is in the background. This is because it needs to record the flyering track. Note that it access the position only while the toggle \"Flyering\" is ticked.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This is needed to keep recording your track while the Tracker is in the background. Note that it access the position only while \"Tracking\" is on.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This is needed to record your track while the Tracker is in  use. Note that it access the position only while \"Tracking\" is on.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -301,7 +302,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Flyering;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The app always requests access to your location even if the app is in the background. This is because it needs to record the flyering track. Note that it access the position only while the toggle \"Flyering\" is ticked.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This is needed to keep recording your track while the Tracker is in the background. Note that it access the position only while \"Tracking\" is on.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This is needed to record your track while the Tracker is in  use. Note that it access the position only while \"Tracking\" is on.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

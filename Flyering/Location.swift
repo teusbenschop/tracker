@@ -23,11 +23,13 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     var locationManager = CLLocationManager()
     
     @Published var authorizationStatus: CLAuthorizationStatus?
-    
+    @Published var lastKnownLocation: CLLocation?
+
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -61,7 +63,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
             
         case .notDetermined:        // Authorization not determined yet.
             authorizationStatus = .notDetermined
-            manager.requestWhenInUseAuthorization()
+            manager.requestAlwaysAuthorization()
             break
             
         default:
@@ -72,13 +74,44 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
-        //print ("didUpdateLocations")
+        print ("didUpdateLocations")
+        lastKnownLocation = locations.first
+        //?.coordinate
     }
     
     func locationManager(_ manager: CLLocationManager,
                          didFailWithError error: Error) {
         print("error: \(error.localizedDescription)")
     }
+    
+    
+    func checkLocationAuthorization() {
+
+        switch locationManager.authorizationStatus {
+        case .notDetermined://The user choose allow or denny your app to get the location yet
+            //            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
+           
+        case .restricted://The user cannot change this app’s status, possibly due to active restrictions such as parental controls being in place.
+            print("Location restricted")
+            
+        case .denied://The user dennied your app to get location or disabled the services location or the phone is in airplane mode
+            print("Location denied")
+            locationManager.requestWhenInUseAuthorization()
+            
+        case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
+            print("Location authorizedAlways")
+            
+        case .authorizedWhenInUse://This authorization allows you to use all location services and receive location events only when your app is in use
+            print("Location authorized when in use")
+            lastKnownLocation = locationManager.location
+            
+        @unknown default:
+            print("Location service disabled")
+            
+        }
+    }
+
 }
 
 
