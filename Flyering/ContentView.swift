@@ -46,6 +46,9 @@ struct ContentView: View {
                 }
                 .onChange(of: tracking) {
                     if tracking {
+                        // If the tracking slider is moved to the "on" position,
+                        // then update the map camera position at once without animation.
+                        updateMapCameraPosition(animate: false)
                         //showingAlert = true
                     }
                     else {
