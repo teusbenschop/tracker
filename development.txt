@@ -1,33 +1,41 @@
-First time that tracking is on, don't animate, but jump right away to it.
-
-
-
-Button for whether the maps follows the user.
-
+If enable tracking, then request location again to update stuff.
 
 
 The Map() may be slow if there's many annotations due to redrawing them.
 Better use MKMapView for performance.
 https://medium.com/@nevinchanyi/mkmapview-in-swiftui-complete-guide-115c4602af8a
 
-xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
+https://developer.apple.com/documentation/mapkit/mkmapview
 
-Setting whether to follow user location.
-If off, it sets the map to the user location at startup.
-
-Use Map .onAppear to set the location properly, that is,, to the user's location.
-
-
-See if animating the map helps, make a setting for that too, as it may use more energy.
-
-
-https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
+Start with writing annotations for the users' track.
+Annotations should be as cheap as possible for writing, no fancy stuff, for better performance.
 
 See how to write a number of dots to indicate the walked track. That is, how to add basic annotations live. Likely have a container with annotatons, and update that container, so the Stete will write them onto the map. Or something like this.
 
 
-Start with writing annotations for the users' track.
-Annotations should be as cheap as possible for writing, no fancy stuff, for better performance.
+
+
+
+
+See if animating the map helps, make a setting for that too, as it may use more energy.
+Button for whether the maps follows the user.
+This button is that setting too.
+
+
+Mapkit overlays.
+https://developer.apple.com/documentation/mapkit/mapkit-overlays
+
+
+
+https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
+
+
+
+
+
+
+Display an updating path of a user's location history.
+https://developer.apple.com/documentation/mapkit/displaying-an-updating-path-of-a-user-s-location-history
 
 
 Ideas

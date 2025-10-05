@@ -22,8 +22,7 @@ enum LocationStatus {
 // Basic location manager object.
 // This object is the delegate of the Core Location location manager.
 // This object will pass updates to CLLocationManager to the app.
-// On the iOS simulator, the app won't ask for permissions to use the location.
-// This permission can be granted from the terminal:
+// On the iOS simulator, the location permissions can be set from the terminal:
 // $ xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
 class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()

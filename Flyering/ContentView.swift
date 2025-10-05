@@ -46,6 +46,8 @@ struct ContentView: View {
                 }
                 .onChange(of: tracking) {
                     if tracking {
+                        // Update location data once.
+                        locationDataManager.checkLocationAuthorization()
                         // If the tracking slider is moved to the "on" position,
                         // then update the map camera position at once without animation.
                         updateMapCameraPosition(animate: false)
@@ -123,6 +125,7 @@ struct ContentView: View {
                 MapCompass() // Move to menu as a button?
             }
             .onAppear {
+                locationDataManager.checkLocationAuthorization()
                 updateMapCameraPosition(animate: false)
             }
             .onLongPressGesture {
