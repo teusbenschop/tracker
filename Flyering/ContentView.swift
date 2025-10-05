@@ -27,6 +27,8 @@ struct ContentView: View {
 
     @StateObject var locationDataManager = LocationDataManager()
 
+    @StateObject var viewModel = ContentViewModel()
+
     // This contains the camera position above the map.
     // The "automatic" value causes the map to open at a standard location.
     // If based in The Netherlands, the map will show that country.
@@ -145,6 +147,23 @@ struct ContentView: View {
             }
             .onChange(of: mapCameraPosition) { _, newLocation in
             }
+            
+            WrapperView(view: viewModel.mapView)
+                .onAppear() {
+                    print("map appears")
+                    //                    viewModel.setAnnotation()
+                    //                    Task {
+                    //                        do {
+                    //                            try await viewModel.displayRoutes()
+                    //                        } catch {
+                    //                            print(error)
+                    //                        }
+                    //                    }
+                    viewModel.addCircle()
+                    viewModel.setRegion(apeldoorn)
+                }
+
+            
         }
         .onReceive(timer) { time in
             if (tracking) {

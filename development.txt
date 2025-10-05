@@ -11,7 +11,8 @@ Start with writing annotations for the users' track.
 Annotations should be as cheap as possible for writing, no fancy stuff, for better performance.
 
 See how to write a number of dots to indicate the walked track. That is, how to add basic annotations live. Likely have a container with annotatons, and update that container, so the Stete will write them onto the map. Or something like this.
-
+Display an updating path of a user's location history.
+https://developer.apple.com/documentation/mapkit/displaying-an-updating-path-of-a-user-s-location-history
 
 
 
@@ -31,11 +32,9 @@ https://developer.apple.com/documentation/corelocation/handling-location-updates
 
 
 
+If app starts, the location give an error. So then on enabling tracking, update this so it gives a green arrow, not a red one.
 
 
-
-Display an updating path of a user's location history.
-https://developer.apple.com/documentation/mapkit/displaying-an-updating-path-of-a-user-s-location-history
 
 
 Ideas
