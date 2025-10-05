@@ -59,8 +59,19 @@ struct ContentView: View {
                 }
                 Image(systemName: "figure.walk")
                     .foregroundColor(tracking ? .green : .gray)
-                ProgressView()
-                    .opacity(tracking ? 1 : 0)
+                switch locationDataManager.locationStatus {
+                case .none:
+                    Image(systemName: "location.slash")
+                        .foregroundColor(.red)
+                case .inuse:
+                    Image(systemName: "location")
+                        .foregroundColor(.orange)
+                        .opacity(tracking ? 1 : 0.5)
+                case .always:
+                    Image(systemName: "location")
+                        .foregroundColor(.green)
+                        .opacity(tracking ? 1 : 0.5)
+                }
                 Menu {
                     Button("Park") {
                         print("Park")
@@ -72,20 +83,7 @@ struct ContentView: View {
                             else {
                             }
                         }
-                    switch locationDataManager.locationManager.authorizationStatus {
-                    case .authorizedWhenInUse:
-                        Text("Using location when in use")
-                    case .authorizedAlways:
-                        Text("Using location always")
-                    case .restricted:
-                        Text("Current location restricted")
-                    case .denied:
-                        Text("Current location denied")
-                    case .notDetermined:
-                        Text("Locating...")
-                    default:
-                        Text("Locating...")
-                    }
+                    Text(locationDataManager.locationInfo)
                 } label: {
                     Circle()
                         .fill(.gray.opacity(0.15))
@@ -111,10 +109,10 @@ struct ContentView: View {
 //            .buttonStyle(.borderedProminent)
 
             Map(position: $mapCameraPosition) {
-                let coordinates : [Coordinate] = createCoordinates()
-                ForEach(coordinates) { coordinate in
-                    Marker("", coordinate: coordinate.coordinate)
-                }
+//                let coordinates : [Coordinate] = createCoordinates()
+//                ForEach(coordinates) { coordinate in
+//                    Marker("", coordinate: coordinate.coordinate)
+//                }
             }
             .mapStyle(.standard)
             .mapControls {
@@ -149,7 +147,7 @@ struct ContentView: View {
             let latitude = location?.coordinate.latitude ?? 0
             let longitude = location?.coordinate.longitude ?? 0
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let course = location?.course ?? 0
+            let course = (location?.course ?? 0)
             let cameraPosition = MapCameraPosition.camera(
                 MapCamera(
                     centerCoordinate: coordinate,

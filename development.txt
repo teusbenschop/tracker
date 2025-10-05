@@ -1,9 +1,14 @@
-The "animate" app, transfer all functionality to the Tracker.
+First time that tracking is on, don't animate, but jump right away to it.
 
 
-Find example SwiftUI app that requests location services, then implement it here.
+
+Button for whether the maps follows the user.
 
 
+
+The Map() may be slow if there's many annotations due to redrawing them.
+Better use MKMapView for performance.
+https://medium.com/@nevinchanyi/mkmapview-in-swiftui-complete-guide-115c4602af8a
 
 xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
 
@@ -43,3 +48,5 @@ And improves, likely, the performance.
 Use MagSafe powerbank for extra power.
 
 Have a setting to keep the screen unlocked.
+
+Have app background permissions, it won't draw on the map, it will just record the track, and draw the remainder on the map once it moves to the foreground.
