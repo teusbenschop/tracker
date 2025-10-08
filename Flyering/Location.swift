@@ -30,17 +30,27 @@ enum LocationStatus {
     case always // Location information always availble, also if app runs in background.
 }
 
+
+let please_grant_access_to_use_location = "Please grant access to user location"
+let user_location_has_been_restricted = "User location has been restricted"
+let user_location_has_been_denied = "User location has been denied"
+let user_location_always_available = "User location always available"
+let user_location_available_when_app_in_use = "User location available when app in use"
+let user_location_disabled = "User location disabled"
+
+
+
 // Basic location manager object.
 // This object is the delegate of the Core Location location manager.
 // This object will pass updates to CLLocationManager to the app.
 // On the iOS simulator, the location permissions can be set from the terminal:
 // $ xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
 class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegate {
+
     var locationManager = CLLocationManager()
 
     @Published var locationStatus : LocationStatus = .none
     @Published var locationInfo : String = ""
-    @Published var authorizationStatus: CLAuthorizationStatus? // Todo no longer published.
     @Published var lastKnownLocation: CLLocation?
 
     override init() {
@@ -59,18 +69,17 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
-            authorizationStatus = .authorizedWhenInUse
             // Get a single, one time location data point.
             manager.requestLocation()
+            manager.startUpdatingLocation()
         case .authorizedAlways:
-            authorizationStatus = .authorizedAlways
             manager.requestLocation()
+            manager.startUpdatingLocation()
         case .restricted:
-            authorizationStatus = .restricted
+            ()
         case .denied:
-            authorizationStatus = .denied
+            ()
         case .notDetermined:
-            authorizationStatus = .notDetermined
             manager.requestAlwaysAuthorization()
         @unknown default:
             ()
@@ -82,6 +91,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.first
+        updateLocationFeedback()
     }
 
     
@@ -110,30 +120,56 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         }
     }
     
-    
+
+    // Update location feedback to be used in SwiftUI.
+    // Make sure to not blindly set the feedback, as this causes redraws in SwiftUI.
+    // Only update a feedback variable if needed.
     func updateLocationFeedback() {
         switch locationManager.authorizationStatus {
         case .notDetermined:
-            locationStatus = .none
-            locationInfo = "Please grant access to user location"
+            if (locationStatus != .none) {
+                locationStatus = .none
+            }
+            if (locationInfo != please_grant_access_to_use_location) {
+                locationInfo = please_grant_access_to_use_location
+            }
         case .restricted:
-            locationStatus = .none
-            locationInfo = "User location has been restricted"
+            if (locationStatus != .none) {
+                locationStatus = .none
+            }
+            if (locationInfo != user_location_has_been_restricted) {
+                locationInfo = user_location_has_been_restricted
+            }
         case .denied:
-            locationStatus = .none
-            locationInfo = "User location has been denied"
+            if (locationStatus != .none) {
+                locationStatus = .none
+            }
+            if (locationInfo != user_location_has_been_denied) {
+                locationInfo = user_location_has_been_denied
+            }
         case .authorizedAlways:
-            locationStatus = .always
-            locationInfo = "User location always available"
+            if (locationStatus != .always) {
+                locationStatus = .always
+            }
+            if (locationInfo != user_location_always_available) {
+                locationInfo = user_location_always_available
+            }
         case .authorizedWhenInUse:
-            locationStatus = .inuse
-            locationInfo = "User location available when app in use"
+            if (locationStatus != .inuse) {
+                locationStatus = .inuse
+            }
+            if (locationInfo != user_location_available_when_app_in_use) {
+                locationInfo = user_location_available_when_app_in_use
+            }
         @unknown default:
-            locationStatus = .none
-            locationInfo = "User location disabled"
+            if (locationStatus != .none) {
+                locationStatus = .none
+            }
+            if (locationInfo != user_location_disabled) {
+                locationInfo = user_location_disabled
+            }
         }
     }
-
 }
 
 

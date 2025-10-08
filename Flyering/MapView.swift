@@ -156,7 +156,7 @@ final class ContentViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         
         if overlay is MKCircle { // checking the type
             print("rendering circle")
-            var circle = MKCircleRenderer(overlay: overlay)
+            let circle = MKCircleRenderer(overlay: overlay)
             circle.strokeColor = UIColor.systemBlue
             circle.fillColor = UIColor.systemBlue.withAlphaComponent(0.2)
             circle.lineWidth = 3
