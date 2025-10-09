@@ -39,6 +39,7 @@ struct ContentView: View {
     @State private var lastLatitude : CLLocationDegrees = 0
     @State private var lastLongitude : CLLocationDegrees = 0
     @State private var lastCourse : CLLocationDirection = 0
+    @State private var lastLocation : CLLocation = CLLocation()
 
     @State private var tracking = false
     
@@ -54,12 +55,44 @@ struct ContentView: View {
         VStack {
             HStack {
                 Spacer()
-                Button(action: {
-                }) {
-                    Image(systemName: "ellipsis")
-                    Text("Dev")
+
+                Menu {
+                    Button("Park") {
+                        print("Park")
+                    }
+                    Toggle("Tracking", isOn: $tracking)
+                        .onChange(of: tracking) {
+                            if tracking {
+                            }
+                            else {
+                            }
+                        }
+                    Toggle("Screen remains on", isOn: $alwayson)
+                        .onChange(of: alwayson) {
+                            if alwayson {
+                            }
+                            else {
+                            }
+                        }
+                    Text(locationDataManager.locationInfo)
+                    Button("Erase track") {
+                        mapViewModel.eraseUserTrack()
+                    }
+
+                } label: {
+                    Circle()
+                        .fill(.gray.opacity(0.15))
+                        .frame(width: 30, height: 30)
+                        .overlay {
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 13.0, weight: .semibold))
+                                .foregroundColor(.pink)
+                        }
                 }
-                .buttonStyle(.bordered)
+                Spacer()
+
+
+
 
 
                 Toggle(isOn: $alwayson) {
@@ -106,35 +139,6 @@ struct ContentView: View {
                         .foregroundColor(.green)
                         .opacity(tracking ? 1 : 0.5)
                 }
-                Menu {
-                    Button("Park") {
-                        print("Park")
-                    }
-                    Toggle("Tracking", isOn: $tracking)
-                        .onChange(of: tracking) {
-                            if tracking {
-                            }
-                            else {
-                            }
-                        }
-                    Toggle("Screen remains on", isOn: $alwayson)
-                        .onChange(of: alwayson) {
-                            if alwayson {
-                            }
-                            else {
-                            }
-                        }
-                    Text(locationDataManager.locationInfo)
-                } label: {
-                    Circle()
-                        .fill(.gray.opacity(0.15))
-                        .frame(width: 30, height: 30)
-                        .overlay {
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 13.0, weight: .semibold))
-                                .foregroundColor(.pink)
-                        }
-                }
                 Spacer()
             }
             
@@ -150,17 +154,18 @@ struct ContentView: View {
                     //                            print(error)
                     //                        }
                     //                    }
-                    //mapViewModel.addCircle()
                     //mapViewModel.setRegion(apeldoorn)
                     //mapViewModel.setCamera(apeldoorn, heading: 0.0, animate: false)
                     
                 }
                 .onLongPressGesture {
                 }
+                
         }
         .onReceive(timer) { time in
             if (tracking) {
                 updateMapCameraPosition(animate: true)
+                updateUserTrack()
             }
         }
         .onAppear {
@@ -220,28 +225,24 @@ struct ContentView: View {
         mapViewModel.setCamera(coordinate, heading: course, animate: animate)
     }
 
-}
-
-
-struct Coordinate : Identifiable {
-    let id = UUID()
-    let coordinate : CLLocationCoordinate2D
-    init(coordinate: CLLocationCoordinate2D) {
-        self.coordinate = coordinate
+    
+    func updateUserTrack() // Todo
+    {
+        // Get the location and make sure it's valid.
+        let location : CLLocation? = locationDataManager.location
+        guard location != nil else { return }
+        
+        // Get the distance from the previous location, whether it's large enough to draw it.
+        let distanceMeters = location?.distance(from: lastLocation)
+        if (distanceMeters ?? 0 < 2) { return }
+        lastLocation = location ?? CLLocation()
+        
+        // Draw the new coordinate on the map.
+        let coordinate = location?.coordinate
+        guard coordinate != nil else { return }
+        mapViewModel.updateUserTrack(coordinate ?? CLLocationCoordinate2D())
     }
-}
 
-
-func createCoordinates() -> [Coordinate] {
-    let home = CLLocationCoordinate2D(latitude: 52.11041098408821, longitude: 6.06349499662067)
-    var coordinates : [Coordinate] = []
-    let count = 0...100
-    for number in count {
-        let d = Double(number)
-        let longitude = home.longitude + (d * 0.0001)
-        let c = CLLocationCoordinate2D(latitude: home.latitude, longitude: longitude)
-        let coordinate : Coordinate = Coordinate(coordinate: c)
-        coordinates.append(coordinate)
-    }
-    return coordinates
+    
+    
 }

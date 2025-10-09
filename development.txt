@@ -1,7 +1,4 @@
-Remove the Map()
-
-
-Take the distance from the current camera distance.
+Separate tracking and map following user.
 
 
 
@@ -30,11 +27,6 @@ And improves, likely, the performance.
 
 
 
-The Map() may be slow if there's many annotations due to redrawing them.
-Better use MKMapView for performance.
-https://medium.com/@nevinchanyi/mkmapview-in-swiftui-complete-guide-115c4602af8a
-
-https://developer.apple.com/documentation/mapkit/mkmapview
 
 
 
@@ -84,8 +76,11 @@ Currently if the app moves to the foreground, it gives a red indication for the 
 Use the location manager's magnetometer data.
 https://github.com/mryssng/MagnetometerDemo
 This info can be used to correct for the map rotation so it rotates if if the person does not move.
+This way the user can rotate the map and see on the map where the user is on a crossroad.
+
 
 
 
 Check on whether make locationManager.desiredAccuracy settable via menu.
+
 

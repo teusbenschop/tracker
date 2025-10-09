@@ -107,7 +107,9 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
-        annotationView?.image = UIImage(systemName: "applelogo")
+        let image = UIImage(systemName: "circle")?
+        .withTintColor(.green)
+        annotationView?.image = image
         return annotationView
     }
     
@@ -171,9 +173,8 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     }
     
     
-    func addCircle() {
-        let location = apeldoorn
-        let circle = MKCircle(center: location, radius: 500 as CLLocationDistance)
+    func addCircle(_ coordinate: CLLocationCoordinate2D) {
+        let circle = MKCircle(center: coordinate, radius: 100.0)
         mapView.addOverlay(circle)
     }
     
@@ -181,10 +182,10 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     func setCamera(_ coordinate: CLLocationCoordinate2D,
                    heading: CLLocationDirection,
                    animate: Bool) {
-        // Take the distance from the camera to the center coordinate
-        // from the existing camera if it exists, else take a default distance.
+        // The distance from the camera to the center coordinate.
+        // Take it from the existing camera if it exists, else take a default distance.
         // This enables the user to change the distance and the app will continue to use that.
-        // ("Change distance" means user zooms the map.
+        // Changing camera distance means that the user zooms the map.
         var distance : CLLocationDistance = mapView.camera.centerCoordinateDistance
         if (distance == 0) {
             distance = 2000
@@ -194,6 +195,36 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
                                  pitch: 0.0,
                                  heading: heading)
         mapView.setCamera(camera, animated: animate)
+    }
+
+    
+    func updateUserTrack(_ coordinate: CLLocationCoordinate2D) {
+        
+        let annotation = MKPointAnnotation()
+//        annotation.title = "Centre"
+//        annotation.subtitle = "Apeldoorn"
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+    }
+
+    
+    func eraseUserTrack() // Todo Update once track is made of annotations.
+    {
+        mapView.removeAnnotations(mapView.annotations)
+//        mapView.removeOverlays(mapView.overlays)
+    }
+    
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated: Bool) {
+        //print ("region will change")
+    }
+    
+
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        //print("did change visible region")
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated: Bool) {
+        //print("region did change")
     }
     
 }
