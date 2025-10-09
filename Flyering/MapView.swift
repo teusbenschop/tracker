@@ -49,7 +49,7 @@ let deventer = CLLocationCoordinate2D(latitude: 52.24941011889572, longitude: 6.
 
 
 // Describe the view model.
-final class ContentViewModel: NSObject, ObservableObject, MKMapViewDelegate {
+final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     
     let mapView = MKMapView()
     
@@ -175,6 +175,10 @@ final class ContentViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         let location = apeldoorn
         let circle = MKCircle(center: location, radius: 500 as CLLocationDistance)
         mapView.addOverlay(circle)
+    }
+    
+    func setCamera() {
+
     }
     
 }

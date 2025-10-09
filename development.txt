@@ -1,3 +1,10 @@
+Now testing battery life is app continues running in the foreground...
+
+
+
+MKMapView MKMapCamera
+
+https://www.techotopia.com/index.php/An_iOS_9_MapKit_Flyover_Tutorial
 
 
 

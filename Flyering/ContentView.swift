@@ -27,7 +27,7 @@ struct ContentView: View {
 
     @StateObject var locationDataManager = LocationDataManager()
 
-    @StateObject var viewModel = ContentViewModel()
+    @StateObject var mapViewModel = MapViewModel()
 
     // This contains the camera position above the map.
     // The "automatic" value causes the map to open at a standard location.
@@ -141,6 +141,11 @@ struct ContentView: View {
             .onAppear {
                 locationDataManager.checkLocationAuthorization()
                 updateMapCameraPosition(animate: false)
+                print("onAppear")
+                
+            }
+            .onDisappear {
+                print("onDisappear")
             }
             .onLongPressGesture {
                 print("long press")
@@ -148,7 +153,7 @@ struct ContentView: View {
             .onChange(of: mapCameraPosition) { _, newLocation in
             }
             
-            WrapperView(view: viewModel.mapView)
+            WrapperView(view: mapViewModel.mapView)
                 .onAppear() {
                     print("map appears")
                     //                    viewModel.setAnnotation()
@@ -159,8 +164,9 @@ struct ContentView: View {
                     //                            print(error)
                     //                        }
                     //                    }
-                    viewModel.addCircle()
-                    viewModel.setRegion(apeldoorn)
+                    //mapViewModel.addCircle()
+                    //mapViewModel.setRegion(apeldoorn)
+                    
                 }
 
             
@@ -169,6 +175,14 @@ struct ContentView: View {
             if (tracking) {
                 updateMapCameraPosition(animate: true)
             }
+        }
+        .onAppear {
+            print("on appear")
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            print("on appear")
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
     
