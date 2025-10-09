@@ -37,6 +37,8 @@ struct ContentView: View {
     // @State private var mapCameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .automatic)
 
     @State private var tracking = false
+    
+    @State private var alwayson = false
 
     @State private var showingAlert = false
     
@@ -55,7 +57,16 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
 
-                
+
+                Toggle(isOn: $alwayson) {
+                    
+                }
+                .onChange(of: alwayson) {
+                    UIApplication.shared.isIdleTimerDisabled = alwayson
+                }
+                Image(systemName: alwayson ? "lock.open.display" : "lock.display")
+                    .foregroundColor(alwayson ? .green : .gray)
+
                 Toggle(isOn: $tracking) {
                 }
                 .onChange(of: tracking) {
@@ -102,6 +113,13 @@ struct ContentView: View {
                             else {
                             }
                         }
+                    Toggle("Screen remains on", isOn: $alwayson)
+                        .onChange(of: alwayson) {
+                            if alwayson {
+                            }
+                            else {
+                            }
+                        }
                     Text(locationDataManager.locationInfo)
                 } label: {
                     Circle()
@@ -141,14 +159,11 @@ struct ContentView: View {
             .onAppear {
                 locationDataManager.checkLocationAuthorization()
                 updateMapCameraPosition(animate: false)
-                print("onAppear")
                 
             }
             .onDisappear {
-                print("onDisappear")
             }
             .onLongPressGesture {
-                print("long press")
             }
             .onChange(of: mapCameraPosition) { _, newLocation in
             }
@@ -177,11 +192,11 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            print("on appear")
-            UIApplication.shared.isIdleTimerDisabled = true
+            if (alwayson) {
+                UIApplication.shared.isIdleTimerDisabled = true
+            }
         }
         .onDisappear {
-            print("on appear")
             UIApplication.shared.isIdleTimerDisabled = false
         }
     }

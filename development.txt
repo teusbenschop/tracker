@@ -1,4 +1,6 @@
-Now testing battery life is app continues running in the foreground...
+
+
+
 
 
 
@@ -65,9 +67,6 @@ Use MagSafe powerbank for extra power.
 
 
 
-Have a setting to keep the screen unlocked.
-
-
 Have app background permissions, it won't draw on the map, it will just record the track, and draw the remainder on the map once it moves to the foreground.
 
 
@@ -78,4 +77,6 @@ Currently if the app moves to the foreground, it gives a red indication for the 
 Use the location manager's magnetometer data.
 https://github.com/mryssng/MagnetometerDemo
 This info can be used to correct for the map rotation so it rotates if if the person does not move.
+
+
 
