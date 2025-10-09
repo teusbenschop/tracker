@@ -137,43 +137,11 @@ struct ContentView: View {
                 }
                 Spacer()
             }
-
-//            if let coordinate = locationDataManager.lastKnownLocation {
-//                Text("Latitude: \(coordinate.latitude)")
-//                Text("Longitude: \(coordinate.longitude)")
-//            } else {
-//                Text("Unknown Location")
-//            }
-//            Button("Get location") {
-//                locationDataManager.checkLocationAuthorization()
-//            }
-//            .buttonStyle(.borderedProminent)
-
-            Map(position: $mapCameraPosition) {
-//                let coordinates : [Coordinate] = createCoordinates()
-//                ForEach(coordinates) { coordinate in
-//                    Marker("", coordinate: coordinate.coordinate)
-//                }
-            }
-            .mapStyle(.standard)
-            .mapControls {
-                MapUserLocationButton() // This makes location visible, to move to menu?
-                MapCompass() // Move to menu as a button?
-            }
-            .onAppear {
-                locationDataManager.checkLocationAuthorization()
-                updateMapCameraPosition(animate: false)
-                
-            }
-            .onDisappear {
-            }
-            .onLongPressGesture {
-            }
-            .onChange(of: mapCameraPosition) { _, newLocation in
-            }
             
             WrapperView(view: mapViewModel.mapView)
                 .onAppear() {
+                    locationDataManager.checkLocationAuthorization()
+                    updateMapCameraPosition(animate: false)
                     //                    viewModel.setAnnotation()
                     //                    Task {
                     //                        do {
@@ -184,11 +152,11 @@ struct ContentView: View {
                     //                    }
                     //mapViewModel.addCircle()
                     //mapViewModel.setRegion(apeldoorn)
-                    mapViewModel.setCamera(apeldoorn, heading: 0.0, animate: false)
+                    //mapViewModel.setCamera(apeldoorn, heading: 0.0, animate: false)
                     
                 }
-
-            
+                .onLongPressGesture {
+                }
         }
         .onReceive(timer) { time in
             if (tracking) {

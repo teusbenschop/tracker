@@ -181,10 +181,14 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     func setCamera(_ coordinate: CLLocationCoordinate2D,
                    heading: CLLocationDirection,
                    animate: Bool) {
-        let distance: CLLocationDistance = 2000
-        
-        print (mapView.camera.centerCoordinateDistance)
-        
+        // Take the distance from the camera to the center coordinate
+        // from the existing camera if it exists, else take a default distance.
+        // This enables the user to change the distance and the app will continue to use that.
+        // ("Change distance" means user zooms the map.
+        var distance : CLLocationDistance = mapView.camera.centerCoordinateDistance
+        if (distance == 0) {
+            distance = 2000
+        }
         let camera = MKMapCamera(lookingAtCenter: coordinate,
                                  fromDistance: distance,
                                  pitch: 0.0,
