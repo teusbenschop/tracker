@@ -110,9 +110,8 @@ struct ContentView: View {
                     if tracking {
                         // Update location data once.
                         locationDataManager.checkLocationAuthorization()
-                        // If the tracking slider is moved to the "on" position,
-                        // then update the map camera position at once without animation.
-                        updateMapCameraPosition(animate: false)
+                        // Update the map camera position at once without animation.
+                        updateMapCameraPosition()
                         //showingAlert = true
                     }
                     else {
@@ -145,7 +144,7 @@ struct ContentView: View {
             WrapperView(view: mapViewModel.mapView)
                 .onAppear() {
                     locationDataManager.checkLocationAuthorization()
-                    updateMapCameraPosition(animate: false)
+                    updateMapCameraPosition()
                     //                    viewModel.setAnnotation()
                     //                    Task {
                     //                        do {
@@ -164,7 +163,7 @@ struct ContentView: View {
         }
         .onReceive(timer) { time in
             if (tracking) {
-                updateMapCameraPosition(animate: true)
+                updateMapCameraPosition()
                 updateUserTrack()
             }
         }
@@ -184,7 +183,7 @@ struct ContentView: View {
     }
     
     
-    func updateMapCameraPosition(animate: Bool) {
+    func updateMapCameraPosition() {
         // Get location data.
         let location = locationDataManager.location
         guard location != nil else { return }
@@ -215,14 +214,8 @@ struct ContentView: View {
                 pitch: 0
             )
         )
-        if (animate) {
-            withAnimation {
-                mapCameraPosition = cameraPosition
-            }
-        } else {
-            mapCameraPosition = cameraPosition
-        }
-        mapViewModel.setCamera(coordinate, heading: course, animate: animate)
+        mapCameraPosition = cameraPosition
+        mapViewModel.setCamera(coordinate, heading: course, animate: false)
     }
 
     
