@@ -47,16 +47,18 @@ let user_location_disabled = "User location disabled"
 // $ xcrun simctl privacy "iPhone 12" grant location-always org.bibledit.ios.test
 class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegate {
 
-    var locationManager = CLLocationManager()
+    private var locationManager = CLLocationManager()
 
     @Published var locationStatus : LocationStatus = .none
     @Published var locationInfo : String = ""
-    @Published var lastKnownLocation: CLLocation?
+    @Published var location: CLLocation?
 
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
+        //locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         // If you need the most precise and regular location data,
         // you would want to call the startUpdatingLocation() function,
         // This is the most power-consuming option.
@@ -90,7 +92,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
-        lastKnownLocation = locations.first
+        location = locations.first
         updateLocationFeedback()
     }
 
@@ -114,7 +116,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         case .authorizedAlways:
             ()
         case .authorizedWhenInUse:
-            lastKnownLocation = locationManager.location
+            location = locationManager.location
         @unknown default:
             ()
         }

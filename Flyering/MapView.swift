@@ -57,12 +57,12 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         super.init()
         mapView.delegate = self
         mapView.isUserInteractionEnabled = true
+        mapView.isRotateEnabled = true
         addGestureRecognizer()
         // More mapView configuration ...
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-        print("mapViewDidFinishLoadingMap")
     }
     
     
@@ -177,8 +177,19 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         mapView.addOverlay(circle)
     }
     
-    func setCamera() {
-
+    
+    func setCamera(_ coordinate: CLLocationCoordinate2D,
+                   heading: CLLocationDirection,
+                   animate: Bool) {
+        let distance: CLLocationDistance = 2000
+        
+        print (mapView.camera.centerCoordinateDistance)
+        
+        let camera = MKMapCamera(lookingAtCenter: coordinate,
+                                 fromDistance: distance,
+                                 pitch: 0.0,
+                                 heading: heading)
+        mapView.setCamera(camera, animated: animate)
     }
     
 }

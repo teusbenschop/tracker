@@ -1,21 +1,11 @@
+Remove the Map()
+
+
+Take the distance from the current camera distance.
 
 
 
 
-
-
-MKMapView MKMapCamera
-
-https://www.techotopia.com/index.php/An_iOS_9_MapKit_Flyover_Tutorial
-
-
-
-
-The Map() may be slow if there's many annotations due to redrawing them.
-Better use MKMapView for performance.
-https://medium.com/@nevinchanyi/mkmapview-in-swiftui-complete-guide-115c4602af8a
-
-https://developer.apple.com/documentation/mapkit/mkmapview
 
 
 
@@ -30,6 +20,24 @@ While drawing the track,
 intelligently decide whether to replace the last drawn annotation with the current annotation.
 This reduces the number of dots drawn.
 And improves, likely, the performance.
+
+
+
+
+
+
+
+
+
+
+The Map() may be slow if there's many annotations due to redrawing them.
+Better use MKMapView for performance.
+https://medium.com/@nevinchanyi/mkmapview-in-swiftui-complete-guide-115c4602af8a
+
+https://developer.apple.com/documentation/mapkit/mkmapview
+
+
+
 
 
 
@@ -63,7 +71,6 @@ Mitigating measures:
 
 
 
-Use MagSafe powerbank for extra power.
 
 
 
@@ -79,4 +86,6 @@ https://github.com/mryssng/MagnetometerDemo
 This info can be used to correct for the map rotation so it rotates if if the person does not move.
 
 
+
+Check on whether make locationManager.desiredAccuracy settable via menu.
 

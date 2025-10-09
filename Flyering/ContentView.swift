@@ -35,6 +35,10 @@ struct ContentView: View {
     @State private var mapCameraPosition: MapCameraPosition = .automatic
     // This would show the user location and the map would follow it.
     // @State private var mapCameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .automatic)
+    
+    @State private var lastLatitude : CLLocationDegrees = 0
+    @State private var lastLongitude : CLLocationDegrees = 0
+    @State private var lastCourse : CLLocationDirection = 0
 
     @State private var tracking = false
     
@@ -170,7 +174,6 @@ struct ContentView: View {
             
             WrapperView(view: mapViewModel.mapView)
                 .onAppear() {
-                    print("map appears")
                     //                    viewModel.setAnnotation()
                     //                    Task {
                     //                        do {
@@ -181,6 +184,7 @@ struct ContentView: View {
                     //                    }
                     //mapViewModel.addCircle()
                     //mapViewModel.setRegion(apeldoorn)
+                    mapViewModel.setCamera(apeldoorn, heading: 0.0, animate: false)
                     
                 }
 
@@ -208,31 +212,44 @@ struct ContentView: View {
     
     
     func updateMapCameraPosition(animate: Bool) {
-        let location = locationDataManager.lastKnownLocation
-        if (location != nil) {
-            let latitude = location?.coordinate.latitude ?? 0
-            let longitude = location?.coordinate.longitude ?? 0
-            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let course = (location?.course ?? 0)
-            let cameraPosition = MapCameraPosition.camera(
-                MapCamera(
-                    centerCoordinate: coordinate,
-                    // The distance from the center point of the map to the camera, in meters.
-                    distance: 2000,
-                    // The heading of the camera, in degrees, relative to true north.
-                    heading: course,
-                    // The viewing angle of the camera, in degrees.
-                    pitch: 0
-                )
+        // Get location data.
+        let location = locationDataManager.location
+        guard location != nil else { return }
+        let latitude = location?.coordinate.latitude ?? 0
+        let longitude = location?.coordinate.longitude ?? 0
+        let course = (location?.course ?? 0)
+
+        // Optimize performance: Proceed if there's a change.
+        if (latitude == lastLatitude
+            && longitude == lastLongitude
+            && course == lastCourse) {
+            return
+        }
+        lastLongitude = longitude
+        lastLatitude = latitude
+        lastCourse = course
+
+        // Create camera.
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let cameraPosition = MapCameraPosition.camera(
+            MapCamera(
+                centerCoordinate: coordinate,
+                // The distance from the center point of the map to the camera, in meters.
+                distance: 2000,
+                // The heading of the camera, in degrees, relative to true north.
+                heading: course,
+                // The viewing angle of the camera, in degrees.
+                pitch: 0
             )
-            if (animate) {
-                withAnimation {
-                    mapCameraPosition = cameraPosition
-                }
-            } else {
+        )
+        if (animate) {
+            withAnimation {
                 mapCameraPosition = cameraPosition
             }
+        } else {
+            mapCameraPosition = cameraPosition
         }
+        mapViewModel.setCamera(coordinate, heading: course, animate: animate)
     }
 
 }
