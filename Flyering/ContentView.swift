@@ -145,17 +145,6 @@ struct ContentView: View {
                 .onAppear() {
                     locationDataManager.checkLocationAuthorization()
                     updateMapCameraPosition()
-                    //                    viewModel.setAnnotation()
-                    //                    Task {
-                    //                        do {
-                    //                            try await viewModel.displayRoutes()
-                    //                        } catch {
-                    //                            print(error)
-                    //                        }
-                    //                    }
-                    //mapViewModel.setRegion(apeldoorn)
-                    //mapViewModel.setCamera(apeldoorn, heading: 0.0, animate: false)
-                    
                 }
                 .onLongPressGesture {
                 }
@@ -219,7 +208,7 @@ struct ContentView: View {
     }
 
     
-    func updateUserTrack() // Todo
+    func updateUserTrack()
     {
         // Get the location and make sure it's valid.
         let location : CLLocation? = locationDataManager.location

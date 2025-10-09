@@ -208,10 +208,9 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     }
 
     
-    func eraseUserTrack() // Todo Update once track is made of annotations.
+    func eraseUserTrack()
     {
         mapView.removeAnnotations(mapView.annotations)
-//        mapView.removeOverlays(mapView.overlays)
     }
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated: Bool) {
