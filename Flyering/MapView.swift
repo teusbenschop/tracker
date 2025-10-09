@@ -107,9 +107,15 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
-        let image = UIImage(systemName: "circle")?
-        .withTintColor(.green)
-        annotationView?.image = image
+        let image = UIImage(systemName: "circle")?.withTintColor(.red)
+        if (image != nil) {
+            let size = 10.0
+            UIGraphicsBeginImageContext(CGSizeMake(size, size))
+            image!.draw(in: CGRectMake(0, 0, size, size))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            annotationView?.image = newImage
+        }
         return annotationView
     }
     

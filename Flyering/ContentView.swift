@@ -29,25 +29,16 @@ struct ContentView: View {
 
     @StateObject var mapViewModel = MapViewModel()
 
-    // This contains the camera position above the map.
-    // The "automatic" value causes the map to open at a standard location.
-    // If based in The Netherlands, the map will show that country.
-    @State private var mapCameraPosition: MapCameraPosition = .automatic
-    // This would show the user location and the map would follow it.
-    // @State private var mapCameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .automatic)
-    
     @State private var lastLatitude : CLLocationDegrees = 0
     @State private var lastLongitude : CLLocationDegrees = 0
     @State private var lastCourse : CLLocationDirection = 0
     @State private var lastLocation : CLLocation = CLLocation()
 
     @State private var tracking = false
-    
+    @State private var following = false;
     @State private var alwayson = false
 
     @State private var showingAlert = false
-    
-    @State private var name = ""
     
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
 
@@ -55,7 +46,6 @@ struct ContentView: View {
         VStack {
             HStack {
                 Spacer()
-
                 Menu {
                     Button("Park") {
                         print("Park")
@@ -78,7 +68,6 @@ struct ContentView: View {
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
                     }
-
                 } label: {
                     Circle()
                         .fill(.gray.opacity(0.15))
@@ -91,23 +80,28 @@ struct ContentView: View {
                 }
                 Spacer()
 
-
-
-
-
-                Toggle(isOn: $alwayson) {
-                    
-                }
-                .onChange(of: alwayson) {
-                    UIApplication.shared.isIdleTimerDisabled = alwayson
-                }
-                Image(systemName: alwayson ? "lock.open.display" : "lock.display")
-                    .foregroundColor(alwayson ? .green : .gray)
-
                 Toggle(isOn: $tracking) {
                 }
                 .onChange(of: tracking) {
                     if tracking {
+                        // Update location data once.
+                        locationDataManager.checkLocationAuthorization()
+                        // Update the map camera position at once without animation.
+//                        updateMapCameraPosition()
+                        //showingAlert = true
+                    }
+                    else {
+                        //showingAlert = false
+                    }
+                }
+                Image(systemName: "figure.walk")
+                    .foregroundColor(tracking ? .green : .gray)
+
+                
+                Toggle(isOn: $following) {
+                }
+                .onChange(of: following) {
+                    if following {
                         // Update location data once.
                         locationDataManager.checkLocationAuthorization()
                         // Update the map camera position at once without animation.
@@ -118,26 +112,25 @@ struct ContentView: View {
                         //showingAlert = false
                     }
                 }
-                .alert("Enter your name", isPresented: $showingAlert) {
-                    Button("OK", action: submit)
-                } message: {
-                    Text("Xcode will print whatever you type.")
+                Image(systemName: "location")
+                    .foregroundColor(following ? .green : .gray)
+
+                
+                Toggle(isOn: $alwayson) {
                 }
-                Image(systemName: "figure.walk")
-                    .foregroundColor(tracking ? .green : .gray)
-                switch locationDataManager.locationStatus {
-                case .none:
-                    Image(systemName: "location.slash")
-                        .foregroundColor(.red)
-                case .inuse:
-                    Image(systemName: "location")
-                        .foregroundColor(.orange)
-                        .opacity(tracking ? 1 : 0.5)
-                case .always:
-                    Image(systemName: "location")
-                        .foregroundColor(.green)
-                        .opacity(tracking ? 1 : 0.5)
+                .onChange(of: alwayson) {
+                    UIApplication.shared.isIdleTimerDisabled = alwayson
                 }
+                Image(systemName: alwayson ? "lock.open.display" : "lock.display")
+                    .foregroundColor(alwayson ? .green : .gray)
+
+
+                    .alert("Enter your name", isPresented: $showingAlert) {
+                        Button("OK", action: submit)
+                    } message: {
+                        Text("Xcode will print whatever you type.")
+                    }
+
                 Spacer()
             }
             
@@ -146,13 +139,13 @@ struct ContentView: View {
                     locationDataManager.checkLocationAuthorization()
                     updateMapCameraPosition()
                 }
-                .onLongPressGesture {
-                }
                 
         }
         .onReceive(timer) { time in
-            if (tracking) {
+            if following {
                 updateMapCameraPosition()
+            }
+            if tracking {
                 updateUserTrack()
             }
         }
@@ -190,20 +183,8 @@ struct ContentView: View {
         lastLatitude = latitude
         lastCourse = course
 
-        // Create camera.
+        // Set the camera.
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let cameraPosition = MapCameraPosition.camera(
-            MapCamera(
-                centerCoordinate: coordinate,
-                // The distance from the center point of the map to the camera, in meters.
-                distance: 2000,
-                // The heading of the camera, in degrees, relative to true north.
-                heading: course,
-                // The viewing angle of the camera, in degrees.
-                pitch: 0
-            )
-        )
-        mapCameraPosition = cameraPosition
         mapViewModel.setCamera(coordinate, heading: course, animate: false)
     }
 
