@@ -67,7 +67,9 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         // but also not as precise or as frequently updated.
         locationManager.startUpdatingLocation()
     }
+
     
+    // Tells the delegate when the app creates the location manager and when the authorization status changes.
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
@@ -90,18 +92,49 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     }
     
     
+    // Tells the delegate that the location manager was unable to retrieve a location value.
+    func locationManager(_ manager: CLLocationManager,
+                         didFailWithError error: Error) {
+        locationStatus = .none
+        locationInfo = error.localizedDescription
+    }
+    
+
+    // Tells the delegate that new location data is available.
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         location = locations.first
         updateLocationFeedback()
     }
 
-    
+    // Tells the delegate that updates will no longer be deferred.
     func locationManager(_ manager: CLLocationManager,
-                         didFailWithError error: Error) {
-        locationStatus = .none
-        locationInfo = error.localizedDescription
+                         didFinishDeferredUpdatesWithError: (any Error)?) {
     }
+
+
+    // Tells the delegate that location updates were paused.
+    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+    }
+    
+    // Tells the delegate that the delivery of location updates has resumed.
+    func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
+    }
+    
+
+    // Tells the delegate that the location manager received updated heading information.
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading: CLHeading) {
+        print (didUpdateHeading)
+    }
+
+
+    // Asks the delegate whether the heading calibration alert should be displayed.
+    func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool {
+        return false
+    }
+
+    
+    
     
     
     func checkLocationAuthorization() {

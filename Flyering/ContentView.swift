@@ -50,9 +50,16 @@ struct ContentView: View {
                     Button("Park") {
                         print("Park")
                     }
-                    Toggle("Tracking", isOn: $tracking)
+                    Toggle("Drawing your track", isOn: $tracking)
                         .onChange(of: tracking) {
                             if tracking {
+                            }
+                            else {
+                            }
+                        }
+                    Toggle("Map follows your location", isOn: $following)
+                        .onChange(of: following) {
+                            if following {
                             }
                             else {
                             }

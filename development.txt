@@ -1,4 +1,3 @@
-Separate tracking and map following user.
 
 
 
@@ -6,18 +5,13 @@ Separate tracking and map following user.
 
 
 
-Start with writing annotations for the users' track.
-Annotations should be as cheap as possible for writing, no fancy stuff, for better performance.
+While in the background, it receives the location updates,
+stores the locations, but does not draw them on the map.
+It will draw the cached locations on the map when it goes to the foreground.
 
-See how to write a number of dots to indicate the walked track. That is, how to add basic annotations live. Likely have a container with annotatons, and update that container, so the Stete will write them onto the map. Or something like this.
-Display an updating path of a user's location history.
-https://developer.apple.com/documentation/mapkit/displaying-an-updating-path-of-a-user-s-location-history
-
-While drawing the track,
-intelligently decide whether to replace the last drawn annotation with the current annotation.
-This reduces the number of dots drawn.
-And improves, likely, the performance.
-
+It stores the track in the app settings, perhaps a database. This persists them.
+If the app starts, and the track has not yet been drawn, it draw the track from the database.
+This is more robust for crashes too.
 
 
 
