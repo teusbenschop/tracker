@@ -52,6 +52,8 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     @Published var locationStatus : LocationStatus = .none
     @Published var locationInfo : String = ""
     @Published var location: CLLocation?
+    
+    private var counter : Int = 0
 
     override init() {
         super.init()
@@ -105,6 +107,8 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
                          didUpdateLocations locations: [CLLocation]) {
         location = locations.first
         updateLocationFeedback()
+        counter += 1
+        print(counter, "did update locations")
     }
 
     // Tells the delegate that updates will no longer be deferred.

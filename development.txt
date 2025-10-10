@@ -13,6 +13,10 @@ It stores the track in the app settings, perhaps a database. This persists them.
 If the app starts, and the track has not yet been drawn, it draw the track from the database.
 This is more robust for crashes too.
 
+If tracking and following are off, then make things very efficient in the background so it uses hardly any power.
+
+In the background, it never follows the user that is, it does not move the map camera.
+
 
 
 

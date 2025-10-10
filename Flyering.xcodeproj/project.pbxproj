@@ -6,18 +6,28 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		CAD7B8EA2E910D3B00AF06D1 /* development.txt in Resources */ = {isa = PBXBuildFile; fileRef = CAD7B8E92E910D3B00AF06D1 /* development.txt */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
+		CA80E9502E998B02002C4D7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = flyering/Info.plist; sourceTree = "<group>"; };
 		CA9C5A872E8D91EB002D0C4D /* flyering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flyering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAD7B8E92E910D3B00AF06D1 /* development.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = development.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CA80E9552E998CA5002C4D7D /* Exceptions for "Flyering" folder in "flyering" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CA9C5A862E8D91EB002D0C4D /* flyering */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CA9C5A892E8D91EB002D0C4D /* Flyering */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CA80E9552E998CA5002C4D7D /* Exceptions for "Flyering" folder in "flyering" target */,
+			);
 			path = Flyering;
 			sourceTree = "<group>";
 		};
@@ -37,6 +47,7 @@
 		CA9C5A7E2E8D91EB002D0C4D = {
 			isa = PBXGroup;
 			children = (
+				CA80E9502E998B02002C4D7D /* Info.plist */,
 				CAD7B8E92E910D3B00AF06D1 /* development.txt */,
 				CA9C5A892E8D91EB002D0C4D /* Flyering */,
 				CA9C5A882E8D91EB002D0C4D /* Products */,
@@ -115,7 +126,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAD7B8EA2E910D3B00AF06D1 /* development.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +273,7 @@
 				DEVELOPMENT_TEAM = L37WFUB5MH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = flyering/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Flyering;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This is needed to keep recording your track while the Tracker is in the background. Note that it access the position only while \"Tracking\" is on.";
@@ -300,6 +311,7 @@
 				DEVELOPMENT_TEAM = L37WFUB5MH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = flyering/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Flyering;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This is needed to keep recording your track while the Tracker is in the background. Note that it access the position only while \"Tracking\" is on.";
