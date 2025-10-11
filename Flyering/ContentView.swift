@@ -41,6 +41,8 @@ struct ContentView: View {
     @State private var showingAlert = false
     
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
+    
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         VStack {
@@ -163,6 +165,15 @@ struct ContentView: View {
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                print("Active")
+            } else if newPhase == .inactive {
+                print("Inactive")
+            } else if newPhase == .background {
+                print("Background")
+            }
         }
     }
     
