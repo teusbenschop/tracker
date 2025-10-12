@@ -49,7 +49,9 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
+
                 Spacer()
+
                 Menu {
                     Button("Park") {
                         print("Park")
@@ -82,6 +84,7 @@ struct ContentView: View {
                                 .foregroundColor(.pink)
                         }
                 }
+
                 Spacer()
                 
                 Button(action: {
@@ -94,6 +97,8 @@ struct ContentView: View {
                         .foregroundColor(drawingTrack ? .red : .gray)
                         .fontWeight(drawingTrack ? .black : .light)
                 })
+
+                Spacer()
 
                 Button(action: {
                     locationDataManager.checkLocationAuthorization()
@@ -115,42 +120,35 @@ struct ContentView: View {
                             .foregroundColor(.gray)
                     }
                 })
-
-
-
-                
-                Toggle(isOn: $followingLocation) {
-                }
-                .onChange(of: followingLocation) {
-                    if followingLocation {
-                        // Update location data once.
+                .onChange(of: userTracking) { oldValue, newValue in
+                    switch (userTracking) {
+                    case .none:
+                        print("none")
+                    case .follow:
                         locationDataManager.checkLocationAuthorization()
-                        // Update the map camera position at once without animation.
-                        updateMapCameraPosition()
-                        //showingAlert = true
-                    }
-                    else {
-                        //showingAlert = false
+                        print("follow")
+                    case .followWithHeading:
+                        print("followWithHeading")
+                    @unknown default:
+                        ()
                     }
                 }
-                Image(systemName: "location")
-                    .foregroundColor(followingLocation ? .green : .gray)
-
                 
-                Toggle(isOn: $screenOn) {
-                }
-                .onChange(of: screenOn) {
+                Spacer()
+                
+                Button(action: {
+                    screenOn = !screenOn
                     UIApplication.shared.isIdleTimerDisabled = screenOn
-                }
-                Image(systemName: screenOn ? "lock.open.display" : "lock.display")
-                    .foregroundColor(screenOn ? .green : .gray)
-
-
-                    .alert("Enter your name", isPresented: $showingAlert) {
-                        Button("OK", action: submit)
-                    } message: {
-                        Text("Xcode will print whatever you type.")
-                    }
+                    // A test indicates that,
+                    // if the app has set the screen to remain on,
+                    // and if the app then moves to the background,
+                    // then the screen goes off with the normal delay.
+                    // Once the app gets moved to the foreground again,
+                    // its setting for keeping the screen on takes effect again.
+                }, label: {
+                    Image(systemName: screenOn ? "lock.open.display" : "lock.display")
+                        .foregroundColor(screenOn ? .red : .gray)
+                })
 
                 Spacer()
             }

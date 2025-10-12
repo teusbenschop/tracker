@@ -1,27 +1,18 @@
 
+On startup:
+                        updateMapCameraPosition()
+Or change to .follow shortly, then back to .none. Or default to .follow?
+
+
+
+
+Have four states, one not displaying user location at all?
 
 
 
 
 
 
-If moving along the same track it cannot now been seen.
-So needs an indicator for current user position. Likely some arrow.
-
-https://developer.apple.com/documentation/MapKit/MKMapView/showsUserLocation
-
-May need button to set it? Or always on?
-
-
-Make central routine to unify the variables for following and heading.
-
-
-
-
-
-
-
-The buttons and menus, should they be visible on the map itself?
 
 
 
@@ -97,5 +88,10 @@ This way the user can rotate the map and see on the map where the user is on a c
 
 
 Check on whether make locationManager.desiredAccuracy settable via menu.
+
+
+
+
+The buttons and menus, should they be visible on the map itself?
 
 
