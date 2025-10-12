@@ -5,6 +5,38 @@
 
 
 
+If moving along the same track it cannot now been seen.
+So needs an indicator for current user position. Likely some arrow.
+
+https://developer.apple.com/documentation/MapKit/MKMapView/showsUserLocation
+
+May need button to set it? Or always on?
+
+
+Make central routine to unify the variables for following and heading.
+
+
+
+
+
+
+
+The buttons and menus, should they be visible on the map itself?
+
+
+
+
+
+
+
+https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
+
+https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background#Add-the-background-mode-capability
+
+
+
+
+
 While in the background, it receives the location updates,
 stores the locations, but does not draw them on the map.
 It will draw the cached locations on the map when it goes to the foreground.
@@ -27,23 +59,8 @@ In the background, it never follows the user that is, it does not move the map c
 
 
 
-
-
-
-
-
-
-See if animating the map helps, make a setting for that too, as it may use more energy.
-Button for whether the maps follows the user.
-This button is that setting too.
-
-
 Mapkit overlays.
 https://developer.apple.com/documentation/mapkit/mapkit-overlays
-
-
-
-https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
 
 
 

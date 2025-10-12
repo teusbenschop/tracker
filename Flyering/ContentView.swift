@@ -34,9 +34,11 @@ struct ContentView: View {
     @State private var lastCourse : CLLocationDirection = 0
     @State private var lastLocation : CLLocation = CLLocation()
 
-    @State private var tracking = false
-    @State private var following = false;
-    @State private var alwayson = false
+    @State private var drawingTrack = false
+    @State private var followingLocation = false // Todo check
+    @State private var followingDirection = false // Todo implement.
+    @State private var userTracking : MKUserTrackingMode = .none
+    @State private var screenOn = false
 
     @State private var showingAlert = false
     
@@ -52,26 +54,19 @@ struct ContentView: View {
                     Button("Park") {
                         print("Park")
                     }
-                    Toggle("Drawing your track", isOn: $tracking)
-                        .onChange(of: tracking) {
-                            if tracking {
-                            }
-                            else {
-                            }
+                    Toggle("Drawing your track", isOn: $drawingTrack)
+                        .onChange(of: drawingTrack) {
                         }
-                    Toggle("Map follows your location", isOn: $following)
-                        .onChange(of: following) {
-                            if following {
-                            }
-                            else {
-                            }
+                    Toggle("Map follows your location", isOn: $followingLocation)
+                        .onChange(of: followingLocation) {
+                            handleToggleFollowLocation()
                         }
-                    Toggle("Screen remains on", isOn: $alwayson)
-                        .onChange(of: alwayson) {
-                            if alwayson {
-                            }
-                            else {
-                            }
+                    Toggle("Map follows your direction", isOn: $followingDirection)
+                        .onChange(of: followingDirection) {
+                            handleToggleFollowDirection()
+                        }
+                    Toggle("Screen remains on", isOn: $screenOn)
+                        .onChange(of: screenOn) {
                         }
                     Text(locationDataManager.locationInfo)
                     Button("Erase track") {
@@ -88,29 +83,46 @@ struct ContentView: View {
                         }
                 }
                 Spacer()
-
-                Toggle(isOn: $tracking) {
-                }
-                .onChange(of: tracking) {
-                    if tracking {
-                        // Update location data once.
+                
+                Button(action: {
+                    drawingTrack = !drawingTrack
+                    if drawingTrack {
                         locationDataManager.checkLocationAuthorization()
-                        // Update the map camera position at once without animation.
-//                        updateMapCameraPosition()
-                        //showingAlert = true
                     }
-                    else {
-                        //showingAlert = false
+                }, label: {
+                    Image(systemName: "road.lanes")
+                        .foregroundColor(drawingTrack ? .red : .gray)
+                        .fontWeight(drawingTrack ? .black : .light)
+                })
+
+                Button(action: {
+                    locationDataManager.checkLocationAuthorization()
+                    handleTrackingModeButton()
+                    mapViewModel.setUserTrackingMode(mode: userTracking)
+                }, label: {
+                    switch(userTracking) {
+                    case .none:
+                        Image(systemName: "location.slash")
+                            .foregroundColor(.gray)
+                    case .follow:
+                        Image(systemName: "location.fill")
+                            .foregroundColor(.red)
+                    case .followWithHeading:
+                        Image(systemName: "location.north.line.fill")
+                            .foregroundColor(.red)
+                    @unknown default:
+                        Image(systemName: "location.slash")
+                            .foregroundColor(.gray)
                     }
-                }
-                Image(systemName: "figure.walk")
-                    .foregroundColor(tracking ? .green : .gray)
+                })
+
+
 
                 
-                Toggle(isOn: $following) {
+                Toggle(isOn: $followingLocation) {
                 }
-                .onChange(of: following) {
-                    if following {
+                .onChange(of: followingLocation) {
+                    if followingLocation {
                         // Update location data once.
                         locationDataManager.checkLocationAuthorization()
                         // Update the map camera position at once without animation.
@@ -122,16 +134,16 @@ struct ContentView: View {
                     }
                 }
                 Image(systemName: "location")
-                    .foregroundColor(following ? .green : .gray)
+                    .foregroundColor(followingLocation ? .green : .gray)
 
                 
-                Toggle(isOn: $alwayson) {
+                Toggle(isOn: $screenOn) {
                 }
-                .onChange(of: alwayson) {
-                    UIApplication.shared.isIdleTimerDisabled = alwayson
+                .onChange(of: screenOn) {
+                    UIApplication.shared.isIdleTimerDisabled = screenOn
                 }
-                Image(systemName: alwayson ? "lock.open.display" : "lock.display")
-                    .foregroundColor(alwayson ? .green : .gray)
+                Image(systemName: screenOn ? "lock.open.display" : "lock.display")
+                    .foregroundColor(screenOn ? .green : .gray)
 
 
                     .alert("Enter your name", isPresented: $showingAlert) {
@@ -151,15 +163,15 @@ struct ContentView: View {
                 
         }
         .onReceive(timer) { time in
-            if following {
+            if followingLocation {
                 updateMapCameraPosition()
             }
-            if tracking {
+            if drawingTrack {
                 updateUserTrack()
             }
         }
         .onAppear {
-            if (alwayson) {
+            if (screenOn) {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
         }
@@ -184,6 +196,7 @@ struct ContentView: View {
     
     
     func updateMapCameraPosition() {
+        return // Todo but set it once, on appear.
         // Get location data.
         let location = locationDataManager.location
         guard location != nil else { return }
@@ -223,6 +236,69 @@ struct ContentView: View {
         guard coordinate != nil else { return }
         mapViewModel.updateUserTrack(coordinate ?? CLLocationCoordinate2D())
     }
+
+
+    // Handle a change in the toolbar button for the tracking mode.
+    func handleTrackingModeButton() { // Todo
+        // Based on the current user tracking mode, update it to the next user tracking mode.
+        switch(userTracking) {
+        case .none:
+            userTracking = .follow
+        case .follow:
+            userTracking = .followWithHeading
+        case .followWithHeading:
+            userTracking = .none
+        @unknown default:
+            ()
+        }
+        // Based on the new user tracking mode, set the toggles correct in the menu.
+        switch(userTracking) {
+        case .none:
+            followingLocation = false
+            followingDirection = false
+        case .follow:
+            followingLocation = true
+            followingDirection = false
+        case .followWithHeading:
+            followingLocation = true
+            followingDirection = true
+        @unknown default:
+            ()
+        }
+    }
+
+    // Handle a change in the menu toggle for following user location.
+    func handleToggleFollowLocation() { // Todo
+        if followingLocation {
+        } else {
+            if followingDirection {
+                followingDirection = false
+            }
+        }
+    }
+
+    // Handle a change in the menu toggle for following user direction.
+    func handleToggleFollowDirection() { // Todo
+        if followingDirection {
+            if !followingLocation {
+                followingLocation = true
+            }
+        } else {
+        }
+    }
+    
+    func translateLocationTogglesToTrackingButton () {
+        if followingLocation {
+            if followingDirection {
+                userTracking = .followWithHeading
+            } else {
+                userTracking = .follow
+            }
+        } else {
+            userTracking = .none
+        }
+    }
+
 
     
     

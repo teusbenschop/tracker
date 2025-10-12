@@ -59,7 +59,8 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         mapView.isUserInteractionEnabled = true
         mapView.isRotateEnabled = true
         addGestureRecognizer()
-        // More mapView configuration ...
+        mapView.showsUserLocation = true
+        mapView.setUserTrackingMode(.none, animated: false)
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
@@ -231,6 +232,13 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated: Bool) {
         //print("region did change")
     }
+    
+    
+    func setUserTrackingMode(mode : MKUserTrackingMode) {
+        mapView.setUserTrackingMode(mode, animated: false)
+    }
+    
+    
     
 }
 
