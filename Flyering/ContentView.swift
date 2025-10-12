@@ -29,14 +29,11 @@ struct ContentView: View {
 
     @StateObject var mapViewModel = MapViewModel()
 
-    @State private var lastLatitude : CLLocationDegrees = 0
-    @State private var lastLongitude : CLLocationDegrees = 0
-    @State private var lastCourse : CLLocationDirection = 0
     @State private var lastLocation : CLLocation = CLLocation()
 
     @State private var drawingTrack = false
-    @State private var followingLocation = false // Todo check
-    @State private var followingDirection = false // Todo implement.
+    @State private var followingLocation = false
+    @State private var followingDirection = false
     @State private var userTracking : MKUserTrackingMode = .none
     @State private var screenOn = false
 
@@ -162,7 +159,6 @@ struct ContentView: View {
         }
         .onReceive(timer) { time in
             if followingLocation {
-                updateMapCameraPosition()
             }
             if drawingTrack {
                 updateUserTrack()
@@ -194,23 +190,12 @@ struct ContentView: View {
     
     
     func updateMapCameraPosition() {
-        return // Todo but set it once, on appear.
         // Get location data.
         let location = locationDataManager.location
         guard location != nil else { return }
         let latitude = location?.coordinate.latitude ?? 0
         let longitude = location?.coordinate.longitude ?? 0
-        let course = (location?.course ?? 0)
-
-        // Optimize performance: Proceed if there's a change.
-        if (latitude == lastLatitude
-            && longitude == lastLongitude
-            && course == lastCourse) {
-            return
-        }
-        lastLongitude = longitude
-        lastLatitude = latitude
-        lastCourse = course
+        let course = 0.0 // (location?.course ?? 0)
 
         // Set the camera.
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -237,7 +222,7 @@ struct ContentView: View {
 
 
     // Handle a change in the toolbar button for the tracking mode.
-    func handleTrackingModeButton() { // Todo
+    func handleTrackingModeButton() {
         // Based on the current user tracking mode, update it to the next user tracking mode.
         switch(userTracking) {
         case .none:
@@ -266,7 +251,7 @@ struct ContentView: View {
     }
 
     // Handle a change in the menu toggle for following user location.
-    func handleToggleFollowLocation() { // Todo
+    func handleToggleFollowLocation() {
         if followingLocation {
         } else {
             if followingDirection {
@@ -276,7 +261,7 @@ struct ContentView: View {
     }
 
     // Handle a change in the menu toggle for following user direction.
-    func handleToggleFollowDirection() { // Todo
+    func handleToggleFollowDirection() {
         if followingDirection {
             if !followingLocation {
                 followingLocation = true

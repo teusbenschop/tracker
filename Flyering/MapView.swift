@@ -195,7 +195,7 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         // Changing camera distance means that the user zooms the map.
         var distance : CLLocationDistance = mapView.camera.centerCoordinateDistance
         if (distance == 0) {
-            distance = 2000
+            distance = 4000
         }
         let camera = MKMapCamera(lookingAtCenter: coordinate,
                                  fromDistance: distance,
