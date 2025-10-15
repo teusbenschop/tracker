@@ -1,12 +1,4 @@
 
-On startup:
-                        updateMapCameraPosition()
-Or change to .follow shortly, then back to .none. Or default to .follow?
-
-
-
-
-Have four states, one not displaying user location at all?
 
 
 
@@ -19,14 +11,22 @@ Have four states, one not displaying user location at all?
 
 
 
+
+
+
+Make a label "About" and update it with diagnostics info, e.g. how many location updates were received, when the app goes to the foreground. Make sure to switch it off again.
+
+Then update location delegate so on background it stores then locations in array only, or say, only count the number.
+Then take the app along on a journey.
+Then on move to foreground, update the "About" label with the location count.
+If ok, then start drawing stuff on move to foreground.
+That will check the entire route.
 
 https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
 
-https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background#Add-the-background-mode-capability
+https://stackoverflow.com/questions/52199463/ios-swift-background-location-monitoring
 
-
-
-
+https://medium.com/simform-engineering/streamlined-location-updates-with-cllocationupdate-in-swift-wwdc23-2200ef71f845
 
 While in the background, it receives the location updates,
 stores the locations, but does not draw them on the map.
@@ -59,6 +59,7 @@ https://developer.apple.com/documentation/mapkit/mapkit-overlays
 
 
 
+
 Once areas get covered, there's more and more annotations to draw.
 Will that affect performance?
 Mitigating measures:
@@ -70,19 +71,14 @@ Mitigating measures:
 
 
 
-
-
 Have app background permissions, it won't draw on the map, it will just record the track, and draw the remainder on the map once it moves to the foreground.
 
 
+
+
 Currently if the app moves to the foreground, it gives a red indication for the location. Switching tracking off and on again fixes that. Think of a better fix.
+Perhaps it should once a minute or so, in the foreground, check the location and ensure it works.
 
-
-
-Use the location manager's magnetometer data.
-https://github.com/mryssng/MagnetometerDemo
-This info can be used to correct for the map rotation so it rotates if if the person does not move.
-This way the user can rotate the map and see on the map where the user is on a crossroad.
 
 
 
@@ -93,5 +89,12 @@ Check on whether make locationManager.desiredAccuracy settable via menu.
 
 
 The buttons and menus, should they be visible on the map itself?
+
+
+
+
+Have four tracking states, one extra not displaying user location at all?
+
+
 
 

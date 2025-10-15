@@ -37,8 +37,8 @@ struct ContentView: View {
     @State private var userTracking : MKUserTrackingMode = .none
     @State private var screenOn = false
 
-    @State private var showingAlert = false
-    
+    @State private var aboutApp : String = "Flyering app version 1.0"
+
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     
     @Environment(\.scenePhase) var scenePhase
@@ -67,10 +67,11 @@ struct ContentView: View {
                     Toggle("Screen remains on", isOn: $screenOn)
                         .onChange(of: screenOn) {
                         }
-                    Text(locationDataManager.locationInfo)
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
                     }
+                    Text(locationDataManager.locationInfo)
+                    Text(aboutApp)
                 } label: {
                     Circle()
                         .fill(.gray.opacity(0.15))
