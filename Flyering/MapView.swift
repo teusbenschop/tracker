@@ -238,6 +238,12 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
         mapView.setUserTrackingMode(mode, animated: false)
     }
     
+    func setShowUserLocation (on : Bool) {
+        if mapView.showsUserLocation != on {
+            mapView.showsUserLocation = on
+        }
+    }
+    
     
     
 }

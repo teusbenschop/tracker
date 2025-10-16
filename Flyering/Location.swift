@@ -108,7 +108,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         location = locations.first
         updateLocationFeedback()
         counter += 1
-        print(counter, "did update locations")
+        //print(counter, "did update locations")
     }
 
     // Tells the delegate that updates will no longer be deferred.

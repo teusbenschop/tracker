@@ -23,6 +23,9 @@ import Foundation
 import CoreLocation
 
 
+var userLocationStabilizer : Int = 0
+
+
 struct ContentView: View {
 
     @StateObject var locationDataManager = LocationDataManager()
@@ -164,6 +167,7 @@ struct ContentView: View {
             if drawingTrack {
                 updateUserTrack()
             }
+            locationStabilizer()
         }
         .onAppear {
             if (screenOn) {
@@ -283,6 +287,14 @@ struct ContentView: View {
         }
     }
 
+    
+    func locationStabilizer() { // Todo
+        userLocationStabilizer += 1
+        if userLocationStabilizer > 10 {
+            userLocationStabilizer = 0
+        }
+        mapViewModel.setShowUserLocation(on: userLocationStabilizer > 0)
+    }
 
     
     
