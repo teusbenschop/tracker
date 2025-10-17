@@ -23,12 +23,13 @@ import Foundation
 import CoreLocation
 
 
-var userLocationStabilizer : Int = 0
+var locationStabilizationCounter : Int = 0
 
 
 struct ContentView: View {
 
     @StateObject var locationDataManager = LocationDataManager()
+    @State private var trackManager = TrackManager()
 
     @StateObject var mapViewModel = MapViewModel()
 
@@ -58,6 +59,11 @@ struct ContentView: View {
                     }
                     Toggle("Drawing your track", isOn: $drawingTrack)
                         .onChange(of: drawingTrack) {
+                            if drawingTrack {
+                                trackManager.openDatabase()
+                            } else {
+                                trackManager.closeDatabase()
+                            }
                         }
                     Toggle("Map follows your location", isOn: $followingLocation)
                         .onChange(of: followingLocation) {
@@ -72,6 +78,12 @@ struct ContentView: View {
                         }
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
+                        if (drawingTrack) {
+                            trackManager.emptyDatabase()
+                        } else {
+                            trackManager.closeDatabase()
+                            trackManager.eraseDatabase()
+                        }
                     }
                     Text(locationDataManager.locationInfo)
                     Text(aboutApp)
@@ -219,9 +231,11 @@ struct ContentView: View {
         if (distanceMeters ?? 0 < 2) { return }
         lastLocation = location ?? CLLocation()
         
+        // Store the new coordinate in the database.
         // Draw the new coordinate on the map.
         let coordinate = location?.coordinate
         guard coordinate != nil else { return }
+        trackManager.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
         mapViewModel.updateUserTrack(coordinate ?? CLLocationCoordinate2D())
     }
 
@@ -287,13 +301,19 @@ struct ContentView: View {
         }
     }
 
-    
+
+    // While using the app in normal circumstances,
+    // it has been seen that the map no longer show the user location,
+    // and that the map no longer moves along with the user.
+    // This may need investigation as to why that is.
+    // In the mean time this function is part of the system
+    // to set the desired map properties for showing location and moving the map along.
     func locationStabilizer() { // Todo
-        userLocationStabilizer += 1
-        if userLocationStabilizer > 10 {
-            userLocationStabilizer = 0
+        locationStabilizationCounter += 1
+        if locationStabilizationCounter > 10 {
+            locationStabilizationCounter = 0
         }
-        mapViewModel.setShowUserLocation(on: userLocationStabilizer > 0)
+        mapViewModel.setShowUserLocation(on: locationStabilizationCounter > 0)
     }
 
     

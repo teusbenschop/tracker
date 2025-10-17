@@ -1,10 +1,28 @@
+Check clearing track and continuing to track.
+Whether that works.
+Other combinations too to test.
+
+
+
+
+Let the track be drawn on the map, yes, but also be stored in the database.
+On startup it reads the track from that database, and draws it on the map.
+On clearing the track it clears the map and removes the database.
+On starting to track, it check if the database exists, if not, it createes one,
+and then stores the locations in the database and puts them on the map.
+In the background, it only stores the locations in the database, but make sure to distinguish them from the already drawn ones, perhaps we can keep locations in memory not yet drawn, and then on moving to the foreground only draw the not yet drawn ones.
+Use a PRAGMA to make insertions very cheap and fast.
+
+
+
+
+
+
 Repeatedly enable moving the map in the app.
 Reason: It stops moving the map on its own.
 First do it slow so it can be seen in the app.
 Then do it faster once it works.
-
-
-
+Also test whether settig it to true repeatedly has the same effect, so never setting it off.
 
 
 Repeatedly enable drawing user location circle in the app.
@@ -15,17 +33,15 @@ Then do it faster once it works.
 Also test whether setting it to true repeatedly has the same effect, so never setting it off.
 
 
+The above does not work.
+- [ ] Write our own symbol for the user location
+- [ ] Mutex around the annotation renderer 
+- [ ] Write on main thread the annotation
 
 
 
-Check example SQLite usage tutorial.
-
-https://medium.com/@emre.deniz/ios-swift-sqlite3-integration-1b3dece47b46
 
 
-Let the track be drawn on the map, yes, but also be stored in the database.
-On startup it reads the track from that database, and draws it on the map.
-On clearing the track it clears the map and the database.
 
 
 
