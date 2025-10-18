@@ -1,6 +1,3 @@
-Check clearing track and continuing to track.
-Whether that works.
-Other combinations too to test.
 
 
 

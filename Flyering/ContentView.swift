@@ -58,24 +58,9 @@ struct ContentView: View {
                         print("Park")
                     }
                     Toggle("Drawing your track", isOn: $drawingTrack)
-                        .onChange(of: drawingTrack) {
-                            if drawingTrack {
-                                trackManager.openDatabase()
-                            } else {
-                                trackManager.closeDatabase()
-                            }
-                        }
                     Toggle("Map follows your location", isOn: $followingLocation)
-                        .onChange(of: followingLocation) {
-                            handleToggleFollowLocation()
-                        }
                     Toggle("Map follows your direction", isOn: $followingDirection)
-                        .onChange(of: followingDirection) {
-                            handleToggleFollowDirection()
-                        }
                     Toggle("Screen remains on", isOn: $screenOn)
-                        .onChange(of: screenOn) {
-                        }
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
                         if (drawingTrack) {
@@ -102,9 +87,6 @@ struct ContentView: View {
                 
                 Button(action: {
                     drawingTrack = !drawingTrack
-                    if drawingTrack {
-                        locationDataManager.checkLocationAuthorization()
-                    }
                 }, label: {
                     Image(systemName: "road.lanes")
                         .foregroundColor(drawingTrack ? .red : .gray)
@@ -133,19 +115,6 @@ struct ContentView: View {
                             .foregroundColor(.gray)
                     }
                 })
-                .onChange(of: userTracking) { oldValue, newValue in
-                    switch (userTracking) {
-                    case .none:
-                        print("none")
-                    case .follow:
-                        locationDataManager.checkLocationAuthorization()
-                        print("follow")
-                    case .followWithHeading:
-                        print("followWithHeading")
-                    @unknown default:
-                        ()
-                    }
-                }
                 
                 Spacer()
                 
@@ -198,6 +167,35 @@ struct ContentView: View {
                 print("Background")
             }
         }
+        .onChange(of: drawingTrack) {
+            if drawingTrack {
+                locationDataManager.checkLocationAuthorization()
+                trackManager.openDatabase()
+            } else {
+                trackManager.closeDatabase()
+            }
+        }
+        .onChange(of: followingLocation) {
+            handleToggleFollowLocation()
+        }
+        .onChange(of: followingDirection) {
+            handleToggleFollowDirection()
+        }
+        .onChange(of: userTracking) { oldValue, newValue in
+            switch (userTracking) {
+            case .none:
+                print("none")
+            case .follow:
+                locationDataManager.checkLocationAuthorization()
+                print("follow")
+            case .followWithHeading:
+                print("followWithHeading")
+            @unknown default:
+                ()
+            }
+        }
+
+
     }
     
 
