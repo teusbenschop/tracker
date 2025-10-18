@@ -25,50 +25,11 @@ import Foundation
 import SQLite3
 import MapKit
 
-class User{
-    var id: Int
-    var name: String
-    var email: String
-    var password: String
-    var address: String
-    
-    init(id: Int, name: String, email: String, password: String, address: String) {
-        self.id = id
-        self.name = name
-        self.email = email
-        self.password = password
-        self.address = address
-    }
-}
-
 
 class TrackManager{
     
     private var db: OpaquePointer?
     
-    // Get all the users from User table Todo
-    func getAllUsers() -> [User] {
-        let queryStatementString = "SELECT * FROM user;"
-        var queryStatement: OpaquePointer? = nil
-        var users : [User] = []
-        if sqlite3_prepare_v2(db,  queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
-            while sqlite3_step(queryStatement) == SQLITE_ROW {
-                let id = sqlite3_column_int(queryStatement, 0)
-                let name = String(describing: String(cString: sqlite3_column_text(queryStatement, 1)))
-                let email = String(describing: String(cString: sqlite3_column_text(queryStatement, 3)))
-                let password = String(describing: String(cString: sqlite3_column_text(queryStatement, 4)))
-                let address = String(describing: String(cString: sqlite3_column_text(queryStatement, 5)))
-                
-                users.append(User(id: Int(id), name: name, email: email, password: password, address: ""))
-                print("User Details:")
-                print("\(id) | \(name) | \(email) | \(password) | \(address)")
-            }
-        } else {
-            print("SELECT statement is failed.")
-        }
-        sqlite3_finalize(queryStatement)
-        return users
-    }
     
     private func databaseUrl() -> URL?
     {
@@ -159,8 +120,31 @@ class TrackManager{
     func getAll() -> [CLLocationCoordinate2D]
     {
         var coordinates : [CLLocationCoordinate2D] = []
-        
-        // Check if db.
+        if databaseExists() {
+            let url : URL? = databaseUrl()
+            if url != nil {
+                // In case, as usual, if this function is called initially,
+                // no database is yet open.
+                // Open database into local variable.
+                var db: OpaquePointer? = nil
+                if sqlite3_open(url?.path, &db) == SQLITE_OK {
+                    // Read coordinates.
+                    let queryStatementString = "SELECT * FROM waypoints;"
+                    var queryStatement: OpaquePointer? = nil
+                    if sqlite3_prepare_v2(db,  queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
+                        while sqlite3_step(queryStatement) == SQLITE_ROW {
+                            let latitude = sqlite3_column_double(queryStatement, 0)
+                            let longitude = sqlite3_column_double(queryStatement, 1)
+                            let coordinate = CLLocationCoordinate2D (latitude: latitude, longitude: longitude)
+                            coordinates.append(coordinate)
+                        }
+                        sqlite3_finalize(queryStatement)
+                    }
+                    // Close database again.
+                    sqlite3_close(db)
+                }
+            }
+        }
         return coordinates
     }
     

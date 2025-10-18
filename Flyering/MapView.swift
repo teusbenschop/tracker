@@ -209,13 +209,23 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     {
         DispatchQueue.main.async() { [self] in
             let annotation = MKPointAnnotation()
-            //        annotation.title = "Centre"
-            //        annotation.subtitle = "Apeldoorn"
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
         }
     }
 
+    
+    func writeInitialUserTrack(coordinates : [CLLocationCoordinate2D])
+    {
+        DispatchQueue.main.async() { [self] in
+            for coordinate in coordinates {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                mapView.addAnnotation(annotation)
+            }
+        }
+    }
+    
     
     func eraseUserTrack()
     {

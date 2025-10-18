@@ -1,14 +1,18 @@
-        mapViewModel.setShowUserLocation(on: locationStabilizationCounter > 0)
 
 
 
 
-Let the track be drawn on the map, yes, but also be stored in the database.
-On startup it reads the track from that database, and draws it on the map.
-On clearing the track it clears the map and removes the database.
-On starting to track, it check if the database exists, if not, it createes one,
-and then stores the locations in the database and puts them on the map.
-In the background, it only stores the locations in the database, but make sure to distinguish them from the already drawn ones, perhaps we can keep locations in memory not yet drawn, and then on moving to the foreground only draw the not yet drawn ones.
+
+
+
+
+In the background, it only stores the waypoints in the database, and does not draw them on the map.
+
+
+On moving to the foreground, it draw the waypoints on the map.
+Distinguish them from the already drawn ones, perhaps by keeping locations in memory not yet drawn, and then only draw the not yet drawn ones.
+
+
 Use a PRAGMA to make insertions very cheap and fast.
 
 

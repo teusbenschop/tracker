@@ -152,6 +152,8 @@ struct ContentView: View {
             if (screenOn) {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
+            let coordinates = trackManager.getAll()
+            mapViewModel.writeInitialUserTrack(coordinates: coordinates)
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
