@@ -98,7 +98,6 @@ struct ContentView: View {
                 Button(action: {
                     locationDataManager.checkLocationAuthorization()
                     handleTrackingModeButton()
-                    mapViewModel.setUserTrackingMode(mode: userTracking)
                 }, label: {
                     switch(userTracking) {
                     case .none:
@@ -148,7 +147,6 @@ struct ContentView: View {
             if drawingTrack {
                 updateUserTrack()
             }
-            locationStabilizer()
         }
         .onAppear {
             if (screenOn) {
@@ -193,6 +191,7 @@ struct ContentView: View {
             @unknown default:
                 ()
             }
+            mapViewModel.setUserTrackingMode(mode: userTracking)
         }
 
 
@@ -275,6 +274,7 @@ struct ContentView: View {
                 followingDirection = false
             }
         }
+        
     }
 
     // Handle a change in the menu toggle for following user direction.
@@ -300,20 +300,4 @@ struct ContentView: View {
     }
 
 
-    // While using the app in normal circumstances,
-    // it has been seen that the map no longer show the user location,
-    // and that the map no longer moves along with the user.
-    // This may need investigation as to why that is.
-    // In the mean time this function is part of the system
-    // to set the desired map properties for showing location and moving the map along.
-    func locationStabilizer() { // Todo
-        locationStabilizationCounter += 1
-        if locationStabilizationCounter > 10 {
-            locationStabilizationCounter = 0
-        }
-        mapViewModel.setShowUserLocation(on: locationStabilizationCounter > 0)
-    }
-
-    
-    
 }

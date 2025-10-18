@@ -1,3 +1,4 @@
+        mapViewModel.setShowUserLocation(on: locationStabilizationCounter > 0)
 
 
 

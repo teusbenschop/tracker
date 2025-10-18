@@ -205,19 +205,23 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     }
 
     
-    func updateUserTrack(_ coordinate: CLLocationCoordinate2D) {
-        
-        let annotation = MKPointAnnotation()
-//        annotation.title = "Centre"
-//        annotation.subtitle = "Apeldoorn"
-        annotation.coordinate = coordinate
-        mapView.addAnnotation(annotation)
+    func updateUserTrack(_ coordinate: CLLocationCoordinate2D)
+    {
+        DispatchQueue.main.async() { [self] in
+            let annotation = MKPointAnnotation()
+            //        annotation.title = "Centre"
+            //        annotation.subtitle = "Apeldoorn"
+            annotation.coordinate = coordinate
+            mapView.addAnnotation(annotation)
+        }
     }
 
     
     func eraseUserTrack()
     {
-        mapView.removeAnnotations(mapView.annotations)
+        DispatchQueue.main.async() { [self] in
+            mapView.removeAnnotations(mapView.annotations)
+        }
     }
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated: Bool) {
@@ -237,13 +241,6 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     func setUserTrackingMode(mode : MKUserTrackingMode) {
         mapView.setUserTrackingMode(mode, animated: false)
     }
-    
-    func setShowUserLocation (on : Bool) {
-        if mapView.showsUserLocation != on {
-            mapView.showsUserLocation = on
-        }
-    }
-    
     
     
 }
