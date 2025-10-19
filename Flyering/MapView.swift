@@ -24,6 +24,158 @@ import Foundation
 import CoreLocation
 
 
+let eerbeek = CLLocationCoordinate2D(latitude: 52.110602332448984, longitude: 6.063657565827189)
+let delta = 0.05
+
+
+struct MapView: UIViewRepresentable {
+    
+    func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
+        
+        // Assign the coordinator (formerly called: delegate)
+        mapView.delegate = context.coordinator
+        
+        mapView.pointOfInterestFilter = .excludingAll
+        mapView.mapType = .standard
+        mapView.isPitchEnabled = false
+        mapView.isRotateEnabled = false
+        mapView.region = MKCoordinateRegion(
+            center: eerbeek,
+            span: MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
+        )
+        let northWest = CLLocationCoordinate2D(
+            latitude: eerbeek.latitude + delta / 2.2,
+            longitude: eerbeek.longitude - delta / 2.2)
+        let northEast = CLLocationCoordinate2D(
+            latitude: eerbeek.latitude + delta  / 2.2,
+            longitude: eerbeek.longitude + delta / 2.2)
+        let southEast = CLLocationCoordinate2D(
+            latitude: eerbeek.latitude - delta  / 2.2,
+            longitude: eerbeek.longitude + delta / 2.2)
+        let southWest = CLLocationCoordinate2D(
+            latitude: eerbeek.latitude - delta  / 2.2,
+            longitude: eerbeek.longitude - delta / 2.2)
+        var coordinates : [CLLocationCoordinate2D] = []
+        coordinates.append(northWest)
+        coordinates.append(northEast)
+        coordinates.append(southEast)
+        coordinates.append(southWest)
+        let polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
+        polygon.title = "Eerbeek"
+        polygon.subtitle = "home"
+        mapView.addOverlay(polygon)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = eerbeek
+        annotation.title = "Eerbeek"
+        mapView.addAnnotation(annotation)
+        return mapView
+    }
+    
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, MKMapViewDelegate {
+        var parent: MapView
+        
+        init(_ parent: MapView) {
+            self.parent = parent
+        }
+    }
+    
+}
+
+
+extension MapView.Coordinator {
+    
+    // This function overload specifies the appropiate renderer object for a given map overlay.
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let polygonOverlay = overlay as? MKPolygon {
+            let renderer = MKPolygonRenderer(polygon: polygonOverlay)
+            renderer.fillColor = UIColor.blue.withAlphaComponent(0.1)
+            renderer.strokeColor = UIColor.blue
+            renderer.lineWidth = 1
+            return renderer
+        }
+        return MKOverlayRenderer()
+    }
+    
+    
+    // This function overload specifies the appropiate UIView for a given map annotation.
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let pointAnnotation = annotation as? MKPointAnnotation {
+            let annotationView = MKAnnotationView(annotation: pointAnnotation, reuseIdentifier: "ZoneLabel")
+            annotationView.canShowCallout = false
+            annotationView.backgroundColor = .clear
+            
+            let label = UILabel()
+            label.text = annotation.title ?? ""
+            label.textColor = .black
+            label.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+            label.font = UIFont.systemFont(ofSize: 8, weight: .bold)
+            label.textAlignment = .center
+            
+            let paddingX: CGFloat = 8
+            let paddingY: CGFloat = 6
+            label.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: label.intrinsicContentSize.width + 2 * paddingX,
+                height: label.intrinsicContentSize.height + 2 * paddingY
+            )
+            label.layer.cornerRadius = label.frame.height / 2
+            label.layer.masksToBounds = true
+            
+            annotationView.addSubview(label)
+            return annotationView
+        }
+        return nil
+    }
+    
+    
+    // This function overload runs every time the user finishes moving or zooming the map.
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        let latitudeDelta = mapView.region.span.latitudeDelta
+        let threshold: CLLocationDegrees = 0.08
+        
+        for annotation in mapView.annotations {
+            if let pointAnnotation = annotation as? MKPointAnnotation,
+               let annotationView = mapView.view(for: pointAnnotation) {
+                annotationView.isHidden = latitudeDelta > threshold
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Generic wrapper for presenting the UIView type in SwiftUI’s View.
 struct WrapperView<V: UIView>: UIViewRepresentable {
     typealias UIViewType = V

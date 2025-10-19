@@ -145,6 +145,10 @@ struct ContentView: View {
                     locationDataManager.checkLocationAuthorization()
                     updateMapCameraPosition()
                 }
+            
+            MapView()
+                .ignoresSafeArea()
+
                 
         }
         .onReceive(timer) { time in
