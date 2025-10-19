@@ -1,4 +1,6 @@
-https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
+Move from old WrapperView to the new MapView step by step.
+How to access the MKMapView from there?
+Check the tutorial for how to do that.
 
 
 Menu: Mark area as ready
@@ -6,7 +8,7 @@ Get user location.
 Create octagon around it.
 Draw it on the map and fill it.
 https://stackoverflow.com/questions/67838540/how-to-draw-a-polygon-using-apple-map-by-mkpolygon
-Check if it works on a rotated map too.
+Check if it works on a rotated map too. No it doesn't.
 
 
 Use octagons.
@@ -18,6 +20,10 @@ Check performance.
 
 Change toolbar to cancel or approve the polygon.
 At the moment of drawing the polygon, don't let the map move, switch that of for that moment.
+
+
+Make octagon editable:
+https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
 
 
 

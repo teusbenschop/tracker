@@ -66,6 +66,7 @@ struct ContentView: View {
                         DispatchQueue.main.async() {
 
                         }
+                        mapViewModel.markAreaAsReady()
                     }
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
@@ -145,10 +146,7 @@ struct ContentView: View {
                     locationDataManager.checkLocationAuthorization()
                     updateMapCameraPosition()
                 }
-            
-            MapView()
                 .ignoresSafeArea()
-
                 
         }
         .onReceive(timer) { time in
