@@ -61,6 +61,12 @@ struct ContentView: View {
                     Toggle("Map follows your location", isOn: $followingLocation)
                     Toggle("Map follows your direction", isOn: $followingDirection)
                     Toggle("Screen remains on", isOn: $screenOn)
+                    Button("Mark area as ready") {
+                        print("Mark area as ready")
+                        DispatchQueue.main.async() {
+
+                        }
+                    }
                     Button("Erase track") {
                         mapViewModel.eraseUserTrack()
                         if (drawingTrack) {
