@@ -26,6 +26,7 @@ import SQLite3
 import MapKit
 
 
+/*
 class TrackManager{
     
     private var db: OpaquePointer?
@@ -196,3 +197,4 @@ class TrackManager{
     
     
 }
+*/

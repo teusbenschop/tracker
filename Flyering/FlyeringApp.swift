@@ -20,9 +20,15 @@ import SwiftUI
 
 @main
 struct FlyeringApp: App {
+    
+    @StateObject private var mapModel = MapViewModel()
+    @StateObject private var locationModel = LocationViewModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(mapModel)
+                .environmentObject(locationModel)
         }
     }
 }

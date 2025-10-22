@@ -23,10 +23,59 @@ import Foundation
 import CoreLocation
 
 
+struct ContentView: View {
+    
+    // Property wrapper for observable object that the parent view supplies.
+    @EnvironmentObject var mapModel: MapViewModel
+    @EnvironmentObject var locationModel: LocationViewModel
+    
+    
+    var body: some View {
+        NavigationStack {
+            
+            ZStack(alignment: .topTrailing) {
+                ZonesMapView()
+                    .ignoresSafeArea()
+                LocationButton()
+                    .padding()
+            }
+            .navigationDestination(isPresented: Binding(
+                // This Binding initializer is useful since there's no boolean.
+                // It defines a function to convert a zone to a boolean.
+                get: { mapModel.selectedZone != nil },
+                // If dismissing the zone detail view, it clears the zone.
+                set: { isPresented in
+                    if !isPresented {
+                        mapModel.selectedZone = nil
+                    }
+                }
+            )) {
+                ZoneDetailView()
+            }
+            
+            
+        }
+    }
+}
+
+
+struct ZoneDetailView: View {
+    
+    @EnvironmentObject var mapModel: MapViewModel
+    
+    var body: some View {
+        Text("Zone detail view")
+            .navigationTitle(mapModel.selectedZone?.name ?? "??")
+            .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+
+/*
 var locationStabilizationCounter : Int = 0
 
 
-struct ContentView: View {
+struct ContentViewOld: View {
 
     @StateObject var locationDataManager = LocationDataManager()
     @State private var trackManager = TrackManager()
@@ -311,3 +360,5 @@ struct ContentView: View {
 
 
 }
+*/
+

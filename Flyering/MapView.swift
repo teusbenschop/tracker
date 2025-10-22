@@ -24,6 +24,7 @@ import Foundation
 import CoreLocation
 
 
+/*
 let eerbeek = CLLocationCoordinate2D(latitude: 52.110602332448984, longitude: 6.063657565827189)
 let delta = 0.05
 
@@ -55,7 +56,7 @@ let deventer = CLLocationCoordinate2D(latitude: 52.24941011889572, longitude: 6.
 
 
 // Describe the view model.
-final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
+final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
     
     let mapView = MKMapView()
     
@@ -291,4 +292,4 @@ final class MapViewModel: NSObject, ObservableObject, MKMapViewDelegate {
     }
     
 }
-
+*/

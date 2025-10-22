@@ -24,6 +24,7 @@ import Foundation
 import CoreLocation
 
 
+/*
 enum LocationStatus {
     case none // No location information available.
     case inuse // Location information available if app is in the foreground, i.e. in use.
@@ -210,5 +211,5 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         }
     }
 }
-
+*/
 

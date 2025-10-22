@@ -1,6 +1,8 @@
 Move from old WrapperView to the new MapView step by step.
-How to access the MKMapView from there?
-Check the tutorial for how to do that.
+https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
+
+
+
 
 
 Menu: Mark area as ready
