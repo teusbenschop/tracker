@@ -16,21 +16,14 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import SwiftUI
 
-@main
-struct FlyeringApp: App {
+import Combine
+
+
+final class Status: ObservableObject {
     
-    @StateObject private var mapModel = MapViewModel()
-    @StateObject private var locationModel = LocationViewModel()
-    @StateObject private var status = Status()
+    // Whether to show the page with the menu.
+    @Published var showMenu : Bool = false
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environmentObject(mapModel)
-                .environmentObject(locationModel)
-                .environmentObject(status)
-        }
-    }
+    
 }

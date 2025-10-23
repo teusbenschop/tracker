@@ -25,48 +25,23 @@ import CoreLocation
 
 struct ContentView: View {
     
-    // Property wrapper for observable object that the parent view supplies.
+    // Property wrappers for observable objects that the parent view supplies.
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var locationModel: LocationViewModel
-    
+    @EnvironmentObject var status: Status
     
     var body: some View {
         NavigationStack {
-            
             ZStack(alignment: .topTrailing) {
-                ZonesMapView()
+                MapViewNew()
                     .ignoresSafeArea()
-                LocationButton()
+                MenuButton()
                     .padding()
             }
-            .navigationDestination(isPresented: Binding(
-                // This Binding initializer is useful since there's no boolean.
-                // It defines a function to convert a zone to a boolean.
-                get: { mapModel.selectedZone != nil },
-                // If dismissing the zone detail view, it clears the zone.
-                set: { isPresented in
-                    if !isPresented {
-                        mapModel.selectedZone = nil
-                    }
-                }
-            )) {
-                ZoneDetailView()
+            .navigationDestination(isPresented: $status.showMenu) {
+                ActionsView()
             }
-            
-            
         }
-    }
-}
-
-
-struct ZoneDetailView: View {
-    
-    @EnvironmentObject var mapModel: MapViewModel
-    
-    var body: some View {
-        Text("Zone detail view")
-            .navigationTitle(mapModel.selectedZone?.name ?? "??")
-            .navigationBarTitleDisplayMode(.large)
     }
 }
 

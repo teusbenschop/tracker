@@ -1,7 +1,7 @@
 import UIKit
 import MapKit
 
-extension ZonesMapView.Coordinator {
+extension MapViewNew.Coordinator {
 
     // The @objc decorator allows the function to be assigned to the tap gesture recognizer with the selector syntax.
     @objc func handleZoneTap(_ gestureRecognizer: UITapGestureRecognizer) {

@@ -1,3 +1,18 @@
+- [ ] Detail view heeft alle knoppen en info
+- [ ] Details kan met vertraging weer dicht gaan via eigen timer.
+- [ ] Een struct maken met soort van globale status met daarin alle vlaggen en ander klein spul.
+
+
+
+
+
+
+
+
+
+
+
+
 Move from old WrapperView to the new MapView step by step.
 https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
 

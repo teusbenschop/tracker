@@ -1,6 +1,6 @@
 import MapKit
 
-extension ZonesMapView.Coordinator {
+extension MapViewNew.Coordinator {
  
     // This function overload specifies the appropiate renderer object for a given map overlay.
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
