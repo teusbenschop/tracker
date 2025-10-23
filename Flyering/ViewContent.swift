@@ -27,7 +27,7 @@ struct ViewContent: View {
     
     // Property wrappers for observable objects that the parent view supplies.
     @EnvironmentObject var mapModel: MapViewModel
-    @EnvironmentObject var locationModel: LocationViewModel
+    @EnvironmentObject var locationModel: LocationManager
     @EnvironmentObject var status: Status
     
     var body: some View {

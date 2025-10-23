@@ -4,7 +4,7 @@ import MapKit
 struct MapViewNew: UIViewRepresentable {
 
     @EnvironmentObject var mapModel: MapViewModel
-    @EnvironmentObject var locationModel: LocationViewModel
+    @EnvironmentObject var locationModel: LocationManager
 
     func makeUIView(context: Context) -> MKMapView {
 
@@ -39,11 +39,11 @@ struct MapViewNew: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        if mapModel.goToUserLocation, let location = locationModel.userLocation {
+        if mapModel.goToUserLocation, let location = locationModel.location {
             UIView.animate(withDuration: 0.5) {
                 uiView.setRegion(
                     MKCoordinateRegion(
-                        center: location,
+                        center: location.coordinate,
                         span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
                     ),
                     animated: true

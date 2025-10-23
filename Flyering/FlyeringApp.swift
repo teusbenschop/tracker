@@ -26,7 +26,7 @@ import SwiftUI
 struct FlyeringApp: App {
     
     @StateObject private var mapModel = MapViewModel()
-    @StateObject private var locationModel = LocationViewModel()
+    @StateObject private var locationModel = LocationManager()
     @StateObject private var status = Status()
 
     var body: some Scene {
