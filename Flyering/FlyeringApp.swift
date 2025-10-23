@@ -18,6 +18,10 @@
 
 import SwiftUI
 
+// Tutorials used:
+// https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
+
+
 @main
 struct FlyeringApp: App {
     
@@ -27,7 +31,7 @@ struct FlyeringApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ViewContent()
                 .environmentObject(mapModel)
                 .environmentObject(locationModel)
                 .environmentObject(status)

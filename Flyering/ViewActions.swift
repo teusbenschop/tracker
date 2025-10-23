@@ -20,7 +20,7 @@
 import SwiftUI
 import Combine
 
-struct ActionsView: View {
+struct ViewActions: View {
     
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var state : Status

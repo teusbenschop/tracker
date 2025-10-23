@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MenuButton: View {
+struct ViewButtonMenu: View {
     @EnvironmentObject var status: Status
     var body: some View {
         Button(action: {status.showMenu = true}) {

@@ -23,7 +23,7 @@ import Foundation
 import CoreLocation
 
 
-struct ContentView: View {
+struct ViewContent: View {
     
     // Property wrappers for observable objects that the parent view supplies.
     @EnvironmentObject var mapModel: MapViewModel
@@ -35,11 +35,11 @@ struct ContentView: View {
             ZStack(alignment: .topTrailing) {
                 MapViewNew()
                     .ignoresSafeArea()
-                MenuButton()
+                ViewButtonMenu()
                     .padding()
             }
             .navigationDestination(isPresented: $status.showMenu) {
-                ActionsView()
+                ViewActions()
             }
         }
     }
