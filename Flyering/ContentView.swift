@@ -23,7 +23,7 @@ import Foundation
 import CoreLocation
 
 
-struct ViewContent: View {
+struct ContentView: View {
     
     // Property wrappers for observable objects that the parent view supplies.
     @EnvironmentObject var mapModel: MapViewModel
