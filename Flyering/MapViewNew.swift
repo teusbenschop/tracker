@@ -25,6 +25,9 @@ struct MapViewNew: UIViewRepresentable {
         mapView.isRotateEnabled = true
         mapView.showsUserLocation = true
 
+        // Do not track initially (can be changed by the user).
+        mapView.setUserTrackingMode(.none, animated: false)
+
         // Don't show the user tracking button because that interferes with the custom menu button.
         mapView.showsUserTrackingButton = false
 

@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 Remove all old WrapperView code and move to the new MapView step by step.
 
 It no longer draws the Naples zones, but keeps the code, and removes the JSON stuff.
@@ -193,4 +200,7 @@ Have a button "Park (vehicle)" and implement it.
 
 
 Tapping items in the menu is hard, there's only a small area that is tappable.
+
+
+For receiving background location updates, does it need "Always location" permissions. Somewhere it says it does not need those if the background service is properly done.
 

@@ -39,3 +39,24 @@ struct ButtonCenterMapOnUser: View {
         .buttonStyle(.bordered)
     }
 }
+
+
+struct ToggleScreenOn: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Toggle(isOn: $status.screenOn, label: {
+            Label("Screen remains on", systemImage: status.screenOn ? "lock.open.display" : "lock.display")
+                .foregroundColor(status.screenOn ? .red : .black)
+        })
+            .padding()
+            .onChange(of: status.screenOn) {
+                UIApplication.shared.isIdleTimerDisabled = status.screenOn
+                // A test indicates that,
+                // if the app has set the screen to remain on,
+                // and if the app then moves to the background,
+                // then the screen goes off with the normal delay.
+                // Once the app gets moved to the foreground again,
+                // its setting for keeping the screen on takes effect again.
+            }
+    }
+}

@@ -20,9 +20,8 @@
 import SwiftUI
 import Combine
 
-struct ViewActions: View {
+struct ActionsView: View {
     
-    @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var status : Status
     
     // Timer to facilitate automatic view close.
@@ -32,6 +31,7 @@ struct ViewActions: View {
     var body: some View {
         VStack {
             ButtonCenterMapOnUser()
+            ToggleScreenOn()
             Spacer()
         }
             .onAppear() {

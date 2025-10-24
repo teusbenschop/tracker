@@ -27,81 +27,10 @@ import CoreLocation
 // Todo transfer essence to new mapview.
 
 /*
-let eerbeek = CLLocationCoordinate2D(latitude: 52.110602332448984, longitude: 6.063657565827189)
-let delta = 0.05
-
-
-// Generic wrapper for presenting the UIView type in SwiftUI’s View.
-struct WrapperView<V: UIView>: UIViewRepresentable {
-    typealias UIViewType = V
-    
-    var view: V
-    
-    init(view: V) {
-        self.view = view
-    }
-    
-    func makeUIView(context: Context) -> V {
-        return view
-    }
-    
-    func updateUIView(_ uiView: V, context: Context) {
-        print(context)
-    }
-}
-
-
-
-let apeldoorn = CLLocationCoordinate2D(latitude: 52.20845050042597, longitude: 5.97093032936879)
-let deventer = CLLocationCoordinate2D(latitude: 52.24941011889572, longitude: 6.191191996121967)
-
-
 
 // Describe the view model.
 final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
     
-    let mapView = MKMapView()
-    
-    override init() {
-        super.init()
-        mapView.delegate = self
-        mapView.isUserInteractionEnabled = true
-        mapView.isRotateEnabled = true
-        addGestureRecognizer()
-        mapView.showsUserLocation = true
-        mapView.setUserTrackingMode(.none, animated: false)
-    }
-    
-    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-    }
-    
-    
-    private func addGestureRecognizer() {
-        let longTapgesture = UILongPressGestureRecognizer(target: self, action: #selector(handleTap))
-        mapView.addGestureRecognizer(longTapgesture)
-    }
-    
-    
-    @objc func handleTap(gestureReconizer: UITapGestureRecognizer) {
-        let locationOnMap = gestureReconizer.location(in: mapView)
-        let coordinate = mapView.convert(locationOnMap, toCoordinateFrom: mapView)
-        print("On long tap coordinates: \(coordinate)")
-    }
-    
-    func setAnnotation() {
-        let annotation = MKPointAnnotation()
-        annotation.title = "Centre"
-        annotation.subtitle = "Apeldoorn"
-        annotation.coordinate = apeldoorn
-        mapView.addAnnotation(annotation)
-    }
-    
-    func setRegion(_ coordinate: CLLocationCoordinate2D) {
-        mapView.setRegion(MKCoordinateRegion(center: coordinate,
-                                             latitudinalMeters: 2000,
-                                             longitudinalMeters: 2000),
-                          animated: true)
-    }
     
     // Function for how to render an annotation on the map.
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

@@ -27,5 +27,8 @@ final class Status: ObservableObject {
 
     // Whether to center the map on the user's location.
     @Published var goToUserLocation : Bool = false
-    
+
+    // Whether to set the screen to remain on always.
+    @Published var screenOn = false
+
 }

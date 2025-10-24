@@ -39,7 +39,15 @@ struct ViewContent: View {
                     .padding()
             }
             .navigationDestination(isPresented: $status.showMenu) {
-                ViewActions()
+                ActionsView()
+            }
+            .onAppear {
+                if (status.screenOn) {
+                    UIApplication.shared.isIdleTimerDisabled = true
+                }
+            }
+            .onDisappear {
+                UIApplication.shared.isIdleTimerDisabled = false
             }
         }
     }
@@ -66,7 +74,6 @@ struct ContentViewOld: View {
     @State private var followingLocation = false
     @State private var followingDirection = false
     @State private var userTracking : MKUserTrackingMode = .none
-    @State private var screenOn = false
 
     @State private var aboutApp : String = "Flyering app version 1.0"
 
@@ -87,7 +94,6 @@ struct ContentViewOld: View {
                     Toggle("Drawing your track", isOn: $drawingTrack)
                     Toggle("Map follows your location", isOn: $followingLocation)
                     Toggle("Map follows your direction", isOn: $followingDirection)
-                    Toggle("Screen remains on", isOn: $screenOn)
                     Button("Mark area as ready") {
                         print("Mark area as ready")
                         DispatchQueue.main.async() {
@@ -151,19 +157,6 @@ struct ContentViewOld: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    screenOn = !screenOn
-                    UIApplication.shared.isIdleTimerDisabled = screenOn
-                    // A test indicates that,
-                    // if the app has set the screen to remain on,
-                    // and if the app then moves to the background,
-                    // then the screen goes off with the normal delay.
-                    // Once the app gets moved to the foreground again,
-                    // its setting for keeping the screen on takes effect again.
-                }, label: {
-                    Image(systemName: screenOn ? "lock.open.display" : "lock.display")
-                        .foregroundColor(screenOn ? .red : .gray)
-                })
 
                 Spacer()
             }
@@ -184,14 +177,8 @@ struct ContentViewOld: View {
             }
         }
         .onAppear {
-            if (screenOn) {
-                UIApplication.shared.isIdleTimerDisabled = true
-            }
             let coordinates = trackManager.getAll()
             mapViewModel.writeInitialUserTrack(coordinates: coordinates)
-        }
-        .onDisappear {
-            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {
