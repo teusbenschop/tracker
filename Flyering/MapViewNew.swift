@@ -12,18 +12,27 @@ struct MapViewNew: UIViewRepresentable {
         
         // Assign the coordinator (delegate).
         mapView.delegate = context.coordinator
-        
-        mapView.region = MKCoordinateRegion(
-            // The camera is initially centered in Naples, Italy.
-            center: CLLocationCoordinate2D(latitude: 40.8522, longitude: 14.265),
-            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        )
-        
-        mapView.pointOfInterestFilter = .excludingAll
+
+        // Display all points of interest because these may assist as beacons during flyering.
+        let configuration = MKStandardMapConfiguration()
+        configuration.pointOfInterestFilter = .includingAll
+        mapView.preferredConfiguration = configuration
+
         mapView.mapType = .standard
         mapView.isPitchEnabled = true
         mapView.isRotateEnabled = true
         mapView.showsUserLocation = true
+
+        // Don't show the user tracking button because that interferes with the custom menu button.
+        mapView.showsUserTrackingButton = false
+
+        // Let the map open at the user's location for convenience.
+        if let location = locationModel.location {
+            mapView.region = MKCoordinateRegion(
+                center: location.coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+            )
+        }
 
         // Draw all zones on the map.
         for zone in mapModel.naplesZones {
@@ -34,17 +43,21 @@ struct MapViewNew: UIViewRepresentable {
             annotation.title = zone.name
             mapView.addAnnotation(annotation)
         }
-        
+
+        // Return the configured map.
         return mapView
     }
-    
+
+
+    // This is called if one of the observed objects changes.
     func updateUIView(_ uiView: MKMapView, context: Context) {
         if mapModel.goToUserLocation, let location = locationModel.location {
             UIView.animate(withDuration: 0.5) {
                 uiView.setRegion(
                     MKCoordinateRegion(
                         center: location.coordinate,
-                        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                        // Keep the current zoomlevel as the user may have adjusted it.
+                        span: uiView.region.span
                     ),
                     animated: true
                 )

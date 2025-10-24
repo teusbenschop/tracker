@@ -1,6 +1,11 @@
 Move from old WrapperView to the new MapView step by step.
 
 
+The map opens at the user's location.
+
+It no longer draws the Naples zones, but keeps the code, and removes the JSON stuff.
+
+A button to focus the map on the user's position.
 
 
 
