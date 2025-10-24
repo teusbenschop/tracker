@@ -46,6 +46,9 @@ struct ViewContent: View {
 }
 
 
+
+// Todo transfer essence to new.
+
 /*
 var locationStabilizationCounter : Int = 0
 

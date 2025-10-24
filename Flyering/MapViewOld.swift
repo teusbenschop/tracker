@@ -24,6 +24,8 @@ import Foundation
 import CoreLocation
 
 
+// Todo transfer essence to new mapview.
+
 /*
 let eerbeek = CLLocationCoordinate2D(latitude: 52.110602332448984, longitude: 6.063657565827189)
 let delta = 0.05

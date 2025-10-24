@@ -8,6 +8,8 @@ import Combine
 // $. Pass the singletons down as environment objects.
 // This frees the developer from the pain of bindings and general coupling in the code structure.
 
+// Todo put this in file MapViewNew.swift.
+
 final class MapViewModel: ObservableObject {
     
     // Use the MKMapView class, not MapView, the SwiftUI equivalent.

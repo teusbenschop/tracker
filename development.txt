@@ -1,12 +1,3 @@
-A button to focus the map on the user's position.
-Make clear button, with icon and text.
-Move the signal to the Status struct.
-Link it to focusing map on user position.
-
-
-
-
-
 Remove all old WrapperView code and move to the new MapView step by step.
 
 It no longer draws the Naples zones, but keeps the code, and removes the JSON stuff.

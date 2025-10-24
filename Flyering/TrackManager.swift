@@ -26,6 +26,7 @@ import SQLite3
 import MapKit
 
 
+// Todo enable again.
 /*
 class TrackManager{
     

@@ -1,5 +1,7 @@
 import CoreLocation
 
+// Todo take essence and use for polygons.
+
 struct Zone: Decodable, Identifiable {
     let id: Int
     let name: String
