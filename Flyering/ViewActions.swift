@@ -23,28 +23,26 @@ import Combine
 struct ViewActions: View {
     
     @EnvironmentObject var mapModel: MapViewModel
-    @EnvironmentObject var state : Status
+    @EnvironmentObject var status : Status
     
     // Timer to facilitate automatic view close.
     let timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     @State private var timeout : Int = 0
-    
+
     var body: some View {
-        Text("Zone detail view")
-        
-            .navigationTitle(mapModel.selectedZone?.name ?? "??")
-            .navigationBarTitleDisplayMode(.large)
+        VStack {
+            ButtonCenterMapOnUser()
+            Spacer()
+        }
             .onAppear() {
-                print("actions view appears")
             }
             .onDisappear() {
-                print("actions view disappears")
             }
             .onReceive(timer) { time in
                 // Close the view after some time.
                 timeout += 1
-                if timeout > 5 {
-                    state.showMenu = false
+                if timeout > 10 {
+                    status.showMenu = false
                 }
             }
 

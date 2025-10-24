@@ -25,5 +25,7 @@ final class Status: ObservableObject {
     // Whether to show the page with the menu.
     @Published var showMenu : Bool = false
 
+    // Whether to center the map on the user's location.
+    @Published var goToUserLocation : Bool = false
     
 }

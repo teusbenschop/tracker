@@ -5,6 +5,8 @@ struct MapViewNew: UIViewRepresentable {
 
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var locationModel: LocationManager
+    @EnvironmentObject var status: Status
+
 
     func makeUIView(context: Context) -> MKMapView {
 
@@ -49,19 +51,17 @@ struct MapViewNew: UIViewRepresentable {
     }
 
 
-    // This is called if one of the observed objects changes.
+    // This is called if any of the observed objects or their published members changes.
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        if mapModel.goToUserLocation, let location = locationModel.location {
-            UIView.animate(withDuration: 0.5) {
-                uiView.setRegion(
-                    MKCoordinateRegion(
-                        center: location.coordinate,
-                        // Keep the current zoomlevel as the user may have adjusted it.
-                        span: uiView.region.span
-                    ),
-                    animated: true
-                )
-            }
+        if status.goToUserLocation, let location = locationModel.location {
+            uiView.setRegion(
+                MKCoordinateRegion(
+                    center: location.coordinate,
+                    // Keep the current zoomlevel as the user may have adjusted it.
+                    span: uiView.region.span
+                ),
+                animated: false
+            )
             
             // Check again whether or not the labels should be displayed!
             uiView.delegate?.mapView?(uiView, regionDidChangeAnimated: false)

@@ -13,7 +13,6 @@ final class MapViewModel: ObservableObject {
     // Use the MKMapView class, not MapView, the SwiftUI equivalent.
     @Published var mkMapView = MKMapView()
     @Published var selectedZone: Zone? = nil
-    @Published var goToUserLocation : Bool = false
     
     // The zones array is loaded from the JSON file.
     // It ignores many theoretically possible errors because they won't occur in this context.
