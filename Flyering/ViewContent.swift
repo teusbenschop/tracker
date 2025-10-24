@@ -35,7 +35,7 @@ struct ViewContent: View {
             ZStack(alignment: .topTrailing) {
                 MapViewNew()
                     .ignoresSafeArea()
-                ButtonMenu()
+                ButtonDisplayMenu()
                     .padding()
             }
             .navigationDestination(isPresented: $status.showMenu) {
