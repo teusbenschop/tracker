@@ -35,6 +35,7 @@ struct FlyeringApp: App {
     @StateObject private var mapModel = MapViewModel()
     @StateObject private var locationModel = LocationManager()
     @StateObject private var status = Status()
+    @StateObject private var trackManager = TrackManager()
 
     var body: some Scene {
         WindowGroup {

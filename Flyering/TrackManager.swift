@@ -24,11 +24,11 @@
 import Foundation
 import SQLite3
 import MapKit
+import Combine
+import Foundation
 
 
-// Todo enable again.
-/*
-class TrackManager{
+final class TrackManager : ObservableObject {
     
     private var db: OpaquePointer?
     
@@ -196,6 +196,4 @@ class TrackManager{
         }
     }
     
-    
 }
-*/
