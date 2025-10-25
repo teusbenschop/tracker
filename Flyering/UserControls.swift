@@ -44,7 +44,6 @@ struct ToggleScreenOn: View {
     var body: some View {
         Toggle(isOn: $status.screenOn, label: {
             Label("Screen remains on", systemImage: status.screenOn ? "lock.open.display" : "lock.display")
-                .foregroundColor(status.screenOn ? .red : .black)
         })
             .padding()
             .onChange(of: status.screenOn) {
@@ -58,3 +57,30 @@ struct ToggleScreenOn: View {
             }
     }
 }
+
+
+struct ToggleFollowUserLocation: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Toggle(isOn: $status.followingLocation, label: {
+            Label("Map follows your location", systemImage: status.followingLocation ? "location.fill" : "location.slash")
+        })
+        .padding()
+        .onChange(of: status.userTrackingMode) {
+        }
+    }
+}
+
+
+struct ToggleFollowUserDirection: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Toggle(isOn: $status.followingDirection, label: {
+            Label("Map follows your direction", systemImage: status.followingDirection ? "location.north.line.fill" : "location.slash")
+        })
+        .padding()
+        .onChange(of: status.userTrackingMode) {
+        }
+    }
+}
+

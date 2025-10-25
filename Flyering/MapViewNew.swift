@@ -6,6 +6,7 @@ struct MapViewNew: UIViewRepresentable {
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var locationModel: LocationManager
     @EnvironmentObject var status: Status
+    @State private var previousUserTrackingMode: MKUserTrackingMode = .none
 
 
     func makeUIView(context: Context) -> MKMapView {
@@ -56,6 +57,8 @@ struct MapViewNew: UIViewRepresentable {
 
     // This is called if any of the observed objects or their published members changes.
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        
+        // Handle focusing on user's location.
         if status.goToUserLocation, let location = locationModel.location {
             uiView.setRegion(
                 MKCoordinateRegion(
@@ -65,9 +68,16 @@ struct MapViewNew: UIViewRepresentable {
                 ),
                 animated: false
             )
-            
-            // Check again whether or not the labels should be displayed!
+            // Check again whether or not the labels should be displayed.
             uiView.delegate?.mapView?(uiView, regionDidChangeAnimated: false)
+        }
+        
+        // Handle change in user tracking mode.
+        if status.userTrackingMode != previousUserTrackingMode {
+            uiView.setUserTrackingMode(status.userTrackingMode, animated: false)
+            DispatchQueue.main.async {
+                previousUserTrackingMode = status.userTrackingMode
+            }
         }
     }
     

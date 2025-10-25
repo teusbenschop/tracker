@@ -71,8 +71,6 @@ struct ContentViewOld: View {
     @State private var lastLocation : CLLocation = CLLocation()
 
     @State private var drawingTrack = false
-    @State private var followingLocation = false
-    @State private var followingDirection = false
     @State private var userTracking : MKUserTrackingMode = .none
 
     @State private var aboutApp : String = "Flyering app version 1.0"
@@ -92,8 +90,6 @@ struct ContentViewOld: View {
                         print("Park")
                     }
                     Toggle("Drawing your track", isOn: $drawingTrack)
-                    Toggle("Map follows your location", isOn: $followingLocation)
-                    Toggle("Map follows your direction", isOn: $followingDirection)
                     Button("Mark area as ready") {
                         print("Mark area as ready")
                         DispatchQueue.main.async() {
@@ -197,26 +193,6 @@ struct ContentViewOld: View {
                 trackManager.closeDatabase()
             }
         }
-        .onChange(of: followingLocation) {
-            handleToggleFollowLocation()
-        }
-        .onChange(of: followingDirection) {
-            handleToggleFollowDirection()
-        }
-        .onChange(of: userTracking) { oldValue, newValue in
-            switch (userTracking) {
-            case .none:
-                print("none")
-            case .follow:
-                locationDataManager.checkLocationAuthorization()
-                print("follow")
-            case .followWithHeading:
-                print("followWithHeading")
-            @unknown default:
-                ()
-            }
-            mapViewModel.setUserTrackingMode(mode: userTracking)
-        }
 
 
     }
@@ -261,67 +237,8 @@ struct ContentViewOld: View {
     }
 
 
-    // Handle a change in the toolbar button for the tracking mode.
-    func handleTrackingModeButton() {
-        // Based on the current user tracking mode, update it to the next user tracking mode.
-        switch(userTracking) {
-        case .none:
-            userTracking = .follow
-        case .follow:
-            userTracking = .followWithHeading
-        case .followWithHeading:
-            userTracking = .none
-        @unknown default:
-            ()
-        }
-        // Based on the new user tracking mode, set the toggles correct in the menu.
-        switch(userTracking) {
-        case .none:
-            followingLocation = false
-            followingDirection = false
-        case .follow:
-            followingLocation = true
-            followingDirection = false
-        case .followWithHeading:
-            followingLocation = true
-            followingDirection = true
-        @unknown default:
-            ()
-        }
-    }
 
-    // Handle a change in the menu toggle for following user location.
-    func handleToggleFollowLocation() {
-        if followingLocation {
-        } else {
-            if followingDirection {
-                followingDirection = false
-            }
-        }
-        
-    }
 
-    // Handle a change in the menu toggle for following user direction.
-    func handleToggleFollowDirection() {
-        if followingDirection {
-            if !followingLocation {
-                followingLocation = true
-            }
-        } else {
-        }
-    }
-    
-    func translateLocationTogglesToTrackingButton () {
-        if followingLocation {
-            if followingDirection {
-                userTracking = .followWithHeading
-            } else {
-                userTracking = .follow
-            }
-        } else {
-            userTracking = .none
-        }
-    }
 
 
 }

@@ -18,6 +18,7 @@
 
 
 import Combine
+import MapKit
 
 
 final class Status: ObservableObject {
@@ -30,5 +31,26 @@ final class Status: ObservableObject {
 
     // Whether to set the screen to remain on always.
     @Published var screenOn = false
+    
+    // How the map tracks the user location.
+    @Published var userTrackingMode: MKUserTrackingMode = .none
 
+}
+
+
+extension Status {
+
+    var followingLocation: Bool {
+        get { userTrackingMode != .none }
+        set (follow) {
+            userTrackingMode = follow ? .follow : .none
+        }
+    }
+    
+    var followingDirection: Bool {
+        get { userTrackingMode == .followWithHeading }
+        set (follow) {
+            userTrackingMode = follow ? .followWithHeading : .follow
+        }
+    }
 }

@@ -38,4 +38,9 @@ final class MapViewModel: ObservableObject {
         }
         return nil
     }
+    
+    // Set the map mode whether to follow user location and/or direction.
+    func setUserTrackingMode(userTrackingMode: MKUserTrackingMode) {
+        mkMapView.setUserTrackingMode(userTrackingMode, animated: false)
+    }
 }

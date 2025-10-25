@@ -32,6 +32,8 @@ struct ActionsView: View {
         VStack {
             ButtonCenterMapOnUser()
             ToggleScreenOn()
+            ToggleFollowUserLocation()
+            ToggleFollowUserDirection()
             Spacer()
         }
             .onAppear() {
