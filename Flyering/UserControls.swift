@@ -4,7 +4,7 @@ import SwiftUI
 struct ButtonDisplayMenu: View {
     @EnvironmentObject var status: Status
     var body: some View {
-        Button(action: {status.showMenu = true}) {
+        Button(action: {status.showActions = true}) {
             Image(systemName: "text.aligncenter")
                 .fontWeight(.medium)
                 .frame(width: 40, height: 40)
@@ -24,7 +24,7 @@ struct ButtonCenterMapOnUser: View {
             DispatchQueue.main.async {
                 status.goToUserLocation = false
             }
-            status.showMenu = false
+            status.showActions = false
         })
         {
             HStack {
@@ -110,3 +110,21 @@ struct TextAboutApp: View {
             .multilineTextAlignment(.center)
     }
 }
+
+
+struct ButtonOpenJournal: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Button(action: {
+            status.showJournal = true
+        })
+        {
+            Text("Show journal")
+                .font(.system(size: 12, weight: .thin))
+        }
+        .padding()
+        .buttonStyle(.bordered)
+    }
+}
+
+

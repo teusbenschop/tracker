@@ -38,13 +38,17 @@ struct ContentView: View {
                 ButtonDisplayMenu()
                     .padding()
             }
-            .navigationDestination(isPresented: $status.showMenu) {
+            .navigationDestination(isPresented: $status.showActions) {
                 ActionsView()
+            }
+            .navigationDestination(isPresented: $status.showJournal) {
+                JournalView()
             }
             .onAppear {
                 if (status.screenOn) {
                     UIApplication.shared.isIdleTimerDisabled = true
                 }
+                status.log(item: "Main view appears")
             }
             .onDisappear {
                 UIApplication.shared.isIdleTimerDisabled = false

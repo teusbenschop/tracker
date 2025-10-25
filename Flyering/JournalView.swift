@@ -20,7 +20,7 @@
 import SwiftUI
 import Combine
 
-struct ActionsView: View {
+struct JournalView: View {
     
     @EnvironmentObject var status : Status
     
@@ -29,20 +29,10 @@ struct ActionsView: View {
     @State private var timeout : Int = 0
 
     var body: some View {
-        VStack {
-            ButtonCenterMapOnUser()
-            ToggleScreenOn()
-            ToggleFollowUserLocation()
-            ToggleFollowUserDirection()
-            TextLocationInfo()
-            TextAboutApp()
-            ButtonOpenJournal()
-            Spacer()
+        ScrollView {
+            Text(status.journalText)
         }
-            .onAppear() {
-            }
-            .onDisappear() {
-            }
+            .padding()
             .onReceive(timer) { time in
                 // Close the view after some time.
                 timeout += 1
@@ -50,10 +40,7 @@ struct ActionsView: View {
                     status.showActions = false
                 }
             }
-
-
     }
-
 }
 
 

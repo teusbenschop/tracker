@@ -23,8 +23,8 @@ import MapKit
 
 final class Status: ObservableObject {
     
-    // Whether to show the page with the menu.
-    @Published var showMenu : Bool = false
+    // Whether to show the page with the actions.
+    @Published var showActions : Bool = false
 
     // Whether to center the map on the user's location.
     @Published var goToUserLocation : Bool = false
@@ -34,6 +34,10 @@ final class Status: ObservableObject {
     
     // How the map tracks the user location.
     @Published var userTrackingMode: MKUserTrackingMode = .none
+    
+    // The journal.
+    @Published var showJournal : Bool = false
+    @Published var journalText : String = ""
 
 }
 
@@ -52,5 +56,14 @@ extension Status {
         set (follow) {
             userTrackingMode = follow ? .followWithHeading : .follow
         }
+    }
+    
+    func log(item: String) {
+        var fragment : String = ""
+        if !journalText.isEmpty {
+            fragment.append("\n")
+        }
+        fragment.append(item)
+        journalText.append(fragment)
     }
 }

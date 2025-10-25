@@ -1,4 +1,6 @@
-
+Have a Developer Journal
+It gives logging lines.
+Disable in production eventually?
 
 
 
