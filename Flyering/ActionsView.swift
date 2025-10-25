@@ -34,6 +34,7 @@ struct ActionsView: View {
             ToggleScreenOn()
             ToggleFollowUserLocation()
             ToggleFollowUserDirection()
+            ToggleRecordTrack()
             TextLocationInfo()
             TextAboutApp()
             ButtonOpenJournal()

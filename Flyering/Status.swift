@@ -35,6 +35,9 @@ final class Status: ObservableObject {
     // How the map tracks the user location.
     @Published var userTrackingMode: MKUserTrackingMode = .none
     
+    // Whether to record the travelled track.
+    @Published var recordTrack : Bool = false
+    
     // The journal.
     @Published var showJournal : Bool = false
     @Published var journalText : String = ""

@@ -84,7 +84,6 @@ struct ContentViewOld: View {
             Button("Park") {
                 print("Park")
             }
-            Toggle("Drawing your track", isOn: $drawingTrack)
             Button("Mark area as ready") {
                 print("Mark area as ready")
                 DispatchQueue.main.async() {
@@ -129,14 +128,6 @@ struct ContentViewOld: View {
                 print("Inactive")
             } else if newPhase == .background {
                 print("Background")
-            }
-        }
-        .onChange(of: drawingTrack) {
-            if drawingTrack {
-                locationDataManager.checkLocationAuthorization()
-                trackManager.openDatabase()
-            } else {
-                trackManager.closeDatabase()
             }
         }
 

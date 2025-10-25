@@ -33,7 +33,7 @@ struct ButtonCenterMapOnUser: View {
                 Image(systemName: "person")
             }
         }
-        .padding()
+        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }
@@ -45,7 +45,7 @@ struct ToggleScreenOn: View {
         Toggle(isOn: $status.screenOn, label: {
             Label("Screen remains on", systemImage: status.screenOn ? "lock.open.display" : "lock.display")
         })
-            .padding()
+        .padding(.horizontal)
             .onChange(of: status.screenOn) {
                 UIApplication.shared.isIdleTimerDisabled = status.screenOn
                 // A test indicates that,
@@ -65,9 +65,7 @@ struct ToggleFollowUserLocation: View {
         Toggle(isOn: $status.followingLocation, label: {
             Label("Map follows your location", systemImage: status.followingLocation ? "location.fill" : "location.slash")
         })
-        .padding()
-        .onChange(of: status.userTrackingMode) {
-        }
+        .padding(.horizontal)
     }
 }
 
@@ -78,8 +76,28 @@ struct ToggleFollowUserDirection: View {
         Toggle(isOn: $status.followingDirection, label: {
             Label("Map follows your direction", systemImage: status.followingDirection ? "location.north.line.fill" : "location.slash")
         })
-        .padding()
-        .onChange(of: status.userTrackingMode) {
+        .padding(.horizontal)
+    }
+}
+
+
+struct ToggleRecordTrack: View {
+    @EnvironmentObject private var status: Status
+    @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var trackManager: TrackManager
+
+    var body: some View {
+        Toggle(isOn: $status.recordTrack, label: {
+            Label("Record your track", systemImage: status.recordTrack ?  "point.bottomleft.forward.to.arrow.triangle.scurvepath" : "point.topleft.down.to.point.bottomright.curvepath")
+        })
+        .padding(.horizontal)
+        .onChange(of: status.recordTrack) {
+            if status.recordTrack {
+                locationManager.checkLocationAuthorization()
+                trackManager.openDatabase()
+            } else {
+                trackManager.closeDatabase()
+            }
         }
     }
 }
@@ -122,7 +140,7 @@ struct ButtonOpenJournal: View {
             Text("Show journal")
                 .font(.system(size: 12, weight: .thin))
         }
-        .padding()
+        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }

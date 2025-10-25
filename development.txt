@@ -1,6 +1,35 @@
-Have a Developer Journal
-It gives logging lines.
-Disable in production eventually?
+Have a toggle to enable recording the track.
+- start and stop database stuff, copy from existing code.
+
+        .onChange(of: drawingTrack) {
+            if drawingTrack {
+                locationDataManager.checkLocationAuthorization()
+                trackManager.openDatabase()
+            } else {
+                trackManager.closeDatabase()
+            }
+        }
+
+
+            Toggle("Drawing your track", isOn: $drawingTrack)
+
+
+Have a timer to update the track.
+Copy from existing.
+Logic for distance to previous point.
+
+
+
+Have a button to erase the track.
+- Erase database, copy from existing.
+- Erase from mapview, copy from existing.
+
+Log, just now, the database path.
+Inspect the database, full and cleared.
+
+
+
+
 
 
 
@@ -203,3 +232,6 @@ Tapping items in the menu is hard, there's only a small area that is tappable.
 
 For receiving background location updates, does it need "Always location" permissions. Somewhere it says it does not need those if the background service is properly done.
 
+
+
+Disable the developer journal production eventually?

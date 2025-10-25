@@ -33,7 +33,7 @@ import SwiftUI
 struct FlyeringApp: App {
     
     @StateObject private var mapModel = MapViewModel()
-    @StateObject private var locationModel = LocationManager()
+    @StateObject private var locationManager = LocationManager()
     @StateObject private var status = Status()
     @StateObject private var trackManager = TrackManager()
 
@@ -41,8 +41,9 @@ struct FlyeringApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(mapModel)
-                .environmentObject(locationModel)
+                .environmentObject(locationManager)
                 .environmentObject(status)
+                .environmentObject(trackManager)
         }
     }
 }
