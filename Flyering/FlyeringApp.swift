@@ -21,6 +21,13 @@ import SwiftUI
 // Tutorials used:
 // https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
 
+// Method for linking data and views:
+// 1. Create view model classes for the different features of the app.
+// 2. These classes conform to the ObservableObject protocol.
+// 3. Define singleton objects in the top of the view hierarchy with @StateObject.
+// $. Pass the singletons down as environment objects.
+// This frees the developer from the pain of bindings and general coupling in the code structure.
+
 
 @main
 struct FlyeringApp: App {

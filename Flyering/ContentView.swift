@@ -33,7 +33,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
-                MapViewNew()
+                MapViewUi()
                     .ignoresSafeArea()
                 ButtonDisplayMenu()
                     .padding()
@@ -70,9 +70,6 @@ struct ContentViewOld: View {
 
     @State private var lastLocation : CLLocation = CLLocation()
 
-    @State private var drawingTrack = false
-    @State private var userTracking : MKUserTrackingMode = .none
-
     @State private var aboutApp : String = "Flyering app version 1.0"
 
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
@@ -81,81 +78,29 @@ struct ContentViewOld: View {
 
     var body: some View {
         VStack {
-            HStack {
-
-                Spacer()
-
-                Menu {
-                    Button("Park") {
-                        print("Park")
-                    }
-                    Toggle("Drawing your track", isOn: $drawingTrack)
-                    Button("Mark area as ready") {
-                        print("Mark area as ready")
-                        DispatchQueue.main.async() {
-
-                        }
-                        mapViewModel.markAreaAsReady()
-                    }
-                    Button("Erase track") {
-                        mapViewModel.eraseUserTrack()
-                        if (drawingTrack) {
-                            trackManager.emptyDatabase()
-                        } else {
-                            trackManager.closeDatabase()
-                            trackManager.eraseDatabase()
-                        }
-                    }
-                    Text(locationDataManager.locationInfo)
-                    Text(aboutApp)
-                } label: {
-                    Circle()
-                        .fill(.gray.opacity(0.15))
-                        .frame(width: 30, height: 30)
-                        .overlay {
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 13.0, weight: .semibold))
-                                .foregroundColor(.pink)
-                        }
-                }
-
-                Spacer()
-                
-                Button(action: {
-                    drawingTrack = !drawingTrack
-                }, label: {
-                    Image(systemName: "road.lanes")
-                        .foregroundColor(drawingTrack ? .red : .gray)
-                        .fontWeight(drawingTrack ? .black : .light)
-                })
-
-                Spacer()
-
-                Button(action: {
-                    locationDataManager.checkLocationAuthorization()
-                    handleTrackingModeButton()
-                }, label: {
-                    switch(userTracking) {
-                    case .none:
-                        Image(systemName: "location.slash")
-                            .foregroundColor(.gray)
-                    case .follow:
-                        Image(systemName: "location.fill")
-                            .foregroundColor(.red)
-                    case .followWithHeading:
-                        Image(systemName: "location.north.line.fill")
-                            .foregroundColor(.red)
-                    @unknown default:
-                        Image(systemName: "location.slash")
-                            .foregroundColor(.gray)
-                    }
-                })
-                
-                Spacer()
-                
-
-                Spacer()
+            Button("Park") {
+                print("Park")
             }
+            Toggle("Drawing your track", isOn: $drawingTrack)
+            Button("Mark area as ready") {
+                print("Mark area as ready")
+                DispatchQueue.main.async() {
+
+                }
+                mapViewModel.markAreaAsReady()
+            }
+            Button("Erase track") {
+                mapViewModel.eraseUserTrack()
+                if (drawingTrack) {
+                    trackManager.emptyDatabase()
+                } else {
+                    trackManager.closeDatabase()
+                    trackManager.eraseDatabase()
+                }
+            }
+            Text(locationDataManager.locationInfo)
+            Text(aboutApp)
+
             
             WrapperView(view: mapViewModel.mapView)
                 .onAppear() {

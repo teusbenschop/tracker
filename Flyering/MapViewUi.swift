@@ -1,7 +1,7 @@
 import SwiftUI
 import MapKit
 
-struct MapViewNew: UIViewRepresentable {
+struct MapViewUi: UIViewRepresentable {
 
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var locationModel: LocationManager
@@ -87,9 +87,9 @@ struct MapViewNew: UIViewRepresentable {
     
     // The Coordinator contains code for custom view appearance and behaviour.
     class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: MapViewNew
+        var parent: MapViewUi
         
-        init(_ parent: MapViewNew) {
+        init(_ parent: MapViewUi) {
             self.parent = parent
             super.init()
             let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleZoneTap))

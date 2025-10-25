@@ -1,12 +1,6 @@
 import MapKit
 import Combine
 
-// Method for linking data and views:
-// 1. Create view model classes for the different features of the app.
-// 2. These classes conform to the ObservableObject protocol.
-// 3. Define singleton objects in the top of the view hierarchy with @StateObject.
-// $. Pass the singletons down as environment objects.
-// This frees the developer from the pain of bindings and general coupling in the code structure.
 
 // Todo put this in file MapViewNew.swift.
 
