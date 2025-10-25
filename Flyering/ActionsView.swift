@@ -34,6 +34,8 @@ struct ActionsView: View {
             ToggleScreenOn()
             ToggleFollowUserLocation()
             ToggleFollowUserDirection()
+            TextLocationInfo()
+            TextAboutApp()
             Spacer()
         }
             .onAppear() {

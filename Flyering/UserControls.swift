@@ -84,3 +84,29 @@ struct ToggleFollowUserDirection: View {
     }
 }
 
+
+struct TextLocationInfo: View {
+    @EnvironmentObject var locationModel: LocationManager
+    var body: some View {
+        Text(locationModel.info)
+            .font(.system(size: 12, weight: .thin))
+            .multilineTextAlignment(.center)
+    }
+}
+
+
+extension Bundle {
+    public var appBuild: String          { getInfo("CFBundleVersion") }
+    public var appVersionLong: String    { getInfo("CFBundleShortVersionString") }
+    fileprivate func getInfo(_ str: String) -> String { infoDictionary?[str] as? String ?? "⚠️" }
+}
+
+
+struct TextAboutApp: View {
+    @EnvironmentObject var locationModel: LocationManager
+    var body: some View {
+        Text("Flyering version \(Bundle.main.appVersionLong)")
+            .font(.system(size: 12, weight: .thin))
+            .multilineTextAlignment(.center)
+    }
+}

@@ -70,7 +70,6 @@ struct ContentViewOld: View {
 
     @State private var lastLocation : CLLocation = CLLocation()
 
-    @State private var aboutApp : String = "Flyering app version 1.0"
 
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     
@@ -98,8 +97,6 @@ struct ContentViewOld: View {
                     trackManager.eraseDatabase()
                 }
             }
-            Text(locationDataManager.locationInfo)
-            Text(aboutApp)
 
             
             WrapperView(view: mapViewModel.mapView)
