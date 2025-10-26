@@ -1,5 +1,22 @@
 
 
+Menu to mark area ready.
+
+find visible map rectangle.
+https://developer.apple.com/documentation/mapkit/mkmapview/visiblemaprect
+
+Add octagon to that rectangle.
+
+
+
+On long tap, check the distance to each of the octagon corners.
+Take the corner with the smallest distance to the tap zone.
+Set a limit to the zone, say, 1/10 of the map span so it selects an annotation that is reasonably near.
+Apply that to the editable annotaton as part of the polygon.
+Move the annotaton, and redraw the polygon.
+Menu to finalize the area ready.
+
+
 
 
 

@@ -53,11 +53,33 @@ extension MapViewUi.Coordinator {
 //        }
     }
     
-    // The @objc decorator allows the function to be assigned to the tap gesture recognizer with the selector syntax.
-    @objc func handleZoneTap(_ gestureRecognizer: UITapGestureRecognizer) {
+    // The @objc decorator allows the function to be assigned to the tap gesture recognizer
+    // with the selector syntax.
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         let mapView = parent.mapModel.mkMapView
         let tapLocation = gestureRecognizer.location(in: mapView)
         let location = mapView.convert(tapLocation, toCoordinateFrom: mapView)
+        print (location) // Todo
+        if let zone = parent.mapModel.zoneOfLocation(location) {
+            parent.mapModel.selectedZone = zone
+        }
+    }
+
+    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let mapView = parent.mapModel.mkMapView
+        let longPressLocation = gestureRecognizer.location(in: mapView)
+        switch gestureRecognizer.state {
+        case .began:
+            print ("began")
+        case .changed:
+            print ("changed")
+        case .ended:
+            print ("ended")
+        default:
+            print ("other")
+        }
+        let location = mapView.convert(longPressLocation, toCoordinateFrom: mapView)
+        print (location) // Todo
         if let zone = parent.mapModel.zoneOfLocation(location) {
             parent.mapModel.selectedZone = zone
         }

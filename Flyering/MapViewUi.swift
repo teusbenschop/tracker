@@ -112,8 +112,10 @@ struct MapViewUi: UIViewRepresentable {
         init(_ parent: MapViewUi) {
             self.parent = parent
             super.init()
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleZoneTap))
-            self.parent.mapModel.mkMapView.addGestureRecognizer(gestureRecognizer)
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+            self.parent.mapModel.mkMapView.addGestureRecognizer(tapRecognizer)
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+            self.parent.mapModel.mkMapView.addGestureRecognizer(longPressRecognizer)
         }
     }
     
