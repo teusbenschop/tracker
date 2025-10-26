@@ -26,7 +26,7 @@ struct MapViewUi: UIViewRepresentable {
         mapView.isRotateEnabled = true
         mapView.showsUserLocation = true
 
-        // Do not track initially (can be changed by the user).
+        // Do not track user initially (can be changed by the user).
         mapView.setUserTrackingMode(.none, animated: false)
 
         // Don't show the user tracking button because that interferes with the custom menu button.
@@ -89,6 +89,14 @@ struct MapViewUi: UIViewRepresentable {
             }
             DispatchQueue.main.async() {
                 status.pendingTrack = []
+            }
+        }
+        
+        // Check on whether to erase the recorded track.
+        if status.clearTrack {
+            uiView.removeAnnotations(uiView.annotations)
+            DispatchQueue.main.async() {
+                status.clearTrack = false
             }
         }
     }

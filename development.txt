@@ -1,27 +1,5 @@
 
 
-Have a button to erase the track.
-- Erase database, copy from existing.
-- Erase from mapview, copy from existing.
-
-            Button("Erase track") {
-                mapViewModel.eraseUserTrack()
-                if (drawingTrack) {
-                    trackManager.emptyDatabase()
-                } else {
-                    trackManager.closeDatabase()
-                    trackManager.eraseDatabase()
-                }
-            }
-
-VACUUM;
-
-
-
-Log, just now, the database path.
-Inspect the database, full and cleared.
-
-
 
 Upon startup, read the database and draw the track.
 

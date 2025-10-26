@@ -108,6 +108,13 @@ struct ButtonClearTrack: View {
     @EnvironmentObject var trackManager: TrackManager
     var body: some View {
         Button(action: {
+            if status.recordTrack {
+                trackManager.emptyDatabase()
+            } else {
+                trackManager.closeDatabase()
+                trackManager.eraseDatabase()
+            }
+            status.clearTrack = true
             status.showActions = false
         })
         {

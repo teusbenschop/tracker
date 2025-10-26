@@ -39,6 +39,8 @@ final class Status: ObservableObject {
     @Published var recordTrack : Bool = false
     // Cache of waypoints still to draw.
     @Published var pendingTrack : [CLLocationCoordinate2D] = []
+    // Whether to clear the recorded track.
+    @Published var clearTrack : Bool = false
     
     // The journal.
     @Published var showJournal : Bool = false

@@ -105,13 +105,6 @@ final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
     }
     
     
-    func eraseUserTrack()
-    {
-        DispatchQueue.main.async() { [self] in
-            mapView.removeAnnotations(mapView.annotations)
-        }
-    }
-    
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated: Bool) {
         //print ("region will change")
     }
