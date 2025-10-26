@@ -26,7 +26,9 @@ struct ActionsView: View {
     
     // Timer to facilitate automatic view close.
     let timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
-    @State private var timeout : Int = 0
+    @State private var elapsedSeconds : Int = 0
+    let maximumSeconds : Int = 10
+
 
     var body: some View {
         VStack {
@@ -46,8 +48,8 @@ struct ActionsView: View {
             }
             .onReceive(timer) { time in
                 // Close the view after some time.
-                timeout += 1
-                if timeout > 10 {
+                elapsedSeconds += 1
+                if elapsedSeconds > maximumSeconds {
                     status.showActions = false
                 }
             }
