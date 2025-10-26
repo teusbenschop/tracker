@@ -50,9 +50,13 @@ struct MainView: View {
             }
         }
         .onAppear {
-            if (status.screenOn) {
+            // On startup cause the map to draw any track from the database.
+            status.pendingTrack = trackManager.getAll()
+            // Handle keeping screen on.
+            if status.screenOn {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
+            // Do logging.
             status.log(item: "Main view appears")
         }
         .onDisappear {
@@ -64,7 +68,7 @@ struct MainView: View {
             }
         }
     }
-    
+
     func recordTrack() {
         // Get the location and make sure it's valid.
         let location : CLLocation? = locationManager.location
@@ -118,10 +122,6 @@ struct ContentViewOld: View {
                 }
                 .ignoresSafeArea()
                 
-        }
-        .onAppear {
-            let coordinates = trackManager.getAll()
-            mapViewModel.writeInitialUserTrack(coordinates: coordinates)
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {

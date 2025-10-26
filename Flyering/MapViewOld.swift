@@ -91,18 +91,6 @@ final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
                                  heading: heading)
         mapView.setCamera(camera, animated: animate)
     }
-
-    
-    func writeInitialUserTrack(coordinates : [CLLocationCoordinate2D])
-    {
-        DispatchQueue.main.async() { [self] in
-            for coordinate in coordinates {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                mapView.addAnnotation(annotation)
-            }
-        }
-    }
     
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated: Bool) {

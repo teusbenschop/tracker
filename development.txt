@@ -1,10 +1,6 @@
 
 
 
-Upon startup, read the database and draw the track.
-
-
-
 
 
 
