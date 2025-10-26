@@ -1,29 +1,3 @@
-/*
- Copyright (©) 2025-2025 Teus Benschop.
- 
- This program is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
-
-import SwiftUI
-import MapKit
-import Combine
-import Foundation
-import CoreLocation
-
-
 // Todo transfer essence to new mapview.
 
 /*
@@ -31,32 +5,6 @@ import CoreLocation
 // Describe the view model.
 final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
     
-    
-    // Function for how to render an annotation on the map.
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "custom")
-        // Current user location is annotation as well, so we leave its appearance as it is.
-        if annotation === mapView.userLocation {
-            annotationView?.annotation = annotation
-            return annotationView
-        }
-        
-        if annotationView == nil {
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "custom")
-        } else {
-            annotationView?.annotation = annotation
-        }
-        let image = UIImage(systemName: "circle")?.withTintColor(.red)
-        if (image != nil) {
-            let size = 10.0
-            UIGraphicsBeginImageContext(CGSizeMake(size, size))
-            image!.draw(in: CGRectMake(0, 0, size, size))
-            let newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            annotationView?.image = newImage
-        }
-        return annotationView
-    }
     
     // Request one or more routes.
     func requestRoutes() async throws -> [MKRoute] {
@@ -142,16 +90,6 @@ final class MapViewModeldOld: NSObject, ObservableObject, MKMapViewDelegate {
                                  pitch: 0.0,
                                  heading: heading)
         mapView.setCamera(camera, animated: animate)
-    }
-
-    
-    func updateUserTrack(_ coordinate: CLLocationCoordinate2D)
-    {
-        DispatchQueue.main.async() { [self] in
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
-        }
     }
 
     

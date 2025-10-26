@@ -39,7 +39,7 @@ struct FlyeringApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 .environmentObject(mapModel)
                 .environmentObject(locationManager)
                 .environmentObject(status)

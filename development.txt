@@ -1,31 +1,29 @@
-Have a toggle to enable recording the track.
-- start and stop database stuff, copy from existing code.
-
-        .onChange(of: drawingTrack) {
-            if drawingTrack {
-                locationDataManager.checkLocationAuthorization()
-                trackManager.openDatabase()
-            } else {
-                trackManager.closeDatabase()
-            }
-        }
-
-
-            Toggle("Drawing your track", isOn: $drawingTrack)
-
-
-Have a timer to update the track.
-Copy from existing.
-Logic for distance to previous point.
-
 
 
 Have a button to erase the track.
 - Erase database, copy from existing.
 - Erase from mapview, copy from existing.
 
+            Button("Erase track") {
+                mapViewModel.eraseUserTrack()
+                if (drawingTrack) {
+                    trackManager.emptyDatabase()
+                } else {
+                    trackManager.closeDatabase()
+                    trackManager.eraseDatabase()
+                }
+            }
+
+VACUUM;
+
+
+
 Log, just now, the database path.
 Inspect the database, full and cleared.
+
+
+
+Upon startup, read the database and draw the track.
 
 
 

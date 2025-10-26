@@ -23,13 +23,17 @@ import Foundation
 import CoreLocation
 
 
-struct ContentView: View {
+struct MainView: View {
     
     // Property wrappers for observable objects that the parent view supplies.
-    @EnvironmentObject var mapModel: MapViewModel
-    @EnvironmentObject var locationModel: LocationManager
-    @EnvironmentObject var status: Status
-    
+    @EnvironmentObject private var mapModel: MapViewModel
+    @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var status: Status
+    @EnvironmentObject private var trackManager: TrackManager
+
+    @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
+    @State private var lastLocation : CLLocation = CLLocation()
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
@@ -44,16 +48,39 @@ struct ContentView: View {
             .navigationDestination(isPresented: $status.showJournal) {
                 JournalView()
             }
-            .onAppear {
-                if (status.screenOn) {
-                    UIApplication.shared.isIdleTimerDisabled = true
-                }
-                status.log(item: "Main view appears")
+        }
+        .onAppear {
+            if (status.screenOn) {
+                UIApplication.shared.isIdleTimerDisabled = true
             }
-            .onDisappear {
-                UIApplication.shared.isIdleTimerDisabled = false
+            status.log(item: "Main view appears")
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onReceive(timer) { time in
+            if status.recordTrack {
+                recordTrack()
             }
         }
+    }
+    
+    func recordTrack() {
+        // Get the location and make sure it's valid.
+        let location : CLLocation? = locationManager.location
+        guard location != nil else { return }
+        
+        // Get the distance from the previous location, whether it's large enough to draw it.
+        let distanceMeters = location?.distance(from: lastLocation)
+        if (distanceMeters ?? 0 < 2) { return }
+        lastLocation = location ?? CLLocation()
+        
+        // Store the new coordinate in the database.
+        // Store it in the State object (which will prompt the mapview to draw it on the map).
+        let coordinate = location?.coordinate
+        guard coordinate != nil else { return }
+        trackManager.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
+        status.pendingTrack.append(coordinate ?? CLLocationCoordinate2D())
     }
 }
 
@@ -67,15 +94,6 @@ var locationStabilizationCounter : Int = 0
 
 struct ContentViewOld: View {
 
-    @StateObject var locationDataManager = LocationDataManager()
-    @State private var trackManager = TrackManager()
-
-    @StateObject var mapViewModel = MapViewModel()
-
-    @State private var lastLocation : CLLocation = CLLocation()
-
-
-    @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     
     @Environment(\.scenePhase) var scenePhase
 
@@ -91,15 +109,6 @@ struct ContentViewOld: View {
                 }
                 mapViewModel.markAreaAsReady()
             }
-            Button("Erase track") {
-                mapViewModel.eraseUserTrack()
-                if (drawingTrack) {
-                    trackManager.emptyDatabase()
-                } else {
-                    trackManager.closeDatabase()
-                    trackManager.eraseDatabase()
-                }
-            }
 
             
             WrapperView(view: mapViewModel.mapView)
@@ -109,13 +118,6 @@ struct ContentViewOld: View {
                 }
                 .ignoresSafeArea()
                 
-        }
-        .onReceive(timer) { time in
-            if followingLocation {
-            }
-            if drawingTrack {
-                updateUserTrack()
-            }
         }
         .onAppear {
             let coordinates = trackManager.getAll()
@@ -154,29 +156,6 @@ struct ContentViewOld: View {
     }
 
     
-    func updateUserTrack()
-    {
-        // Get the location and make sure it's valid.
-        let location : CLLocation? = locationDataManager.location
-        guard location != nil else { return }
-        
-        // Get the distance from the previous location, whether it's large enough to draw it.
-        let distanceMeters = location?.distance(from: lastLocation)
-        if (distanceMeters ?? 0 < 2) { return }
-        lastLocation = location ?? CLLocation()
-        
-        // Store the new coordinate in the database.
-        // Draw the new coordinate on the map.
-        let coordinate = location?.coordinate
-        guard coordinate != nil else { return }
-        trackManager.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
-        mapViewModel.updateUserTrack(coordinate ?? CLLocationCoordinate2D())
-    }
-
-
-
-
-
 
 }
 */

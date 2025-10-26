@@ -103,6 +103,26 @@ struct ToggleRecordTrack: View {
 }
 
 
+struct ButtonClearTrack: View {
+    @EnvironmentObject var status: Status
+    @EnvironmentObject var trackManager: TrackManager
+    var body: some View {
+        Button(action: {
+            status.showActions = false
+        })
+        {
+            HStack {
+                Image(systemName: "eraser.line.dashed")
+                Text("Clear your recorded track")
+                Image(systemName: "eraser.line.dashed")
+            }
+        }
+        .padding(.horizontal)
+        .buttonStyle(.bordered)
+    }
+}
+
+
 struct TextLocationInfo: View {
     @EnvironmentObject var locationModel: LocationManager
     var body: some View {

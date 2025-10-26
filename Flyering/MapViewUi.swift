@@ -79,6 +79,18 @@ struct MapViewUi: UIViewRepresentable {
                 previousUserTrackingMode = status.userTrackingMode
             }
         }
+        
+        // Check on and add the track to the map.
+        if !status.pendingTrack.isEmpty {
+            for coordinate in status.pendingTrack {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                uiView.addAnnotation(annotation)
+            }
+            DispatchQueue.main.async() {
+                status.pendingTrack = []
+            }
+        }
     }
     
     func makeCoordinator() -> Coordinator {
