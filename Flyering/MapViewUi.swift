@@ -6,6 +6,8 @@ struct MapViewUi: UIViewRepresentable {
     @EnvironmentObject var mapModel: MapViewModel
     @EnvironmentObject var locationModel: LocationManager
     @EnvironmentObject var status: Status
+    @EnvironmentObject var markAreaReady: MarkAreaReady
+    
     @State private var previousUserTrackingMode: MKUserTrackingMode = .none
 
 
@@ -97,6 +99,14 @@ struct MapViewUi: UIViewRepresentable {
             uiView.removeAnnotations(uiView.annotations)
             DispatchQueue.main.async() {
                 status.clearTrack = false
+            }
+        }
+        
+        // Check on whether to start marking area as ready. Todo
+        if status.markReadyStart {
+            markAreaReady.start(mapView: uiView)
+            DispatchQueue.main.async() {
+                status.markReadyStart = false
             }
         }
     }

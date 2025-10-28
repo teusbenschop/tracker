@@ -1,4 +1,5 @@
 import MapKit
+import SwiftUI
 
 extension MapViewUi.Coordinator {
  
@@ -59,7 +60,9 @@ extension MapViewUi.Coordinator {
         let mapView = parent.mapModel.mkMapView
         let tapLocation = gestureRecognizer.location(in: mapView)
         let location = mapView.convert(tapLocation, toCoordinateFrom: mapView)
+        print (tapLocation)
         print (location) // Todo
+        print (mapView.frame.size) // Todo gives the MapView size
         if let zone = parent.mapModel.zoneOfLocation(location) {
             parent.mapModel.selectedZone = zone
         }

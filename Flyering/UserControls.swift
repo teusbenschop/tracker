@@ -103,6 +103,26 @@ struct ToggleRecordTrack: View {
 }
 
 
+struct ButtonMarkAreaReady: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Button(action: {
+            status.markReadyStart = true
+            status.showActions = false
+        })
+        {
+            HStack {
+                Image(systemName: "checkmark.rectangle")
+                Text("Mark area as ready")
+                Image(systemName: "checkmark.rectangle")
+            }
+        }
+        .padding(.horizontal)
+        .buttonStyle(.bordered)
+    }
+}
+
+
 struct ButtonClearTrack: View {
     @EnvironmentObject var status: Status
     @EnvironmentObject var trackManager: TrackManager

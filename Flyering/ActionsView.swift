@@ -37,6 +37,7 @@ struct ActionsView: View {
             ToggleFollowUserLocation()
             ToggleFollowUserDirection()
             ToggleRecordTrack()
+            ButtonMarkAreaReady()
             ButtonClearTrack()
             TextLocationInfo()
             TextAboutApp()

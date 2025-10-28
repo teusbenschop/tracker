@@ -35,7 +35,7 @@ final class Status: ObservableObject {
     // How the map tracks the user location.
     @Published var userTrackingMode: MKUserTrackingMode = .none
     
-    // Whether to record the travelled track.
+    // Whether to record the traveled track.
     @Published var recordTrack : Bool = false
     // Cache of waypoints still to draw.
     @Published var pendingTrack : [CLLocationCoordinate2D] = []
@@ -46,6 +46,9 @@ final class Status: ObservableObject {
     @Published var showJournal : Bool = false
     @Published var journalText : String = ""
 
+    // Marking an area as ready.
+    @Published var markReadyStart : Bool = false
+    
 }
 
 

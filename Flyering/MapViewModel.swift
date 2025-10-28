@@ -27,7 +27,7 @@ final class MapViewModel: ObservableObject {
             let mapPoint = MKMapPoint(location)
             let rendererPoint = renderer.point(for: mapPoint)
             if renderer.path.contains(rendererPoint) {
-                return naplesZones[index]
+                //return naplesZones[index]
             }
         }
         return nil

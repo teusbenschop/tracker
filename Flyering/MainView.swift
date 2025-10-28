@@ -106,13 +106,6 @@ struct ContentViewOld: View {
             Button("Park") {
                 print("Park")
             }
-            Button("Mark area as ready") {
-                print("Mark area as ready")
-                DispatchQueue.main.async() {
-
-                }
-                mapViewModel.markAreaAsReady()
-            }
 
             
             WrapperView(view: mapViewModel.mapView)

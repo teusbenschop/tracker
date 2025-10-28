@@ -1,9 +1,30 @@
 
 
+            Button("Mark area as ready") {
+                print("Mark area as ready")
+                DispatchQueue.main.async() {
+
+                }
+                mapViewModel.markAreaAsReady()
+            }
+
+
+
+This class defines the portion of the map that the overlay covers. To draw the region, return an MKCircleRenderer object from the mapView(_:rendererFor:) method of your map view delegate.
+
+
+Create class, observable, that does the calculation and the annotations and the editing, to keep code together a bit.
+
+
+
 Menu to mark area ready.
 
 find visible map rectangle.
 https://developer.apple.com/documentation/mapkit/mkmapview/visiblemaprect
+
+Does that take map rotation in account?
+If not, get map rotation and correct for that.
+
 
 Add octagon to that rectangle.
 

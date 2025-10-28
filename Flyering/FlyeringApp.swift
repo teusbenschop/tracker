@@ -36,6 +36,7 @@ struct FlyeringApp: App {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var status = Status()
     @StateObject private var trackManager = TrackManager()
+    @StateObject private var markAreaReady = MarkAreaReady()
 
     var body: some Scene {
         WindowGroup {
@@ -44,6 +45,7 @@ struct FlyeringApp: App {
                 .environmentObject(locationManager)
                 .environmentObject(status)
                 .environmentObject(trackManager)
+                .environmentObject(markAreaReady)
         }
     }
 }
