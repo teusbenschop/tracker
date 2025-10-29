@@ -23,25 +23,23 @@ import MapKit
 
 final class MarkAreaReady: ObservableObject {
 
-    var coordinates : [CLLocationCoordinate2D] = []
     var annotations : [MKCircle] = []
     var polygon : MKPolygon? = nil
+    var selectedVertex : MKCircle? = nil
 
     func start(mapView: MKMapView) {
         
         // If the user has started a ready operation,
         // and has not completed the operation,
-        // remove the data from the map.
+        // remove the data from the map and clear related data.
         for annotation in annotations {
             mapView.removeAnnotation(annotation)
         }
+        annotations = []
         if polygon != nil {
             mapView.removeOverlay(polygon ?? MKPolygon())
         }
-
-        // Clear any previous ready-related data.
-        coordinates = []
-        annotations = []
+        polygon = nil
 
         // Determine the points, on the screen, where the octagon is to be placed.
         var points : [CGPoint] = []
@@ -63,25 +61,56 @@ final class MarkAreaReady: ObservableObject {
         // Convert the screen points to coordinates on the map.
         // Draw the eight annotations on the map.
         // Store the coordinates and annotations in the object.
-        let radius = CLLocationDistance(15) // Meters.
+        let radius = mapDiagonalMeters(mapView: mapView) / 20
         for point in points {
             let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
             let annotation = MKCircle(center: coordinate, radius: radius)
             mapView.addAnnotation(annotation)
-            coordinates.append(coordinate)
             annotations.append(annotation)
         }
 
-
-        
+        // Draw the polygon on the map to initially mark the area.
+        var coordinates : [CLLocationCoordinate2D] = []
+        for annotation in annotations {
+            coordinates.append(annotation.coordinate)
+        }
         polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon ?? MKPolygon())
+    }
 
-        
-        
-        
-        
+    // Get the diagonal distance of the map corners in meters.
+    func mapDiagonalMeters (mapView: MKMapView) -> CLLocationDistance {
+        let point1 = CGPoint(x: mapView.frame.origin.x, y: mapView.frame.origin.y)
+        let point2 = CGPoint(x: mapView.frame.size.width, y: mapView.frame.size.height)
+        let coordinate1 = mapView.convert(point1, toCoordinateFrom: mapView)
+        let coordinate2 = mapView.convert(point2, toCoordinateFrom: mapView)
+        let location1 = CLLocation(latitude: coordinate1.latitude, longitude: coordinate1.longitude)
+        let location2 = CLLocation(latitude: coordinate2.latitude, longitude: coordinate2.longitude)
+        return location1.distance(from: location2)
+    }
+    
+    func selectPin (mapView: MKMapView, coordinate: CLLocationCoordinate2D) {
 
+        let longPressLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        print (longPressLocation)
+        var lastDistance = mapDiagonalMeters(mapView: mapView) / 20
+        for annotation in annotations {
+            let coordinate = annotation.coordinate
+            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            let distance = longPressLocation.distance(from: location)
+            print("distance", distance)
+            if distance < lastDistance {
+                lastDistance = distance
+                selectedVertex = annotation
+            }
+        }
+
+        print ("selected vertex", selectedVertex)
+        
+        
+        
+        
+        
         
         
         

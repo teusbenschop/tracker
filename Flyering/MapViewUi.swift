@@ -102,7 +102,7 @@ struct MapViewUi: UIViewRepresentable {
             }
         }
         
-        // Check on whether to start marking area as ready. Todo
+        // Check on whether to start marking area as ready.
         if status.markReadyStart {
             markAreaReady.start(mapView: uiView)
             DispatchQueue.main.async() {
@@ -117,6 +117,7 @@ struct MapViewUi: UIViewRepresentable {
     
     // The Coordinator contains code for custom view appearance and behaviour.
     class Coordinator: NSObject, MKMapViewDelegate {
+
         var parent: MapViewUi
         
         init(_ parent: MapViewUi) {

@@ -20,16 +20,16 @@ final class MapViewModel: ObservableObject {
 
     // Get a Zone object, if any, based on a location.
     func zoneOfLocation(_ location: CLLocationCoordinate2D) -> Zone? {
-        for (index, overlay) in mkMapView.overlays.enumerated() {
-            guard let polygon = overlay as? MKPolygon else { continue }
-            
-            let renderer = MKPolygonRenderer(polygon: polygon)
-            let mapPoint = MKMapPoint(location)
-            let rendererPoint = renderer.point(for: mapPoint)
-            if renderer.path.contains(rendererPoint) {
-                //return naplesZones[index]
-            }
-        }
+//        for (index, overlay) in mkMapView.overlays.enumerated() {
+//            guard let polygon = overlay as? MKPolygon else { continue }
+//            
+//            let renderer = MKPolygonRenderer(polygon: polygon)
+//            let mapPoint = MKMapPoint(location)
+//            let rendererPoint = renderer.point(for: mapPoint)
+//            if renderer.path.contains(rendererPoint) {
+//                return naplesZones[index]
+//            }
+//        }
         return nil
     }
     
