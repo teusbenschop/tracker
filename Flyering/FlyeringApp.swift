@@ -21,6 +21,9 @@ import SwiftUI
 // Tutorials used:
 // https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
 
+// In-depth information:
+// https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/AnnotatingMaps/AnnotatingMaps.html
+
 // Method for linking data and views:
 // 1. Create view model classes for the different features of the app.
 // 2. These classes conform to the ObservableObject protocol.

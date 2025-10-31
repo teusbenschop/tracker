@@ -24,6 +24,7 @@ extension MapViewUi.Coordinator {
             }
             let annotationView = MKAnnotationView(annotation: pointAnnotation, reuseIdentifier: "waypoint")
             annotationView.canShowCallout = false
+            annotationView.isDraggable = true
             annotationView.backgroundColor = .clear
             let image = UIImage(systemName: "circle")?.withTintColor(.red)
             if (image != nil) {
@@ -36,12 +37,19 @@ extension MapViewUi.Coordinator {
             }
             return annotationView
         }
-        if let circleAnnotation = annotation as? MKCircle {
+        if annotation is DraggableAnnotation {
+            let annotationView = DraggableAnnotationView(annotation: annotation, reuseIdentifier: "draggable")
+            annotationView.isDraggable = true
+            return annotationView
+        }
+        if let circleAnnotation = annotation as? MKCircle { // Todo this part no longer needed
             if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: "areaready") {
                 return existingView
             }
             let annotationView = MKAnnotationView(annotation: circleAnnotation, reuseIdentifier: "areaready")
             annotationView.canShowCallout = false
+            annotationView.isDraggable = true
+//            annotationView.isUserInteractionEnabled = false
             annotationView.backgroundColor = .blue
             let image = UIImage(systemName: "circle")?.withTintColor(.red)
             if (image != nil) {
@@ -54,6 +62,7 @@ extension MapViewUi.Coordinator {
             }
             return annotationView
         }
+        // Use a default view.
         return nil
     }
 
@@ -72,31 +81,33 @@ extension MapViewUi.Coordinator {
 //        }
     }
     
+    
+    
     // The @objc decorator allows the function to be assigned to the tap gesture recognizer
     // with the selector syntax.
     @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        let mapView = parent.mapModel.mkMapView
-        let screenLocation = gestureRecognizer.location(in: mapView)
-        let location = mapView.convert(screenLocation, toCoordinateFrom: mapView)
+//        let mapView = parent.mapModel.mkMapView
+//        let screenLocation = gestureRecognizer.location(in: mapView)
+//        let location = mapView.convert(screenLocation, toCoordinateFrom: mapView)
 //        if let zone = parent.mapModel.zoneOfLocation(location) {
 //            parent.mapModel.selectedZone = zone
 //        }
     }
 
     @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        let mapView = parent.mapModel.mkMapView
-        let screenLocation = gestureRecognizer.location(in: mapView)
-        let coordinate = mapView.convert(screenLocation, toCoordinateFrom: mapView)
-        switch gestureRecognizer.state {
-        case .began:
-            parent.markAreaReady.selectPin(mapView: mapView, coordinate: coordinate)
-        case .changed:
-            print ("changed")
-        case .ended:
-            print ("ended")
-        default:
-            print ("other")
-        }
+//        let mapView = parent.mapModel.mkMapView
+//        let screenLocation = gestureRecognizer.location(in: mapView)
+//        let coordinate = mapView.convert(screenLocation, toCoordinateFrom: mapView)
+//        switch gestureRecognizer.state {
+//        case .began:
+//            parent.markAreaReady.selectPin(mapView: mapView, coordinate: coordinate)
+//        case .changed:
+//            print ("changed")
+//        case .ended:
+//            print ("ended")
+//        default:
+//            print ("other")
+//        }
 //        if let zone = parent.mapModel.zoneOfLocation(location) {
 //            parent.mapModel.selectedZone = zone
 //        }
@@ -104,5 +115,62 @@ extension MapViewUi.Coordinator {
 
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
     }
+    
+    
+    // The map view selected an annotation view.
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
+    }
+    
+    // The map view deselected an annotation view.
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
+    }
+    
+    // The map view selected an annotation.
+    func mapView(_ mapView: MKMapView, didSelect annotation: any MKAnnotation) {
+    }
+    
+    // The map view deselected an annotation.
+    func mapView(_ mapView: MKMapView, didDeselect annotation: any MKAnnotation) {
+    }
+    
+    
+    func mapView(_ mapView: MKMapView,
+                 annotationView view: MKAnnotationView,
+                 didChange newState: MKAnnotationView.DragState,
+                 fromOldState oldState: MKAnnotationView.DragState)
+    {
+        guard let annotation = view.annotation as? DraggableAnnotation else { return }
+        
+        print("Drag state changed from", toString(state: oldState), "to", toString(state: newState))
+        
+        switch newState {
+        case .starting:
+            view.dragState = .dragging
+        case .dragging:
+            break
+        case .ending, .canceling:
+            view.dragState = .none
+            mapView.deselectAnnotation(annotation, animated: true)
+        case .none:
+            break
+        default:
+            break
+        }
 
+//        print ("did change drag state")
+//        if (newState == MKAnnotationView.DragState.ending)
+//        {
+//            let droppedAt = view.annotation?.coordinate
+//            print("dropped at : ", droppedAt?.latitude ?? 0.0, droppedAt?.longitude ?? 0.0);
+//            view.setDragState(.none, animated: true)
+//        }
+//        if (newState == .canceling )
+//        {
+//            view.setDragState(.none, animated: true)
+//        }
+    }
+    
 }
+

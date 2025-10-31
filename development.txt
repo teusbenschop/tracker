@@ -1,3 +1,13 @@
+https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/AnnotatingMaps/AnnotatingMaps.html
+
+
+Probably make custom Annotation class and implement setCoordinate
+https://developer.apple.com/documentation/mapkit/mkannotation/1429528-setcoordinate
+
+The map should then on its own move the annotation by dragging it.
+
+
+
 On long tap, check the distance to each of the octagon corners.
 Take the corner with the smallest distance to the tap zone.
 Set a limit to the zone, say, 1/10 of the map span so it selects an annotation that is reasonably near.

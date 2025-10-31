@@ -23,9 +23,9 @@ import MapKit
 
 final class MarkAreaReady: ObservableObject {
 
-    var annotations : [MKCircle] = []
+    var annotations : [DraggableAnnotation] = []
     var polygon : MKPolygon? = nil
-    var selectedVertex : MKCircle? = nil
+    var selectedVertex : DraggableAnnotation? = nil
 
     func start(mapView: MKMapView) {
         
@@ -61,10 +61,11 @@ final class MarkAreaReady: ObservableObject {
         // Convert the screen points to coordinates on the map.
         // Draw the eight annotations on the map.
         // Store the coordinates and annotations in the object.
-        let radius = mapDiagonalMeters(mapView: mapView) / 20
-        for point in points {
+        points.enumerated().forEach {
+            let index = $0.offset
+            let point = $0.element
             let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-            let annotation = MKCircle(center: coordinate, radius: radius)
+            let annotation = DraggableAnnotation(coordinate: coordinate, index: index)
             mapView.addAnnotation(annotation)
             annotations.append(annotation)
         }
@@ -90,30 +91,20 @@ final class MarkAreaReady: ObservableObject {
     }
     
     func selectPin (mapView: MKMapView, coordinate: CLLocationCoordinate2D) {
-
-        let longPressLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        print (longPressLocation)
-        var lastDistance = mapDiagonalMeters(mapView: mapView) / 20
-        for annotation in annotations {
-            let coordinate = annotation.coordinate
-            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            let distance = longPressLocation.distance(from: location)
-            print("distance", distance)
-            if distance < lastDistance {
-                lastDistance = distance
-                selectedVertex = annotation
-            }
-        }
-
-        print ("selected vertex", selectedVertex)
-        
-        
-        
-        
-        
-        
-        
-        
+//        let longPressLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+//        print (longPressLocation)
+//        var lastDistance = mapDiagonalMeters(mapView: mapView) / 20
+//        for annotation in annotations {
+//            let coordinate = annotation.coordinate
+//            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+//            let distance = longPressLocation.distance(from: location)
+//            print("distance", distance)
+//            if distance < lastDistance {
+//                lastDistance = distance
+//                selectedVertex = annotation
+//            }
+//        }
+//        print ("selected vertex", selectedVertex)
     }
     
 }
