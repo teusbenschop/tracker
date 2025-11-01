@@ -1,3 +1,10 @@
+
+Test drag state ending, and cancelling, whether it reverts to the begin position.
+
+https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
+
+
+
 https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/AnnotatingMaps/AnnotatingMaps.html
 
 

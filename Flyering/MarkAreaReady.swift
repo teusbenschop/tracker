@@ -23,25 +23,13 @@ import MapKit
 
 final class MarkAreaReady: ObservableObject {
 
+    var coordinates : [CLLocationCoordinate2D] = []
     var annotations : [DraggableAnnotation] = []
     var polygon : MKPolygon? = nil
-    var selectedVertex : DraggableAnnotation? = nil
 
     func start(mapView: MKMapView) {
-        
-        // If the user has started a ready operation,
-        // and has not completed the operation,
-        // remove the data from the map and clear related data.
-        for annotation in annotations {
-            mapView.removeAnnotation(annotation)
-        }
-        annotations = []
-        if polygon != nil {
-            mapView.removeOverlay(polygon ?? MKPolygon())
-        }
-        polygon = nil
 
-        // Determine the points, on the screen, where the octagon is to be placed.
+        // Determine the points on the screen where the octagon is to be placed.
         var points : [CGPoint] = []
         let windowOrigin : CGPoint = mapView.frame.origin
         let windowSize = mapView.frame.size
@@ -58,27 +46,57 @@ final class MarkAreaReady: ObservableObject {
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.8)) // Bottom left.
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.5))
 
-        // Convert the screen points to coordinates on the map.
-        // Draw the eight annotations on the map.
-        // Store the coordinates and annotations in the object.
+        // Convert the screen points to coordinates on the map and store those.
         points.enumerated().forEach {
-            let index = $0.offset
             let point = $0.element
             let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            coordinates.append(coordinate)
+        }
+        
+        // Place the annotations.
+        placeAnnotations(mapView: mapView)
+
+        // Draw the polygon.
+        drawPolygon(mapView: mapView)
+    }
+
+    
+    // Function to place the annotations on the map, based on the coordinates.
+    func placeAnnotations (mapView: MKMapView) {
+        // If the user has started a ready operation,
+        // and has not completed the operation,
+        // remove the annotations from the map and clear its data.
+        for annotation in annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        annotations = []
+        // Place annotations on the map at the coordinates and store them in the object.
+        coordinates.enumerated().forEach {
+            let index = $0.offset
+            let coordinate = $0.element
             let annotation = DraggableAnnotation(coordinate: coordinate, index: index)
             mapView.addAnnotation(annotation)
             annotations.append(annotation)
         }
+    }
 
-        // Draw the polygon on the map to initially mark the area.
-        var coordinates : [CLLocationCoordinate2D] = []
-        for annotation in annotations {
-            coordinates.append(annotation.coordinate)
+    
+    // Function to draw the polygon on the map, based on the coordinates.
+    func drawPolygon (mapView: MKMapView) {
+        // If the user has started a ready operation,
+        // and has not completed the operation,
+        // remove the polygon from the map and clear its data.
+        if polygon != nil {
+            mapView.removeOverlay(polygon ?? MKPolygon())
         }
+        polygon = nil
+        
+        // Draw the polygon on the map to initially mark the area.
         polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon ?? MKPolygon())
     }
 
+    
     // Get the diagonal distance of the map corners in meters.
     func mapDiagonalMeters (mapView: MKMapView) -> CLLocationDistance {
         let point1 = CGPoint(x: mapView.frame.origin.x, y: mapView.frame.origin.y)

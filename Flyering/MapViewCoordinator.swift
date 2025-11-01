@@ -119,20 +119,24 @@ extension MapViewUi.Coordinator {
     
     // The map view selected an annotation view.
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard view is DraggableAnnotationView else { return }
         view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
     }
     
     // The map view deselected an annotation view.
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        guard view is DraggableAnnotationView else { return }
         view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
     }
     
     // The map view selected an annotation.
     func mapView(_ mapView: MKMapView, didSelect annotation: any MKAnnotation) {
+        guard annotation is DraggableAnnotation else { return }
     }
     
     // The map view deselected an annotation.
     func mapView(_ mapView: MKMapView, didDeselect annotation: any MKAnnotation) {
+        guard annotation is DraggableAnnotation else { return }
     }
     
     
@@ -142,15 +146,17 @@ extension MapViewUi.Coordinator {
                  fromOldState oldState: MKAnnotationView.DragState)
     {
         guard let annotation = view.annotation as? DraggableAnnotation else { return }
-        
-        print("Drag state changed from", toString(state: oldState), "to", toString(state: newState))
-        
         switch newState {
         case .starting:
             view.dragState = .dragging
         case .dragging:
             break
-        case .ending, .canceling:
+        case .ending:
+            view.dragState = .none
+            mapView.deselectAnnotation(annotation, animated: true)
+            parent.markAreaReady.coordinates[annotation.index] = annotation.coordinate
+            parent.markAreaReady.drawPolygon(mapView: mapView)
+        case .canceling:
             view.dragState = .none
             mapView.deselectAnnotation(annotation, animated: true)
         case .none:
@@ -158,18 +164,15 @@ extension MapViewUi.Coordinator {
         default:
             break
         }
+    }
+    
+    // Gets called if the annotation view changed.
+    // This is called continuously while dragging the annotation view.
+    func mapView(_ mapView: MKMapView, annotationView: MKAnnotationView, didChange changedView: MKAnnotationView) {
+        guard let annotation = changedView.annotation as? DraggableAnnotation else { return }
 
-//        print ("did change drag state")
-//        if (newState == MKAnnotationView.DragState.ending)
-//        {
-//            let droppedAt = view.annotation?.coordinate
-//            print("dropped at : ", droppedAt?.latitude ?? 0.0, droppedAt?.longitude ?? 0.0);
-//            view.setDragState(.none, animated: true)
-//        }
-//        if (newState == .canceling )
-//        {
-//            view.setDragState(.none, animated: true)
-//        }
+        print (annotation.coordinate)
+
     }
     
 }
