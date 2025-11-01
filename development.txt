@@ -1,40 +1,9 @@
-
-Test drag state ending, and cancelling, whether it reverts to the begin position.
-
-https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
+Draw X (cancel) and tick (ok) while marking the area as ready.
 
 
 
-https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/LocationAwarenessPG/AnnotatingMaps/AnnotatingMaps.html
 
 
-Probably make custom Annotation class and implement setCoordinate
-https://developer.apple.com/documentation/mapkit/mkannotation/1429528-setcoordinate
-
-The map should then on its own move the annotation by dragging it.
-
-
-
-On long tap, check the distance to each of the octagon corners.
-Take the corner with the smallest distance to the tap zone.
-Set a limit to the zone, say, 1/10 of the map span so it selects an annotation that is reasonably near.
-
-On long tap began: Select an annotation and store it in the object.
-On long tap changed: If selected annotation, remove it and put it back on the map on new location.
-On long tap ended: Move the annotation finally and set the annotation in the object back to nil.
-
-Apply that to the editable annotation as part of the polygon.
-Move the annotaton, and redraw the polygon.
-Menu to finalize the area ready.
-
-
-
-This class defines the portion of the map that the overlay covers. To draw the region, return an MKCircleRenderer object from the mapView(_:rendererFor:) method of your map view delegate.
-
-
-Create class, observable, that does the calculation and the annotations and the editing, to keep code together a bit.
-
-Menu to mark area ready.
 
 
 
@@ -251,3 +220,9 @@ For receiving background location updates, does it need "Always location" permis
 
 
 Disable the developer journal production eventually?
+
+
+
+Keep updating the polygon while dragging?
+https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
+

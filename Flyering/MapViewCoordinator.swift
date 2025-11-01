@@ -2,7 +2,7 @@ import MapKit
 import SwiftUI
 
 extension MapViewUi.Coordinator {
- 
+    
     // This function overload specifies the appropiate renderer object for a given map overlay.
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let polygonOverlay = overlay as? MKPolygon {
@@ -166,14 +166,6 @@ extension MapViewUi.Coordinator {
         }
     }
     
-    // Gets called if the annotation view changed.
-    // This is called continuously while dragging the annotation view.
-    func mapView(_ mapView: MKMapView, annotationView: MKAnnotationView, didChange changedView: MKAnnotationView) {
-        guard let annotation = changedView.annotation as? DraggableAnnotation else { return }
-
-        print (annotation.coordinate)
-
-    }
     
 }
 
