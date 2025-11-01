@@ -33,7 +33,6 @@ struct ButtonCenterMapOnUser: View {
                 Image(systemName: "person")
             }
         }
-        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }
@@ -45,7 +44,6 @@ struct ToggleScreenOn: View {
         Toggle(isOn: $status.screenOn, label: {
             Label("Screen remains on", systemImage: status.screenOn ? "lock.open.display" : "lock.display")
         })
-        .padding(.horizontal)
             .onChange(of: status.screenOn) {
                 UIApplication.shared.isIdleTimerDisabled = status.screenOn
                 // A test indicates that,
@@ -65,7 +63,6 @@ struct ToggleFollowUserLocation: View {
         Toggle(isOn: $status.followingLocation, label: {
             Label("Map follows your location", systemImage: status.followingLocation ? "location.fill" : "location.slash")
         })
-        .padding(.horizontal)
     }
 }
 
@@ -76,7 +73,6 @@ struct ToggleFollowUserDirection: View {
         Toggle(isOn: $status.followingDirection, label: {
             Label("Map follows your direction", systemImage: status.followingDirection ? "location.north.line.fill" : "location.slash")
         })
-        .padding(.horizontal)
     }
 }
 
@@ -90,7 +86,6 @@ struct ToggleRecordTrack: View {
         Toggle(isOn: $status.recordTrack, label: {
             Label("Record your track", systemImage: status.recordTrack ?  "point.bottomleft.forward.to.arrow.triangle.scurvepath" : "point.topleft.down.to.point.bottomright.curvepath")
         })
-        .padding(.horizontal)
         .onChange(of: status.recordTrack) {
             if status.recordTrack {
                 locationManager.checkLocationAuthorization()
@@ -117,7 +112,6 @@ struct ButtonMarkAreaReady: View {
                 Image(systemName: "checkmark.rectangle")
             }
         }
-        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }
@@ -144,7 +138,6 @@ struct ButtonClearTrack: View {
                 Image(systemName: "eraser.line.dashed")
             }
         }
-        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }
@@ -187,7 +180,6 @@ struct ButtonOpenJournal: View {
             Text("Show journal")
                 .font(.system(size: 12, weight: .thin))
         }
-        .padding(.horizontal)
         .buttonStyle(.bordered)
     }
 }

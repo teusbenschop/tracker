@@ -1,3 +1,7 @@
+
+Fix dragging again, it's no broken.
+
+
 Draw X (cancel) and tick (ok) while marking the area as ready.
 
 
@@ -7,7 +11,6 @@ Draw X (cancel) and tick (ok) while marking the area as ready.
 
 
 
-- [ ] Buttons Actions menu are too close vertically.
 
 
 
