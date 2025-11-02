@@ -1,7 +1,5 @@
-
-The reject and accept button.
-
-Handle the click, that is, the selected, then immediately deselect it again, after taking the action associated with it.
+The accept button.
+Handle the click, that is, the selected, take the action associated with it.
 
 
 

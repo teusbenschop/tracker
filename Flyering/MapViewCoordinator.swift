@@ -133,7 +133,12 @@ extension MapViewUi.Coordinator {
     
     // The map view selected an annotation.
     func mapView(_ mapView: MKMapView, didSelect annotation: any MKAnnotation) {
-        guard annotation is DraggableAnnotation else { return }
+        if let draggableAnnotation = annotation as? DraggableAnnotation {
+            let index = draggableAnnotation.index
+            if index == rejectIndex {
+                self.parent.markAreaReady.clear(mapView: mapView)
+            }
+        }
     }
     
     // The map view deselected an annotation.

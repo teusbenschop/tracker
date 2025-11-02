@@ -23,8 +23,8 @@ import MapKit
 
 // The indices for the reject and accept annotations (buttons).
 // (The polygon vertices have positive indices 0...n)
-private let rejectIndex = -1
-private let acceptIndex = -2
+let rejectIndex = -1
+let acceptIndex = -2
 
 
 final class MarkAreaReady: ObservableObject {
@@ -33,10 +33,10 @@ final class MarkAreaReady: ObservableObject {
     
 
     func start(mapView: MKMapView) {
-
-        // Remove any area coordinates left over from a previous mark-ready operation.
-        coordinates = []
         
+        // Remove data possibly left over from a previous mark-ready operation.
+        clear(mapView: mapView)
+
         // Determine the points on the screen where the octagon is to be placed.
         var points : [CGPoint] = []
         let windowOrigin : CGPoint = mapView.frame.origin
@@ -77,16 +77,6 @@ final class MarkAreaReady: ObservableObject {
     
     // Function to place the annotations on the map, based on the coordinates.
     func placeAnnotations (mapView: MKMapView) {
-        // If the user has started a ready operation,
-        // and has not completed it,
-        // remove the relevant annotations from the map.
-        for annotation in mapView.annotations {
-            if let draggableAnnotation = annotation as? DraggableAnnotation {
-                if draggableAnnotation.index >= 0 {
-                    mapView.removeAnnotation(draggableAnnotation)
-                }
-            }
-        }
         // Place annotations on the map at the calculated coordinates.
         coordinates.enumerated().forEach {
             let index = $0.offset
@@ -115,16 +105,6 @@ final class MarkAreaReady: ObservableObject {
     
     // Function to place the reject and accept buttons on the map.
     func drawButtons (mapView: MKMapView, rejectPoint: CGPoint, acceptPoint: CGPoint) {
-        // If the user has started a ready operation,
-        // and has not completed it,
-        // remove the relevant buttons from the map.
-        for annotation in mapView.annotations {
-            if let draggableAnnotation = annotation as? DraggableAnnotation {
-                if draggableAnnotation.index < 0 {
-                    mapView.removeAnnotation(draggableAnnotation)
-                }
-            }
-        }
         // Place annotations as buttons on the map at the calculated coordinates.
         let rejectCoordinate = mapView.convert(rejectPoint, toCoordinateFrom: mapView)
         let rejectAnnotation = DraggableAnnotation(coordinate: rejectCoordinate, index: rejectIndex)
@@ -133,6 +113,35 @@ final class MarkAreaReady: ObservableObject {
         let acceptAnnotation = DraggableAnnotation(coordinate: acceptCoordinate, index: acceptIndex)
         mapView.addAnnotation(acceptAnnotation)
     }
+    
+
+    func clear(mapView: MKMapView) { // Todo
+
+        // Clear possibly previous coordinates.
+        coordinates = []
+        
+        // If the user has started a ready operation,
+        // and has not completed it,
+        // remove the relevant annotations from the map.
+        for annotation in mapView.annotations {
+            if annotation is DraggableAnnotation {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+        
+        // Remove possibly polygon left over.
+        drawPolygon(mapView: mapView)
+    }
+
+    
+    func reject(mapView: MKMapView) { // Todo
+    }
+    
+    
+    func accept(mapView: MKMapView) { // Todo
+    }
+
+
 }
 
 
