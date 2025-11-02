@@ -114,7 +114,10 @@ struct MapViewUi: UIViewRepresentable {
         
         // Check on whether to erase the recorded track.
         if status.clearTrack {
-            uiView.removeAnnotations(uiView.annotations)
+            for annotation in uiView.annotations {
+                guard annotation is MKPointAnnotation else { continue }
+                uiView.removeAnnotation(annotation)
+            }
             DispatchQueue.main.async() {
                 status.clearTrack = false
             }
