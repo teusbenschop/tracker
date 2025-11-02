@@ -66,14 +66,14 @@ final class MarkAreaReady: ObservableObject {
     // Function to place the annotations on the map, based on the coordinates.
     func placeAnnotations (mapView: MKMapView) {
         // If the user has started a ready operation,
-        // and has not completed the operation,
-        // remove the annotations from the map and clear its data.
+        // and has not completed it,
+        // remove the relevant annotations from the map.
         for annotation in mapView.annotations {
             if let draggableAnnotation = annotation as? DraggableAnnotation {
                 mapView.removeAnnotation(draggableAnnotation)
             }
         }
-        // Place annotations on the map at the coordinates and store them in the object.
+        // Place annotations on the map at the calculated coordinates.
         coordinates.enumerated().forEach {
             let index = $0.offset
             let coordinate = $0.element
@@ -96,5 +96,53 @@ final class MarkAreaReady: ObservableObject {
         // Draw the polygon on the map to initially mark the area.
         polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon ?? MKPolygon())
+    }
+}
+
+
+func getImageName(selected: Bool, dragging: Bool) -> String
+{
+    if selected {
+        return "arrow.up.and.down.and.arrow.left.and.right"
+    }
+    return "circle.fill"
+}
+
+
+class DraggableAnnotation: NSObject, MKAnnotation {
+    
+    var coordinate: CLLocationCoordinate2D
+    var index: Int
+    
+    init(coordinate: CLLocationCoordinate2D, index: Int) {
+        self.coordinate = coordinate
+        self.index = index
+        super.init()
+    }
+}
+
+
+class DraggableAnnotationView: MKAnnotationView {
+    override var annotation: MKAnnotation? {
+        didSet {
+            self.isDraggable = true
+            self.canShowCallout = false
+            updateAppearance()
+        }
+    }
+    
+    override func setDragState(_ newState: MKAnnotationView.DragState, animated: Bool) {
+        super.setDragState(newState, animated: animated)
+        updateAppearance()
+    }
+    
+    private func updateAppearance() {
+        let dragging = dragState != .none
+        let scale: CGFloat = dragging ? 1.3 : 1.0
+        let name = getImageName(selected: self.isSelected, dragging: dragging)
+        UIView.animate(withDuration: 0.5) {
+            self.transform = CGAffineTransform(scaleX: scale, y: scale)
+            self.image = UIImage(systemName: name)?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        }
     }
 }
