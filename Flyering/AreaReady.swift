@@ -24,7 +24,6 @@ import MapKit
 final class MarkAreaReady: ObservableObject {
 
     var coordinates : [CLLocationCoordinate2D] = []
-    var polygon : MKPolygon? = nil
 
     func start(mapView: MKMapView) {
 
@@ -88,14 +87,14 @@ final class MarkAreaReady: ObservableObject {
         // If the user has started a ready operation,
         // and has not completed the operation,
         // remove the polygon from the map and clear its data.
-        if polygon != nil {
-            mapView.removeOverlay(polygon ?? MKPolygon())
+        for polygon in mapView.overlays {
+            if let readyPolygon = polygon as? ReadyPolygon {
+                mapView.removeOverlay(readyPolygon)
+            }
         }
-        polygon = nil
-        
         // Draw the polygon on the map to initially mark the area.
-        polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
-        mapView.addOverlay(polygon ?? MKPolygon())
+        let polygon = ReadyPolygon(coordinates: coordinates, count: coordinates.count)
+        mapView.addOverlay(polygon)
     }
 }
 
@@ -145,4 +144,8 @@ class DraggableAnnotationView: MKAnnotationView {
             self.image = UIImage(systemName: name)?.withTintColor(.red, renderingMode: .alwaysOriginal)
         }
     }
+}
+
+
+class ReadyPolygon: MKPolygon {
 }
