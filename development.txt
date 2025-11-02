@@ -1,14 +1,7 @@
 
+The reject and accept button.
 
-
-Draw X (cancel) and tick (ok) while marking the area as ready.
-
-Can be draggable annotations, but with negative index to distinguish them from the ones marking the polygon.
-
-With an image depending on the index given to it.
-
-Or rather to put those things in the menu?
-
+Handle the click, that is, the selected, then immediately deselect it again, after taking the action associated with it.
 
 
 

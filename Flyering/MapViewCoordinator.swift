@@ -119,14 +119,16 @@ extension MapViewUi.Coordinator {
     
     // The map view selected an annotation view.
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard view is DraggableAnnotationView else { return }
-        view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
+        if let draggableView = view as? DraggableAnnotationView {
+            view.image = UIImage(systemName: getImageName(view: draggableView, selected: view.isSelected, dragging: false))
+        }
     }
     
     // The map view deselected an annotation view.
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        guard view is DraggableAnnotationView else { return }
-        view.image = UIImage(systemName: getImageName(selected: view.isSelected, dragging: false))
+        if let draggableView = view as? DraggableAnnotationView {
+            view.image = UIImage(systemName: getImageName(view: draggableView, selected: view.isSelected, dragging: false))
+        }
     }
     
     // The map view selected an annotation.
@@ -154,8 +156,10 @@ extension MapViewUi.Coordinator {
         case .ending:
             view.dragState = .none
             mapView.deselectAnnotation(annotation, animated: true)
-            parent.markAreaReady.coordinates[annotation.index] = annotation.coordinate
-            parent.markAreaReady.drawPolygon(mapView: mapView)
+            if annotation.index >= 0 {
+                parent.markAreaReady.coordinates[annotation.index] = annotation.coordinate
+                parent.markAreaReady.drawPolygon(mapView: mapView)
+            }
         case .canceling:
             view.dragState = .none
             mapView.deselectAnnotation(annotation, animated: true)

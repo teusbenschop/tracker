@@ -21,13 +21,20 @@ import Combine
 import MapKit
 
 
+// The indices for the reject and accept annotations (buttons).
+// (The polygon vertices have positive indices 0...n)
+private let rejectIndex = -1
+private let acceptIndex = -2
+
+
 final class MarkAreaReady: ObservableObject {
 
     var coordinates : [CLLocationCoordinate2D] = []
+    
 
     func start(mapView: MKMapView) {
 
-        // Remove any coordinates left over from a previous mark-ready operation.
+        // Remove any area coordinates left over from a previous mark-ready operation.
         coordinates = []
         
         // Determine the points on the screen where the octagon is to be placed.
@@ -54,11 +61,17 @@ final class MarkAreaReady: ObservableObject {
             coordinates.append(coordinate)
         }
         
-        // Place the annotations.
         placeAnnotations(mapView: mapView)
-
-        // Draw the polygon.
+        
         drawPolygon(mapView: mapView)
+
+        // Determine the points on the screen for placing
+        // the reject and accept annotations that act as buttons.
+        // The reject button is at the left as is normal for a cancel button.
+        // The accept button is at the right like the usual OK button.
+        let rejectPoint = CGPoint(x: x + w * 1/3, y: y + h * 0.5)
+        let acceptPoint = CGPoint(x: x + w * 2/3, y: y + h * 0.5)
+        drawButtons(mapView: mapView, rejectPoint: rejectPoint, acceptPoint: acceptPoint)
     }
 
     
@@ -69,7 +82,9 @@ final class MarkAreaReady: ObservableObject {
         // remove the relevant annotations from the map.
         for annotation in mapView.annotations {
             if let draggableAnnotation = annotation as? DraggableAnnotation {
-                mapView.removeAnnotation(draggableAnnotation)
+                if draggableAnnotation.index >= 0 {
+                    mapView.removeAnnotation(draggableAnnotation)
+                }
             }
         }
         // Place annotations on the map at the calculated coordinates.
@@ -96,15 +111,72 @@ final class MarkAreaReady: ObservableObject {
         let polygon = ReadyPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon)
     }
+    
+    
+    // Function to place the reject and accept buttons on the map.
+    func drawButtons (mapView: MKMapView, rejectPoint: CGPoint, acceptPoint: CGPoint) {
+        // If the user has started a ready operation,
+        // and has not completed it,
+        // remove the relevant buttons from the map.
+        for annotation in mapView.annotations {
+            if let draggableAnnotation = annotation as? DraggableAnnotation {
+                if draggableAnnotation.index < 0 {
+                    mapView.removeAnnotation(draggableAnnotation)
+                }
+            }
+        }
+        // Place annotations as buttons on the map at the calculated coordinates.
+        let rejectCoordinate = mapView.convert(rejectPoint, toCoordinateFrom: mapView)
+        let rejectAnnotation = DraggableAnnotation(coordinate: rejectCoordinate, index: rejectIndex)
+        mapView.addAnnotation(rejectAnnotation)
+        let acceptCoordinate = mapView.convert(acceptPoint, toCoordinateFrom: mapView)
+        let acceptAnnotation = DraggableAnnotation(coordinate: acceptCoordinate, index: acceptIndex)
+        mapView.addAnnotation(acceptAnnotation)
+    }
 }
 
 
-func getImageName(selected: Bool, dragging: Bool) -> String
+func getImageName(view: DraggableAnnotationView, selected: Bool, dragging: Bool) -> String
 {
-    if selected {
-        return "arrow.up.and.down.and.arrow.left.and.right"
+    var index : Int = 0
+    if let draggableAnnotation = view.annotation as? DraggableAnnotation {
+        index = draggableAnnotation.index
     }
+    if index >= 0 {
+        // The image intends to show that the polygon vertex is draggable.
+        if selected {
+            return "arrow.up.and.down.and.arrow.left.and.right"
+        }
+    }
+    // Image for the reject button.
+    if index == rejectIndex {
+        return "xmark.circle"
+    }
+    // Image for the accept button.
+    if index == acceptIndex {
+        return "checkmark.circle"
+    }
+    // Default image for the polygon vertices.
     return "circle.fill"
+}
+
+
+func getImageScale(view: DraggableAnnotationView, dragging: Bool) -> CGFloat
+{
+    var index : Int = 0
+    if let draggableAnnotation = view.annotation as? DraggableAnnotation {
+        index = draggableAnnotation.index
+    }
+    if index >= 0 {
+        if dragging {
+            return 1.5
+        }
+        else {
+            return 1.0
+        }
+    }
+    // Size for reject and accept button images.
+    return 2.0
 }
 
 
@@ -137,13 +209,16 @@ class DraggableAnnotationView: MKAnnotationView {
     
     private func updateAppearance() {
         let dragging = dragState != .none
-        let scale: CGFloat = dragging ? 1.5 : 1.0
-        let name = getImageName(selected: self.isSelected, dragging: dragging)
+        let scale: CGFloat = getImageScale(view: self, dragging: dragging)
+        let name = getImageName(view: self, selected: self.isSelected, dragging: dragging)
         self.transform = CGAffineTransform(scaleX: scale, y: scale)
         self.image = UIImage(systemName: name)
     }
 }
 
 
+// A polygon for use while marking an area as ready.
 class ReadyPolygon: MKPolygon {
 }
+
+
