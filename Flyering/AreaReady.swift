@@ -27,6 +27,9 @@ final class MarkAreaReady: ObservableObject {
 
     func start(mapView: MKMapView) {
 
+        // Remove any coordinates left over from a previous mark-ready operation.
+        coordinates = []
+        
         // Determine the points on the screen where the octagon is to be placed.
         var points : [CGPoint] = []
         let windowOrigin : CGPoint = mapView.frame.origin
@@ -43,9 +46,6 @@ final class MarkAreaReady: ObservableObject {
         points.append(CGPoint(x: x + w * 0.5, y: y + h * 0.9))
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.8)) // Bottom left.
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.5))
-
-        // Remove coordinates left over from a previous mark-ready operation.
-        coordinates = []
 
         // Convert the screen points to coordinates on the map and store those.
         points.enumerated().forEach {
@@ -137,12 +137,10 @@ class DraggableAnnotationView: MKAnnotationView {
     
     private func updateAppearance() {
         let dragging = dragState != .none
-        let scale: CGFloat = dragging ? 1.3 : 1.0
+        let scale: CGFloat = dragging ? 1.5 : 1.0
         let name = getImageName(selected: self.isSelected, dragging: dragging)
-        UIView.animate(withDuration: 0.5) {
-            self.transform = CGAffineTransform(scaleX: scale, y: scale)
-            self.image = UIImage(systemName: name)?.withTintColor(.red, renderingMode: .alwaysOriginal)
-        }
+        self.transform = CGAffineTransform(scaleX: scale, y: scale)
+        self.image = UIImage(systemName: name)
     }
 }
 

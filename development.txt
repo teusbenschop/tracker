@@ -1,8 +1,4 @@
-    var annotations : [DraggableAnnotation] = []
-
-
-If marking ready twice, iterate over annotation on map, and remove those matching.
-Same over the polygons, remove the one matching.
+.
 
 
 
@@ -237,4 +233,8 @@ https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
 
 Later nog mogelijkheid maken om als het waren rond een gebied te "tekenen" met de vinger om een ruwe polylijn neer te zetten om te starten. Kan door te starten, dan met "tap" annotaties neer te zetten, en dan steeds verder, en dan knopje voor "klaar". Dit vereist een andere database layout.
 
+
+
+Make an option to remove the last area marked ready in the database and from the map.
+This is to remove an accidentally marked aread.
 
