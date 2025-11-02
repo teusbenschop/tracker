@@ -24,7 +24,6 @@ import MapKit
 final class MarkAreaReady: ObservableObject {
 
     var coordinates : [CLLocationCoordinate2D] = []
-    var annotations : [DraggableAnnotation] = []
     var polygon : MKPolygon? = nil
 
     func start(mapView: MKMapView) {
@@ -46,6 +45,9 @@ final class MarkAreaReady: ObservableObject {
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.8)) // Bottom left.
         points.append(CGPoint(x: x + w * 0.1, y: y + h * 0.5))
 
+        // Remove coordinates left over from a previous mark-ready operation.
+        coordinates = []
+
         // Convert the screen points to coordinates on the map and store those.
         points.enumerated().forEach {
             let point = $0.element
@@ -66,17 +68,17 @@ final class MarkAreaReady: ObservableObject {
         // If the user has started a ready operation,
         // and has not completed the operation,
         // remove the annotations from the map and clear its data.
-        for annotation in annotations {
-            mapView.removeAnnotation(annotation)
+        for annotation in mapView.annotations {
+            if let draggableAnnotation = annotation as? DraggableAnnotation {
+                mapView.removeAnnotation(draggableAnnotation)
+            }
         }
-        annotations = []
         // Place annotations on the map at the coordinates and store them in the object.
         coordinates.enumerated().forEach {
             let index = $0.offset
             let coordinate = $0.element
             let annotation = DraggableAnnotation(coordinate: coordinate, index: index)
             mapView.addAnnotation(annotation)
-            annotations.append(annotation)
         }
     }
 
@@ -95,34 +97,4 @@ final class MarkAreaReady: ObservableObject {
         polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon ?? MKPolygon())
     }
-
-    
-    // Get the diagonal distance of the map corners in meters.
-    func mapDiagonalMeters (mapView: MKMapView) -> CLLocationDistance {
-        let point1 = CGPoint(x: mapView.frame.origin.x, y: mapView.frame.origin.y)
-        let point2 = CGPoint(x: mapView.frame.size.width, y: mapView.frame.size.height)
-        let coordinate1 = mapView.convert(point1, toCoordinateFrom: mapView)
-        let coordinate2 = mapView.convert(point2, toCoordinateFrom: mapView)
-        let location1 = CLLocation(latitude: coordinate1.latitude, longitude: coordinate1.longitude)
-        let location2 = CLLocation(latitude: coordinate2.latitude, longitude: coordinate2.longitude)
-        return location1.distance(from: location2)
-    }
-    
-    func selectPin (mapView: MKMapView, coordinate: CLLocationCoordinate2D) {
-//        let longPressLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-//        print (longPressLocation)
-//        var lastDistance = mapDiagonalMeters(mapView: mapView) / 20
-//        for annotation in annotations {
-//            let coordinate = annotation.coordinate
-//            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-//            let distance = longPressLocation.distance(from: location)
-//            print("distance", distance)
-//            if distance < lastDistance {
-//                lastDistance = distance
-//                selectedVertex = annotation
-//            }
-//        }
-//        print ("selected vertex", selectedVertex)
-    }
-    
 }

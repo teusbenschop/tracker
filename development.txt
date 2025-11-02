@@ -1,5 +1,12 @@
+    var annotations : [DraggableAnnotation] = []
 
-Fix dragging again, it's no broken.
+
+If marking ready twice, iterate over annotation on map, and remove those matching.
+Same over the polygons, remove the one matching.
+
+
+
+
 
 
 Draw X (cancel) and tick (ok) while marking the area as ready.
@@ -215,9 +222,6 @@ Have a button "Park (vehicle)" and implement it.
 
 
 
-Tapping items in the menu is hard, there's only a small area that is tappable.
-
-
 For receiving background location updates, does it need "Always location" permissions. Somewhere it says it does not need those if the background service is properly done.
 
 
@@ -228,4 +232,9 @@ Disable the developer journal production eventually?
 
 Keep updating the polygon while dragging?
 https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
+
+
+
+Later nog mogelijkheid maken om als het waren rond een gebied te "tekenen" met de vinger om een ruwe polylijn neer te zetten om te starten. Kan door te starten, dan met "tap" annotaties neer te zetten, en dan steeds verder, en dan knopje voor "klaar". Dit vereist een andere database layout.
+
 
