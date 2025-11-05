@@ -80,7 +80,7 @@ struct ToggleFollowUserDirection: View {
 struct ToggleRecordTrack: View {
     @EnvironmentObject private var status: Status
     @EnvironmentObject private var locationManager: LocationManager
-    @EnvironmentObject private var trackManager: TrackManager
+    @EnvironmentObject private var trackDatabase: TrackDatabase
 
     var body: some View {
         Toggle(isOn: $status.recordTrack, label: {
@@ -89,9 +89,9 @@ struct ToggleRecordTrack: View {
         .onChange(of: status.recordTrack) {
             if status.recordTrack {
                 locationManager.checkLocationAuthorization()
-                trackManager.openDatabase()
+                trackDatabase.openDatabase()
             } else {
-                trackManager.closeDatabase()
+                trackDatabase.closeDatabase()
             }
         }
     }
@@ -121,14 +121,14 @@ struct ButtonMarkAreaReady: View {
 
 struct ButtonClearTrack: View {
     @EnvironmentObject var status: Status
-    @EnvironmentObject var trackManager: TrackManager
+    @EnvironmentObject var trackDatabase: TrackDatabase
     var body: some View {
         Button(action: {
             if status.recordTrack {
-                trackManager.emptyDatabase()
+                trackDatabase.emptyDatabase()
             } else {
-                trackManager.closeDatabase()
-                trackManager.eraseDatabase()
+                trackDatabase.closeDatabase()
+                trackDatabase.eraseDatabase()
             }
             status.clearTrack = true
             status.showActions = false

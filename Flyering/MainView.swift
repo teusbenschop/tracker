@@ -29,7 +29,7 @@ struct MainView: View {
     @EnvironmentObject private var mapModel: MapViewModel
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var status: Status
-    @EnvironmentObject private var trackManager: TrackManager
+    @EnvironmentObject private var trackDatabase: TrackDatabase
 
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     @State private var lastLocation : CLLocation = CLLocation()
@@ -51,7 +51,7 @@ struct MainView: View {
         }
         .onAppear {
             // On startup cause the map to draw any track from the database.
-            status.pendingTrack = trackManager.getAll()
+            status.pendingTrack = trackDatabase.getAll()
             // Handle keeping screen on.
             if status.screenOn {
                 UIApplication.shared.isIdleTimerDisabled = true
@@ -83,7 +83,7 @@ struct MainView: View {
         // Store it in the State object (which will prompt the mapview to draw it on the map).
         let coordinate = location?.coordinate
         guard coordinate != nil else { return }
-        trackManager.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
+        trackDatabase.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
         status.pendingTrack.append(coordinate ?? CLLocationCoordinate2D())
     }
 }

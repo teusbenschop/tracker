@@ -27,7 +27,7 @@ import MapKit
 import Combine
 
 
-final class TrackManager : ObservableObject {
+final class TrackDatabase : ObservableObject {
     
     private var db: OpaquePointer?
     

@@ -38,7 +38,7 @@ struct FlyeringApp: App {
     @StateObject private var mapModel = MapViewModel()
     @StateObject private var locationManager = LocationManager()
     @StateObject private var status = Status()
-    @StateObject private var trackManager = TrackManager()
+    @StateObject private var trackDatabase = TrackDatabase()
     @StateObject private var markAreaReady = MarkAreaReady()
 
     var body: some Scene {
@@ -47,7 +47,7 @@ struct FlyeringApp: App {
                 .environmentObject(mapModel)
                 .environmentObject(locationManager)
                 .environmentObject(status)
-                .environmentObject(trackManager)
+                .environmentObject(trackDatabase)
                 .environmentObject(markAreaReady)
         }
     }

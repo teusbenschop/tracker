@@ -115,7 +115,7 @@ final class MarkAreaReady: ObservableObject {
     }
     
 
-    func clear(mapView: MKMapView) { // Todo
+    func clear(mapView: MKMapView) {
 
         // Clear possibly previous coordinates.
         coordinates = []
@@ -134,11 +134,23 @@ final class MarkAreaReady: ObservableObject {
     }
 
     
-    func reject(mapView: MKMapView) { // Todo
-    }
-    
-    
-    func accept(mapView: MKMapView) { // Todo
+    func accept(mapView: MKMapView) {
+        
+        // Store the coordinates in the database.
+        let areaDatabase = AreaDatabase()
+        let success = areaDatabase.storeCoordinates(coordinates: coordinates)
+        
+        // On failure to store the coordinates, bail out early.
+        // It means that the map retains the area as if still working on marking it.
+        if !success {
+            //status.log(item: "Failure to store the marked area")
+            return
+        }
+
+        // Remove the markers from the map.
+        clear(mapView: mapView)
+        
+        // Call function with data from the database to draw this polygon. Todo
     }
 
 

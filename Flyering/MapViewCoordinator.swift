@@ -138,6 +138,9 @@ extension MapViewUi.Coordinator {
             if index == rejectIndex {
                 self.parent.markAreaReady.clear(mapView: mapView)
             }
+            if index == acceptIndex {
+                self.parent.markAreaReady.accept(mapView: mapView)
+            }
         }
     }
     

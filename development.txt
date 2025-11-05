@@ -1,6 +1,6 @@
 The accept button.
 Handle the click, that is, the selected, take the action associated with it.
-
+Use the AreaDatabase to store the stuff in.
 
 
 
