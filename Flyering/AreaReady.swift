@@ -146,11 +146,22 @@ final class MarkAreaReady: ObservableObject {
             //status.log(item: "Failure to store the marked area")
             return
         }
+        
+        // Keep a copy of the coordinates.
+        let coordinates = self.coordinates
 
         // Remove the markers from the map.
         clear(mapView: mapView)
         
-        // Call function with data from the database to draw this polygon. Todo
+        // Call function with data from the database to draw this polygon.
+        drawPolygon(mapView: mapView, coordinates: coordinates)
+    }
+
+    
+    // Function to draw the polygon on the map, based on the coordinates.
+    func drawPolygon (mapView: MKMapView, coordinates: [CLLocationCoordinate2D]) {
+        let polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
+        mapView.addOverlay(polygon)
     }
 
 
