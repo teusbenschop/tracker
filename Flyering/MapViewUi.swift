@@ -27,6 +27,7 @@ struct MapViewUi: UIViewRepresentable {
     @EnvironmentObject var markAreaReady: MarkAreaReady
     
     @State private var previousUserTrackingMode: MKUserTrackingMode = .none
+    @State private var previousShowAreasReady: Bool = false
 
 
     func makeUIView(context: Context) -> MKMapView {
@@ -130,6 +131,19 @@ struct MapViewUi: UIViewRepresentable {
                 status.markReadyStart = false
             }
         }
+        
+        // Check on whether to show the area ready. // Todo
+        if status.showAreasReady != previousShowAreasReady {
+            if status.showAreasReady {
+                markAreaReady.showReady(mapView: uiView)
+            } else {
+                markAreaReady.hideReady(mapView: uiView)
+            }
+            DispatchQueue.main.async() {
+                previousShowAreasReady = status.showAreasReady
+            }
+        }
+        
     }
     
     func makeCoordinator() -> Coordinator {

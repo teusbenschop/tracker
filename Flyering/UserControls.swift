@@ -81,7 +81,7 @@ struct ToggleRecordTrack: View {
     @EnvironmentObject private var status: Status
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var trackDatabase: TrackDatabase
-
+    
     var body: some View {
         Toggle(isOn: $status.recordTrack, label: {
             Label("Record your track", systemImage: status.recordTrack ?  "point.bottomleft.forward.to.arrow.triangle.scurvepath" : "point.topleft.down.to.point.bottomright.curvepath")
@@ -93,6 +93,18 @@ struct ToggleRecordTrack: View {
             } else {
                 trackDatabase.closeDatabase()
             }
+        }
+    }
+}
+
+
+struct ToggleShowAreaReady: View {
+    @EnvironmentObject private var status: Status
+    var body: some View {
+        Toggle(isOn: $status.showAreasReady, label: {
+            Label("Show area ready", systemImage: status.showAreasReady ? "octagon.fill" : "octagon")
+        })
+        .onChange(of: status.showAreasReady) {
         }
     }
 }

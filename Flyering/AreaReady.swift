@@ -129,7 +129,7 @@ final class MarkAreaReady: ObservableObject {
             }
         }
         
-        // Remove possibly polygon left over.
+        // Remove possible polygon left over.
         drawPolygon(mapView: mapView)
     }
 
@@ -162,6 +162,24 @@ final class MarkAreaReady: ObservableObject {
     func drawPolygon (mapView: MKMapView, coordinates: [CLLocationCoordinate2D]) {
         let polygon = MKPolygon(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polygon)
+    }
+    
+    
+    func showReady (mapView: MKMapView) {
+        let areaDatabase = AreaDatabase()
+        let list = areaDatabase.getAll()
+        print (list.count)
+        for coordinates in list {
+            drawPolygon(mapView: mapView, coordinates: coordinates)
+        }
+    }
+    
+    
+    func hideReady (mapView: MKMapView) {
+        for polygon in mapView.overlays {
+            guard polygon is MKPolygon else { continue }
+            mapView.removeOverlay(polygon)
+        }
     }
 
 

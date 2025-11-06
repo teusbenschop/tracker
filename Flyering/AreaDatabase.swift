@@ -148,35 +148,55 @@ final class AreaDatabase {
     }
     
     
-    func getAll() -> [CLLocationCoordinate2D]
+    func getAll() -> [[CLLocationCoordinate2D]]
     {
-        var coordinates : [CLLocationCoordinate2D] = []
+        var list : [[CLLocationCoordinate2D]] = []
         if databaseExists() {
-            let url : URL? = databaseUrl()
-            if url != nil {
-                // In case, as usual, if this function is called initially,
-                // no database is yet open.
-                // Open database into local variable.
-                var db: OpaquePointer? = nil
-                if sqlite3_open(url?.path, &db) == SQLITE_OK {
-                    // Read coordinates.
-                    let queryStatementString = "SELECT * FROM waypoints;"
-                    var queryStatement: OpaquePointer? = nil
-                    if sqlite3_prepare_v2(db,  queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
-                        while sqlite3_step(queryStatement) == SQLITE_ROW {
-                            let latitude = sqlite3_column_double(queryStatement, 0)
-                            let longitude = sqlite3_column_double(queryStatement, 1)
-                            let coordinate = CLLocationCoordinate2D (latitude: latitude, longitude: longitude)
-                            coordinates.append(coordinate)
-                        }
-                        sqlite3_finalize(queryStatement)
-                    }
-                    // Close database again.
-                    sqlite3_close(db)
+            openDatabase();
+            let sql = "SELECT * FROM areas;"
+            var statement: OpaquePointer? = nil
+            if sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK {
+                while sqlite3_step(statement) == SQLITE_ROW {
+                    let latitude0  = sqlite3_column_double(statement,  0)
+                    let longitude0 = sqlite3_column_double(statement,  1)
+                    let latitude1  = sqlite3_column_double(statement,  2)
+                    let longitude1 = sqlite3_column_double(statement,  3)
+                    let latitude2  = sqlite3_column_double(statement,  4)
+                    let longitude2 = sqlite3_column_double(statement,  5)
+                    let latitude3  = sqlite3_column_double(statement,  6)
+                    let longitude3 = sqlite3_column_double(statement,  7)
+                    let latitude4  = sqlite3_column_double(statement,  8)
+                    let longitude4 = sqlite3_column_double(statement,  9)
+                    let latitude5  = sqlite3_column_double(statement, 10)
+                    let longitude5 = sqlite3_column_double(statement, 11)
+                    let latitude6  = sqlite3_column_double(statement, 12)
+                    let longitude6 = sqlite3_column_double(statement, 13)
+                    let latitude7  = sqlite3_column_double(statement, 14)
+                    let longitude7 = sqlite3_column_double(statement, 15)
+                    let coordinate0 = CLLocationCoordinate2D (latitude: latitude0, longitude: longitude0)
+                    let coordinate1 = CLLocationCoordinate2D (latitude: latitude1, longitude: longitude1)
+                    let coordinate2 = CLLocationCoordinate2D (latitude: latitude2, longitude: longitude2)
+                    let coordinate3 = CLLocationCoordinate2D (latitude: latitude3, longitude: longitude3)
+                    let coordinate4 = CLLocationCoordinate2D (latitude: latitude4, longitude: longitude4)
+                    let coordinate5 = CLLocationCoordinate2D (latitude: latitude5, longitude: longitude5)
+                    let coordinate6 = CLLocationCoordinate2D (latitude: latitude6, longitude: longitude6)
+                    let coordinate7 = CLLocationCoordinate2D (latitude: latitude7, longitude: longitude7)
+                    var coordinates : [CLLocationCoordinate2D] = []
+                    coordinates.append(coordinate0)
+                    coordinates.append(coordinate1)
+                    coordinates.append(coordinate2)
+                    coordinates.append(coordinate3)
+                    coordinates.append(coordinate4)
+                    coordinates.append(coordinate5)
+                    coordinates.append(coordinate6)
+                    coordinates.append(coordinate7)
+                    list.append(coordinates)
                 }
+                sqlite3_finalize(statement)
             }
+            closeDatabase()
         }
-        return coordinates
+        return list
     }
     
     

@@ -1,7 +1,10 @@
+Make toggle to show the area ready.
 
+On toggle read the database and draw the polygons on the map.
 
-On startup read the database and draw the polygons on the map.
+Or remove all polygons
 
+Once toggled it reverts to the map faster than the timeout of now.
 
 
 
@@ -229,4 +232,13 @@ Later nog mogelijkheid maken om als het waren rond een gebied te "tekenen" met d
 
 Make an option to remove the last area marked ready in the database and from the map.
 This is to remove an accidentally marked aread.
+
+
+
+
+Import database with areas ready: Read the file, recreate local database, import data from file. Advantage: Refresh stuff.
+
+
+
+Export database functionality needed.
 
