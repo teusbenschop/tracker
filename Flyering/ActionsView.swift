@@ -28,6 +28,7 @@ struct ActionsView: View {
     let timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     @State private var elapsedSeconds : Int = 0
     let maximumSeconds : Int = 10
+    let closeSoonSeconds : Int = 8
 
 
     var body: some View {
@@ -54,6 +55,7 @@ struct ActionsView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             ButtonClearTrack()
+                .padding(.horizontal)
                 .padding(.bottom)
             TextLocationInfo()
                 .padding(.horizontal)
@@ -74,8 +76,12 @@ struct ActionsView: View {
                     status.showActions = false
                 }
             }
-
-
+            .onChange(of: status.showAreasReady) {
+                // If the toggle is operated, it will return to the map soon.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    status.showActions = false
+                }
+            }
     }
 
 }

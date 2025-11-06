@@ -1,11 +1,3 @@
-Make toggle to show the area ready.
-
-On toggle read the database and draw the polygons on the map.
-
-Or remove all polygons
-
-Once toggled it reverts to the map faster than the timeout of now.
-
 
 
 
