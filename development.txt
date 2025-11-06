@@ -29,14 +29,6 @@ It no longer draws the Naples zones, but keeps the code, and removes the JSON st
 
 
 
-Menu: Mark area as ready
-Get user location.
-Create octagon around it.
-Draw it on the map and fill it.
-https://stackoverflow.com/questions/67838540/how-to-draw-a-polygon-using-apple-map-by-mkpolygon
-Check if it works on a rotated map too. No it doesn't.
-
-
 Use octagons.
 Draw a fixed polygon on the map and cover the area.
 Export the Android polygons.
@@ -44,12 +36,6 @@ Import the Android polygon database.
 Draw all areas covered on the map.
 Check performance.
 
-Change toolbar to cancel or approve the polygon.
-At the moment of drawing the polygon, don't let the map move, switch that of for that moment.
-
-
-Make octagon editable:
-https://medium.com/@leocoronag/interactive-polygon-zones-in-mapkit-customizing-your-map-views-to-an-obsessive-extent-77943267ed10
 
 
 

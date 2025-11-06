@@ -42,26 +42,6 @@ extension MapViewUi.Coordinator {
             annotationView.isDraggable = true
             return annotationView
         }
-        if let circleAnnotation = annotation as? MKCircle { // Todo this part no longer needed
-            if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: "areaready") {
-                return existingView
-            }
-            let annotationView = MKAnnotationView(annotation: circleAnnotation, reuseIdentifier: "areaready")
-            annotationView.canShowCallout = false
-            annotationView.isDraggable = true
-//            annotationView.isUserInteractionEnabled = false
-            annotationView.backgroundColor = .blue
-            let image = UIImage(systemName: "circle")?.withTintColor(.red)
-            if (image != nil) {
-                let size = 30.0
-                UIGraphicsBeginImageContext(CGSizeMake(size, size))
-                image!.draw(in: CGRectMake(0, 0, size, size))
-                let newImage = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
-                annotationView.image = newImage
-            }
-            return annotationView
-        }
         // Use a default view.
         return nil
     }

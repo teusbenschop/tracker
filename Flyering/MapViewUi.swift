@@ -61,16 +61,6 @@ struct MapViewUi: UIViewRepresentable {
             )
         }
 
-        // Draw all zones on the map.
-        for zone in mapModel.naplesZones {
-            let polygon = MKPolygon(coordinates: zone.vertices, count: zone.vertices.count)
-            mapView.addOverlay(polygon)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = zone.labelLocation
-            annotation.title = zone.name
-            mapView.addAnnotation(annotation)
-        }
-
         // Return the configured map.
         return mapView
     }
@@ -132,7 +122,7 @@ struct MapViewUi: UIViewRepresentable {
             }
         }
         
-        // Check on whether to show the area ready. // Todo
+        // Check on whether to show the area ready.
         if status.showAreasReady != previousShowAreasReady {
             if status.showAreasReady {
                 markAreaReady.showReady(mapView: uiView)

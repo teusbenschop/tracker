@@ -60,7 +60,6 @@ final class AreaDatabase {
         if url == nil {
             return
         }
-        print(url) // Todo
 
         // If the database exists, just open it, and bail out.
         if databaseExists() {

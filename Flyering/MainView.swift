@@ -30,6 +30,8 @@ struct MainView: View {
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var status: Status
     @EnvironmentObject private var trackDatabase: TrackDatabase
+    @Environment(\.scenePhase) var scenePhase
+
 
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     @State private var lastLocation : CLLocation = CLLocation()
@@ -67,6 +69,16 @@ struct MainView: View {
                 recordTrack()
             }
         }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                print("Active")
+            } else if newPhase == .inactive {
+                print("Inactive")
+            } else if newPhase == .background {
+                print("Background")
+            }
+        }
+
     }
 
     func recordTrack() {
@@ -87,69 +99,3 @@ struct MainView: View {
         status.pendingTrack.append(coordinate ?? CLLocationCoordinate2D())
     }
 }
-
-
-
-// Todo transfer essence to new.
-
-/*
-var locationStabilizationCounter : Int = 0
-
-
-struct ContentViewOld: View {
-
-    
-    @Environment(\.scenePhase) var scenePhase
-
-    var body: some View {
-        VStack {
-            Button("Park") {
-                print("Park")
-            }
-
-            
-            WrapperView(view: mapViewModel.mapView)
-                .onAppear() {
-                    locationDataManager.checkLocationAuthorization()
-                    updateMapCameraPosition()
-                }
-                .ignoresSafeArea()
-                
-        }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .active {
-                print("Active")
-            } else if newPhase == .inactive {
-                print("Inactive")
-            } else if newPhase == .background {
-                print("Background")
-            }
-        }
-
-
-    }
-    
-
-    func submit() {
-        print("You entered")
-    }
-    
-    
-    func updateMapCameraPosition() {
-        // Get location data.
-        let location = locationDataManager.location
-        guard location != nil else { return }
-        let latitude = location?.coordinate.latitude ?? 0
-        let longitude = location?.coordinate.longitude ?? 0
-        let course = 0.0 // (location?.course ?? 0)
-
-        // Set the camera.
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        mapViewModel.setCamera(coordinate, heading: course, animate: false)
-    }
-
-    
-
-}
-*/
-
