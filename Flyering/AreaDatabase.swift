@@ -27,6 +27,19 @@ import MapKit
 import Combine
 
 
+func areaDatabaseData() -> Data
+{
+    let areaDatabase = AreaDatabase()
+    return areaDatabase.databaseData()
+}
+
+
+func areaDatabaseName() -> String
+{
+    return "areas.sqlite"
+}
+
+
 final class AreaDatabase {
     
     private var db: OpaquePointer?
@@ -34,7 +47,7 @@ final class AreaDatabase {
     
     private func databaseUrl() -> URL?
     {
-        let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("areas.sqlite")
+        let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(areaDatabaseName())
         return url
     }
 
@@ -46,6 +59,20 @@ final class AreaDatabase {
             return false
         }
         return FileManager.default.fileExists(atPath: databaseUrl()!.path)
+    }
+
+    
+    func databaseData() -> Data
+    {
+        if databaseExists() {
+            do {
+                let data = try Data(contentsOf: databaseUrl() ?? URL(fileURLWithPath: ""))
+                return data
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return Data()
     }
 
     

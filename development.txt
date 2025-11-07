@@ -6,33 +6,42 @@
 
 
 
-
-
-
-
-
-Remove all old WrapperView code and move to the new MapView step by step.
-
-It no longer draws the Naples zones, but keeps the code, and removes the JSON stuff.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Use octagons.
-Draw a fixed polygon on the map and cover the area.
 Export the Android polygons.
+
 Import the Android polygon database.
+
+
+Button("Read and Write") {
+    let data = Data("Test Message".utf8)
+    let url = URL.documentsDirectory.appending(path: "message.txt")
+
+    do {
+        try data.write(to: url, options: [.atomic, .completeFileProtection])
+        let input = try String(contentsOf: url)
+        print(input)
+    } catch {
+        print(error.localizedDescription)
+    }
+}
+
+
+https://levelup.gitconnected.com/swift-ios-file-import-and-export-choose-destination-folder-filename-and-save-to-files-app-3-ways-240770633fe1
+
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-export-files-using-fileexporter
+
+
+https://levelup.gitconnected.com/swiftui-synchronize-store-files-documents-with-icloud-89b482361148
+
+https://blog.devgenius.io/integrating-icloud-file-system-for-import-export-a-practical-guide-to-ios-swiftui-app-8d6d050ebce6
+
+
+
+
+
+
+
+Import database with areas ready: Read the file, recreate local database, import data from file. Advantage: Refresh stuff.
+
 Draw all areas covered on the map.
 Check performance.
 
@@ -214,9 +223,16 @@ This is to remove an accidentally marked aread.
 
 
 
-Import database with areas ready: Read the file, recreate local database, import data from file. Advantage: Refresh stuff.
 
 
 
 Export database functionality needed.
+
+
+
+
+
+
+Make setting in the app that it has vertical layout as normal, and that it has portrait mode.
+https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-view-in-portrait-mode-whilst-allowing-others
 

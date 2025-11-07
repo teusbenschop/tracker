@@ -157,6 +157,44 @@ struct ButtonClearTrack: View {
 }
 
 
+struct ButtonExportAreas: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Button(action: {
+            status.exporting = true
+            status.showActions = false
+        })
+        {
+            HStack {
+                Image(systemName: "square.and.arrow.up")
+                Text("Export completed areas")
+                Image(systemName: "square.and.arrow.up")
+            }
+        }
+        .buttonStyle(.bordered)
+    }
+}
+
+
+struct ButtonImportAreas: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Button(action: {
+            status.importing = true
+            status.showActions = false
+        })
+        {
+            HStack {
+                Image(systemName: "square.and.arrow.down")
+                Text("Import completed areas")
+                Image(systemName: "square.and.arrow.down")
+            }
+        }
+        .buttonStyle(.bordered)
+    }
+}
+
+
 struct TextLocationInfo: View {
     @EnvironmentObject var locationModel: LocationManager
     var body: some View {

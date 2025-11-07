@@ -21,6 +21,7 @@ import MapKit
 import Combine
 import Foundation
 import CoreLocation
+import UniformTypeIdentifiers
 
 
 struct MainView: View {
@@ -76,6 +77,35 @@ struct MainView: View {
                 print("Inactive")
             } else if newPhase == .background {
                 print("Background")
+            }
+        }
+        .fileExporter(
+            isPresented: $status.exporting,
+            document: DataDocument(areaDatabaseData()),
+            contentType: .data,
+            defaultFilename: areaDatabaseName()
+        ) { result in
+            switch result {
+            case .success(let url):
+                print("Saved to", url)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        .fileImporter(
+            isPresented: $status.importing,
+            allowedContentTypes: [.text],
+            allowsMultipleSelection: false
+        ) { result in
+            print("result:", result)
+            switch result {
+            case .success(let urls):
+                print("success url:", urls)
+                guard let url = urls.first else {return}
+                guard let content = try? String(contentsOf: url, encoding: .utf8) else {return}
+                print(content)
+            case .failure(let error):
+                print("failed with error:", error.localizedDescription)
             }
         }
 

@@ -57,6 +57,12 @@ struct ActionsView: View {
             ButtonClearTrack()
                 .padding(.horizontal)
                 .padding(.bottom)
+            ButtonExportAreas()
+                .padding(.horizontal)
+                .padding(.bottom)
+            ButtonImportAreas()
+                .padding(.horizontal)
+                .padding(.bottom)
             TextLocationInfo()
                 .padding(.horizontal)
             TextAboutApp()
@@ -85,5 +91,3 @@ struct ActionsView: View {
     }
 
 }
-
-

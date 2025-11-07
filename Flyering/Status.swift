@@ -50,6 +50,9 @@ final class Status: ObservableObject {
     @Published var markReadyStart : Bool = false
     @Published var showAreasReady : Bool = false
     
+    // Exporting and importing data.
+    @Published var exporting : Bool = false
+    @Published var importing : Bool = false
 }
 
 
