@@ -282,11 +282,13 @@ final class AreaDatabase {
                     print("Cannot close database")
                 }
                 
-                // Process the import.
-                // Just now add them. Todo
+                // Process the import by adding all records into the database.
                 for coordinates in list {
                     storeCoordinates(coordinates: coordinates)
                 }
+
+                // Remove any duplicates that could be in the database due to multiple imports.
+                removeDuplicates()
                 
             } catch {
                 print(error.localizedDescription)
@@ -297,7 +299,37 @@ final class AreaDatabase {
         // Import success.
         return true
     }
+
     
+    func removeDuplicates()
+    {
+        openDatabase()
+        
+        let sql =
+        """
+        DELETE FROM areas WHERE rowid NOT IN
+        (
+        SELECT MIN(rowid) FROM areas GROUP BY
+        latitude0, longitude0,
+        latitude1, longitude1,
+        latitude2, longitude2,
+        latitude3, longitude3,
+        latitude4, longitude4,
+        latitude5, longitude5,
+        latitude6, longitude6,
+        latitude7, longitude7
+        );
+        """
+        var statement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK {
+            if sqlite3_step(statement) == SQLITE_DONE {
+                sqlite3_finalize(statement)
+            }
+        }
+        
+        closeDatabase()
+    }
+
     
     private func closeDatabase()
     {

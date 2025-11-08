@@ -7,23 +7,9 @@ Export the Android polygons.
 
 Import the Android polygon database.
 
-Always add it to the existing record, but make sure no double records will be there.
-https://stackoverflow.com/questions/8190541/deleting-duplicate-rows-from-sqlite-database
 
 
 
-
-
-
-
-
-
-Import database with areas ready: Read the file, recreate local database, import data from file. Advantage: Refresh stuff.
-
-Draw all areas covered on the map.
-Check performance.
-
-Optionally on import ask whether to overwrite existing areas, or whether to add the imported areas to the existing areas (if different).
 
 
 
