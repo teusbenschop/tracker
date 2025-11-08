@@ -3,36 +3,14 @@
 
 
 
-
-
-
 Export the Android polygons.
 
 Import the Android polygon database.
 
-
-Button("Read and Write") {
-    let data = Data("Test Message".utf8)
-    let url = URL.documentsDirectory.appending(path: "message.txt")
-
-    do {
-        try data.write(to: url, options: [.atomic, .completeFileProtection])
-        let input = try String(contentsOf: url)
-        print(input)
-    } catch {
-        print(error.localizedDescription)
-    }
-}
+Always add it to the existing record, but make sure no double records will be there.
+https://stackoverflow.com/questions/8190541/deleting-duplicate-rows-from-sqlite-database
 
 
-https://levelup.gitconnected.com/swift-ios-file-import-and-export-choose-destination-folder-filename-and-save-to-files-app-3-ways-240770633fe1
-
-https://www.hackingwithswift.com/quick-start/swiftui/how-to-export-files-using-fileexporter
-
-
-https://levelup.gitconnected.com/swiftui-synchronize-store-files-documents-with-icloud-89b482361148
-
-https://blog.devgenius.io/integrating-icloud-file-system-for-import-export-a-practical-guide-to-ios-swiftui-app-8d6d050ebce6
 
 
 
@@ -44,6 +22,11 @@ Import database with areas ready: Read the file, recreate local database, import
 
 Draw all areas covered on the map.
 Check performance.
+
+Optionally on import ask whether to overwrite existing areas, or whether to add the imported areas to the existing areas (if different).
+
+
+
 
 
 
@@ -235,4 +218,12 @@ Export database functionality needed.
 
 Make setting in the app that it has vertical layout as normal, and that it has portrait mode.
 https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-view-in-portrait-mode-whilst-allowing-others
+
+
+
+
+
+
+The action widget should be scrollable for portrait orientation
+
 

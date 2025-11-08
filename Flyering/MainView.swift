@@ -94,16 +94,15 @@ struct MainView: View {
         }
         .fileImporter(
             isPresented: $status.importing,
-            allowedContentTypes: [.text],
+            allowedContentTypes: [.data],
             allowsMultipleSelection: false
         ) { result in
-            print("result:", result)
             switch result {
             case .success(let urls):
-                print("success url:", urls)
                 guard let url = urls.first else {return}
-                guard let content = try? String(contentsOf: url, encoding: .utf8) else {return}
-                print(content)
+                print(url)
+                let areaDatabase = AreaDatabase()
+                areaDatabase.importAreas(url: url)
             case .failure(let error):
                 print("failed with error:", error.localizedDescription)
             }
