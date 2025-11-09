@@ -1,14 +1,5 @@
 
 
-Action widget.
-Split it up into two widgets:
-1. The daily actions.
-2. The info and maintenance actions.
-
-
-Check on Action widget whether to make it scrollable in portait mode.
-
-
 
 
 
