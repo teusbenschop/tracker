@@ -1,3 +1,17 @@
+Look for sample app for background location updates.
+
+Use the official way to do it.
+
+https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
+
+https://stackoverflow.com/questions/52199463/ios-swift-background-location-monitoring
+
+https://medium.com/simform-engineering/streamlined-location-updates-with-cllocationupdate-in-swift-wwdc23-2200ef71f845
+
+
+
+
+
 
 
 
@@ -70,12 +84,6 @@ Then on move to foreground, update the "About" label with the location count.
 If ok, then start drawing stuff on move to foreground.
 That will check the entire route.
 
-https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
-
-https://stackoverflow.com/questions/52199463/ios-swift-background-location-monitoring
-
-https://medium.com/simform-engineering/streamlined-location-updates-with-cllocationupdate-in-swift-wwdc23-2200ef71f845
-
 While in the background, it receives the location updates,
 stores the locations, but does not draw them on the map.
 It will draw the cached locations on the map when it goes to the foreground.
@@ -113,8 +121,6 @@ Have app background permissions, it won't draw on the map, it will just record t
 
 
 
-Currently if the app moves to the foreground, it gives a red indication for the location. Switching tracking off and on again fixes that. Think of a better fix.
-Perhaps it should once a minute or so, in the foreground, check the location and ensure it works.
 
 
 
@@ -142,7 +148,7 @@ For receiving background location updates, does it need "Always location" permis
 
 
 
-Disable the developer journal production eventually?
+Add more actions to the journal.
 
 
 
@@ -154,9 +160,6 @@ https://stackoverflow.com/questions/57401258/track-mkannotation-drag-as-it-moves
 Later nog mogelijkheid maken om als het waren rond een gebied te "tekenen" met de vinger om een ruwe polylijn neer te zetten om te starten. Kan door te starten, dan met "tap" annotaties neer te zetten, en dan steeds verder, en dan knopje voor "klaar". Dit vereist een andere database layout.
 
 
-
-Make an option to remove the last area marked ready in the database and from the map.
-This is to remove an accidentally marked aread.
 
 
 
@@ -170,9 +173,4 @@ This is to remove an accidentally marked aread.
 
 Make setting in the app that it has vertical layout as normal, and that it has portrait mode.
 https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-view-in-portrait-mode-whilst-allowing-others
-
-
-
-
-
 
