@@ -48,6 +48,9 @@ struct MainView: View {
             .navigationDestination(isPresented: $status.displayActions) {
                 ActionsView()
             }
+            .navigationDestination(isPresented: $status.displayMaintenance) {
+                MaintenanceView()
+            }
             .navigationDestination(isPresented: $status.displayJournal) {
                 JournalView()
             }

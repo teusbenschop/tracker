@@ -157,6 +157,24 @@ struct ButtonClearTrack: View {
 }
 
 
+struct ButtonMaintenance: View {
+    @EnvironmentObject var status: Status
+    var body: some View {
+        Button(action: {
+            status.displayMaintenance = true
+        })
+        {
+            HStack {
+                Image(systemName: "wrench.adjustable")
+                Text("Maintenance")
+                Image(systemName: "wrench.adjustable")
+            }
+        }
+        .buttonStyle(.bordered)
+    }
+}
+
+
 struct ButtonExportAreas: View {
     @EnvironmentObject var status: Status
     var body: some View {

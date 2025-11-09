@@ -70,6 +70,13 @@ extension Status {
         }
     }
 
+    var displayMaintenance : Bool {
+        get { pageSelector == .maintenance }
+        set (display) {
+            pageSelector = display ? .maintenance : .map
+        }
+    }
+    
     var displayJournal : Bool {
         get { pageSelector == .journal }
         set (display) {
