@@ -51,13 +51,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     @Published var location: CLLocation?
 
     private var locationManager = CLLocationManager()
+    private var backgroundActivitySesion: CLBackgroundActivitySession? = nil
 
     
     override init() {
         super.init()
         locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        //locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         // If you need the most precise and regular location data,
         // you would want to call the startUpdatingLocation() function,
@@ -85,7 +85,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         case .denied:
             ()
         case .notDetermined:
-            manager.requestAlwaysAuthorization()
+            manager.requestWhenInUseAuthorization()
         @unknown default:
             ()
         }
@@ -106,6 +106,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         self.location = location
+        print(location) // Todo
         updateFeedback()
     }
 
@@ -191,7 +192,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         updateFeedback()
         switch locationManager.authorizationStatus {
         case .notDetermined:
-            locationManager.requestAlwaysAuthorization()
+            locationManager.requestWhenInUseAuthorization()
         case .restricted:
             ()
         case .denied:
@@ -202,6 +203,31 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             location = locationManager.location
         @unknown default:
             ()
+        }
+    }
+    
+    
+    func handleChangeScenePhase (recording: Bool, old: ScenePhase, new: ScenePhase) {
+        // If recording the track,
+        // just before going into the background,
+        // create the object that manages a visual indicator to the user
+        // that keeps the app in use in the background,
+        // allowing it to receive updates or events.
+        if recording {
+            if (old == .active) && (new == .inactive) {
+                backgroundActivitySesion = CLBackgroundActivitySession()
+            }
+        }
+        // When going back to the foreground, remove this object again.
+        if (new == .active) {
+            backgroundActivitySesion = nil
+        }
+        if new == .active {
+            print("Active")
+        } else if new == .inactive {
+            print("Inactive")
+        } else if new == .background {
+            print("Background")
         }
     }
 }

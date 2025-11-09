@@ -74,13 +74,8 @@ struct MainView: View {
             }
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
-            if newPhase == .active {
-                print("Active")
-            } else if newPhase == .inactive {
-                print("Inactive")
-            } else if newPhase == .background {
-                print("Background")
-            }
+            locationManager.handleChangeScenePhase(recording: status.recordTrack,
+                                                   old: oldPhase, new: newPhase)
         }
         .fileExporter(
             isPresented: $status.displayExport,

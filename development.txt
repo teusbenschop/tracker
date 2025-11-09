@@ -8,6 +8,20 @@ https://stackoverflow.com/questions/52199463/ios-swift-background-location-monit
 
 https://medium.com/simform-engineering/streamlined-location-updates-with-cllocationupdate-in-swift-wwdc23-2200ef71f845
 
+Use Mutex
+https://www.avanderlee.com/concurrency/modern-swift-lock-mutex-the-synchronization-framework/
+to access the list of locations from the location manager.
+In the background this list is populated.
+In the foreground this list is read and drawn on the map, with a mutex.
+
+
+
+
+
+Set it on or off depending on whether recording track.
+locationManager.startUpdatingLocation()
+This saves lots of power.
+
 
 
 
@@ -173,4 +187,12 @@ Later nog mogelijkheid maken om als het waren rond een gebied te "tekenen" met d
 
 Make setting in the app that it has vertical layout as normal, and that it has portrait mode.
 https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-view-in-portrait-mode-whilst-allowing-others
+
+
+
+
+
+
+Check what happens if location permission is refused.
+The app should then give a popup with information about that situation.
 
