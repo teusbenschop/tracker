@@ -1,12 +1,14 @@
-Look for sample app for background location updates.
+Set it on or off depending on whether recording the track.
+locationManager.startUpdatingLocation()
+This saves lots of power.
 
-Use the official way to do it.
+func startUpdatingLocation()
+Starts the generation of updates that report the user’s current location.
+func stopUpdatingLocation()
+Stops the generation of location updates.
 
-https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background
 
-https://stackoverflow.com/questions/52199463/ios-swift-background-location-monitoring
 
-https://medium.com/simform-engineering/streamlined-location-updates-with-cllocationupdate-in-swift-wwdc23-2200ef71f845
 
 Use Mutex
 https://www.avanderlee.com/concurrency/modern-swift-lock-mutex-the-synchronization-framework/
@@ -16,11 +18,6 @@ In the foreground this list is read and drawn on the map, with a mutex.
 
 
 
-
-
-Set it on or off depending on whether recording track.
-locationManager.startUpdatingLocation()
-This saves lots of power.
 
 
 

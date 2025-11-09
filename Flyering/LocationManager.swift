@@ -59,13 +59,6 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        // If you need the most precise and regular location data,
-        // you would want to call the startUpdatingLocation() function,
-        // This is the most power-consuming option.
-        // Other options, such as startMonitoringSignificantLocationChanges()
-        // and startMonitoringVisits() are lower power,
-        // but also not as precise or as frequently updated.
-        locationManager.startUpdatingLocation()
     }
 
     
@@ -76,10 +69,8 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         case .authorizedWhenInUse:
             // Get a single, one time location data point.
             manager.requestLocation()
-            manager.startUpdatingLocation()
         case .authorizedAlways:
             manager.requestLocation()
-            manager.startUpdatingLocation()
         case .restricted:
             ()
         case .denied:
@@ -229,6 +220,20 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         } else if new == .background {
             print("Background")
         }
+    }
+    
+    func startReceivingLocations() {
+        // To receive the most precise and regular location data,
+        // call the startUpdatingLocation() function,
+        // This is the most power-consuming option.
+        // Other options, such as startMonitoringSignificantLocationChanges()
+        // and startMonitoringVisits() are lower power,
+        // but also not as precise or as frequently updated.
+        locationManager.startUpdatingLocation()
+    }
+    
+    func stopReceivingLocations() {
+        locationManager.stopUpdatingLocation()
     }
 }
 
