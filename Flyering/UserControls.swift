@@ -161,8 +161,7 @@ struct ButtonExportAreas: View {
     @EnvironmentObject var status: Status
     var body: some View {
         Button(action: {
-            status.exporting = true
-            status.displayActions = false
+            status.displayExport = true
         })
         {
             HStack {
@@ -180,8 +179,7 @@ struct ButtonImportAreas: View {
     @EnvironmentObject var status: Status
     var body: some View {
         Button(action: {
-            status.importing = true
-            status.displayActions = false
+            status.displayImport = true
         })
         {
             HStack {

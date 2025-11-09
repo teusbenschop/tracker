@@ -48,10 +48,6 @@ final class Status: ObservableObject {
     // Marking an area as ready.
     @Published var markReadyStart : Bool = false
     @Published var showAreasReady : Bool = false
-    
-    // Exporting and importing data.
-    @Published var exporting : Bool = false
-    @Published var importing : Bool = false
 }
 
 
@@ -60,6 +56,8 @@ enum displaying {
     case actions // Display the page with the action controls.
     case maintenance // Display the page with maintenance controls
     case journal // Display the page with the journal control
+    case exporting // Display the standard file export dialog.
+    case importing // Display the standard file import dialog.
 }
 
 
@@ -76,6 +74,20 @@ extension Status {
         get { pageSelector == .journal }
         set (display) {
             pageSelector = display ? .journal : .map
+        }
+    }
+
+    var displayExport : Bool {
+        get { pageSelector == .exporting }
+        set (display) {
+            pageSelector = display ? .exporting : .map
+        }
+    }
+
+    var displayImport : Bool {
+        get { pageSelector == .importing }
+        set (display) {
+            pageSelector = display ? .importing : .map
         }
     }
 

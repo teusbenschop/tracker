@@ -80,7 +80,7 @@ struct MainView: View {
             }
         }
         .fileExporter(
-            isPresented: $status.exporting,
+            isPresented: $status.displayExport,
             document: DataDocument(areaDatabaseData()),
             contentType: .data,
             defaultFilename: areaDatabaseName()
@@ -93,7 +93,7 @@ struct MainView: View {
             }
         }
         .fileImporter(
-            isPresented: $status.importing,
+            isPresented: $status.displayImport,
             allowedContentTypes: [.data],
             allowsMultipleSelection: false
         ) { result in
