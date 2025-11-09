@@ -45,10 +45,10 @@ struct MainView: View {
                 ButtonDisplayMenu()
                     .padding()
             }
-            .navigationDestination(isPresented: $status.showActions) {
+            .navigationDestination(isPresented: $status.displayActions) {
                 ActionsView()
             }
-            .navigationDestination(isPresented: $status.showJournal) {
+            .navigationDestination(isPresented: $status.displayJournal) {
                 JournalView()
             }
         }

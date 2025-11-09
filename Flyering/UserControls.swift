@@ -4,7 +4,7 @@ import SwiftUI
 struct ButtonDisplayMenu: View {
     @EnvironmentObject var status: Status
     var body: some View {
-        Button(action: {status.showActions = true}) {
+        Button(action: {status.displayActions = true}) {
             Image(systemName: "text.aligncenter")
                 .fontWeight(.medium)
                 .frame(width: 40, height: 40)
@@ -24,7 +24,7 @@ struct ButtonCenterMapOnUser: View {
             DispatchQueue.main.async {
                 status.goToUserLocation = false
             }
-            status.showActions = false
+            status.displayActions = false
         })
         {
             HStack {
@@ -116,7 +116,7 @@ struct ButtonMarkAreaReady: View {
         VStack {
             Button(action: {
                 status.markReadyStart = true
-                status.showActions = false
+                status.displayActions = false
             })
             {
                 HStack {
@@ -143,7 +143,7 @@ struct ButtonClearTrack: View {
                 trackDatabase.eraseDatabase()
             }
             status.clearTrack = true
-            status.showActions = false
+            status.displayActions = false
         })
         {
             HStack {
@@ -162,7 +162,7 @@ struct ButtonExportAreas: View {
     var body: some View {
         Button(action: {
             status.exporting = true
-            status.showActions = false
+            status.displayActions = false
         })
         {
             HStack {
@@ -181,7 +181,7 @@ struct ButtonImportAreas: View {
     var body: some View {
         Button(action: {
             status.importing = true
-            status.showActions = false
+            status.displayActions = false
         })
         {
             HStack {
@@ -226,7 +226,7 @@ struct ButtonOpenJournal: View {
     @EnvironmentObject var status: Status
     var body: some View {
         Button(action: {
-            status.showJournal = true
+            status.displayJournal = true
         })
         {
             Text("Show journal")

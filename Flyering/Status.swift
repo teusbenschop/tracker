@@ -23,8 +23,8 @@ import MapKit
 
 final class Status: ObservableObject {
     
-    // Whether to show the page with the actions.
-    @Published var showActions : Bool = false
+    // Selector for which page to show.
+    @Published var pageSelector : displaying = .map
 
     // Whether to center the map on the user's location.
     @Published var goToUserLocation : Bool = false
@@ -43,7 +43,6 @@ final class Status: ObservableObject {
     @Published var clearTrack : Bool = false
     
     // The journal.
-    @Published var showJournal : Bool = false
     @Published var journalText : String = ""
 
     // Marking an area as ready.
@@ -56,7 +55,29 @@ final class Status: ObservableObject {
 }
 
 
+enum displaying {
+    case map // Display the main page with the map.
+    case actions // Display the page with the action controls.
+    case maintenance // Display the page with maintenance controls
+    case journal // Display the page with the journal control
+}
+
+
 extension Status {
+
+    var displayActions : Bool {
+        get { pageSelector == .actions }
+        set (display) {
+            pageSelector = display ? .actions : .map
+        }
+    }
+
+    var displayJournal : Bool {
+        get { pageSelector == .journal }
+        set (display) {
+            pageSelector = display ? .journal : .map
+        }
+    }
 
     var followingLocation: Bool {
         get { userTrackingMode != .none }
@@ -80,4 +101,5 @@ extension Status {
         fragment.append(item)
         journalText.append(fragment)
     }
+    
 }

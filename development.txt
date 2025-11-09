@@ -1,16 +1,7 @@
-
-
-
-
-
-Export the Android polygons.
-
-Import the Android polygon database.
-
-
-
-
-
+Action widget.
+Split it up into two widgets:
+1. The daily actions.
+2. The info and maintenance actions.
 
 
 
@@ -37,9 +28,6 @@ Use a PRAGMA to make insertions very cheap and fast.
 
 
 
-If it keeps losing the user location symbol on the map, then do one of these:
-- [x] Write the annotation on the main thread
-- [ ] Write our own symbol for the user location
 
 
 
@@ -56,14 +44,13 @@ If it keeps losing the user location symbol on the map, then do one of these:
 
 
 
+Reducing the number of areas.
 
-Have a way to designate an area covered.
-The area can be edited.
-Have OK and cancel, perhaps in the menu or the toolbar?
-Stored that area in the database.
-Export that database.
-Import that database.
 If a larger area is marked, all containing areas are wiped and replaced with the larger one.
+
+Make a menu to call a procedure to join areas into one to reduce the number of areas.
+
+If drawing a new covered area, and it entirely overlays existing areas, then those existing areas will be removed and effectually replaced by the larger area. This may significantly reduce the areas if used wisely.
 
 
 
@@ -117,22 +104,11 @@ In the background, it never follows the user that is, it does not move the map c
 
 
 
-Mapkit overlays.
-https://developer.apple.com/documentation/mapkit/mapkit-overlays
 
 
 
 
 
-
-
-
-Once areas get covered, there's more and more annotations to draw.
-Will that affect performance?
-Mitigating measures:
-* Draw the covered areas only in the visible area.
-* Make a menu to call a procedure to join areas into one to reduce the number of areas.
-* If drawing a new covered area, and it entirely overlays existing areas, then those existing areas will be removed and effectually replaced by the larger area. This may significantly reduce the areas if used wisely.
 
 
 
@@ -155,7 +131,6 @@ Check on whether make locationManager.desiredAccuracy settable via menu.
 
 
 
-The buttons and menus, should they be visible on the map itself?
 
 
 
@@ -195,9 +170,6 @@ This is to remove an accidentally marked aread.
 
 
 
-Export database functionality needed.
-
-
 
 
 
@@ -208,8 +180,5 @@ https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-
 
 
 
-
-
-The action widget should be scrollable for portrait orientation
 
 

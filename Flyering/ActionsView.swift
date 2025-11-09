@@ -79,13 +79,13 @@ struct ActionsView: View {
                 // Close the view after some time.
                 elapsedSeconds += 1
                 if elapsedSeconds > maximumSeconds {
-                    status.showActions = false
+                    status.displayActions = false
                 }
             }
             .onChange(of: status.showAreasReady) {
                 // If the toggle is operated, it will return to the map soon.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    status.showActions = false
+                    status.displayActions = false
                 }
             }
     }

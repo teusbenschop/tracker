@@ -37,7 +37,7 @@ struct JournalView: View {
                 // Close the view after some time.
                 timeout += 1
                 if timeout > 10 {
-                    status.showActions = false
+                    status.displayActions = false
                 }
             }
     }
