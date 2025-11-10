@@ -49,9 +49,11 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     @Published var status : status = .none
     @Published var info : String = ""
     @Published var location: CLLocation?
+    @Published var locations: [CLLocation] = []
 
     private var locationManager = CLLocationManager()
     private var backgroundActivitySesion: CLBackgroundActivitySession? = nil
+    private var appInForeground : Bool = false
 
     
     override init() {
@@ -69,8 +71,10 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         case .authorizedWhenInUse:
             // Get a single, one time location data point.
             manager.requestLocation()
+            manager.startUpdatingLocation() // Todo out?
         case .authorizedAlways:
             manager.requestLocation()
+            manager.startUpdatingLocation() // Todo out?
         case .restricted:
             ()
         case .denied:
@@ -97,7 +101,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         self.location = location
-        print(location) // Todo
+        self.locations.append(location)
         updateFeedback()
     }
 
@@ -192,6 +196,8 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             ()
         case .authorizedWhenInUse:
             location = locationManager.location
+            guard let location = locationManager.location else { return }
+            locations.append(location)
         @unknown default:
             ()
         }
@@ -204,8 +210,8 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         // create the object that manages a visual indicator to the user
         // that keeps the app in use in the background,
         // allowing it to receive updates or events.
-        if recording {
-            if (old == .active) && (new == .inactive) {
+        if new == .background {
+            if recording {
                 backgroundActivitySesion = CLBackgroundActivitySession()
             }
         }
@@ -213,13 +219,14 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         if (new == .active) {
             backgroundActivitySesion = nil
         }
-        if new == .active {
-            print("Active")
-        } else if new == .inactive {
-            print("Inactive")
-        } else if new == .background {
-            print("Background")
+        // Set flag for whether app is running in the foreground.
+        if (new == .active) {
+            appInForeground = true
         }
+        if (new == .background) {
+            appInForeground = false
+        }
+        print (recording, old, new)
     }
     
     func startReceivingLocations() {

@@ -42,6 +42,7 @@ struct MapViewUi: UIViewRepresentable {
         configuration.pointOfInterestFilter = .includingAll
         mapView.preferredConfiguration = configuration
 
+        // More useful settings for the map.
         mapView.mapType = .standard
         mapView.isPitchEnabled = true
         mapView.isRotateEnabled = true
@@ -53,7 +54,7 @@ struct MapViewUi: UIViewRepresentable {
         // Don't show the user tracking button because that interferes with the custom menu button.
         mapView.showsUserTrackingButton = false
 
-        // Let the map open at the user's location for convenience.
+        // Let the map open at the user's location for convenience. // Todo fix this again.
         if let location = locationModel.location {
             mapView.region = MKCoordinateRegion(
                 center: location.coordinate,

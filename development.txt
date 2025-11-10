@@ -1,46 +1,45 @@
-Set it on or off depending on whether recording the track.
-locationManager.startUpdatingLocation()
-This saves lots of power.
-
-func startUpdatingLocation()
-Starts the generation of updates that report the user’s current location.
-func stopUpdatingLocation()
-Stops the generation of location updates.
+No longer centers on users's position on startup.
+Perhaps to continue updating locations on startup as it did formerly.
+And if not tracking, then after a few seconds to turn that off again?
 
 
 
 
-Use Mutex
-https://www.avanderlee.com/concurrency/modern-swift-lock-mutex-the-synchronization-framework/
-to access the list of locations from the location manager.
+
+
+Use a Mutex to access the list of locations from the location manager.
+
 In the background this list is populated.
-In the foreground this list is read and drawn on the map, with a mutex.
+In the foreground this list is read and drawn on the map.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://www.avanderlee.com/concurrency/modern-swift-lock-mutex-the-synchronization-framework/
 
 In the background, it only stores the waypoints in the database, and does not draw them on the map.
 
 
-On moving to the foreground, it draw the waypoints on the map.
+On moving to the foreground, it draws the waypoints on the map.
 Distinguish them from the already drawn ones, perhaps by keeping locations in memory not yet drawn, and then only draw the not yet drawn ones.
 
 
 Use a PRAGMA to make insertions very cheap and fast.
+Check whether the points make it into the database, in the background (should not happen), and when moving to the foreground (should happen then).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

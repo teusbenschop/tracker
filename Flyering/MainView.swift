@@ -70,7 +70,9 @@ struct MainView: View {
         }
         .onReceive(timer) { time in
             if status.recordTrack {
-                recordTrack()
+                if scenePhase == .active {
+                    recordTrack()
+                }
             }
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
@@ -109,20 +111,18 @@ struct MainView: View {
     }
 
     func recordTrack() {
-        // Get the location and make sure it's valid.
-        let location : CLLocation? = locationManager.location
-        guard location != nil else { return }
-        
-        // Get the distance from the previous location, whether it's large enough to draw it.
-        let distanceMeters = location?.distance(from: lastLocation)
-        if (distanceMeters ?? 0 < 2) { return }
-        lastLocation = location ?? CLLocation()
-        
-        // Store the new coordinate in the database.
-        // Store it in the State object (which will prompt the mapview to draw it on the map).
-        let coordinate = location?.coordinate
-        guard coordinate != nil else { return }
-        trackDatabase.storeCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
-        status.pendingTrack.append(coordinate ?? CLLocationCoordinate2D())
+        // Iterate over the locations.
+        for location in locationManager.locations {
+            // Get the distance from the previous location, whether it's large enough to draw it.
+            let distanceMeters = location.distance(from: lastLocation)
+            if (distanceMeters < 2) { return }
+            lastLocation = location
+            // Store the new coordinate in the database.
+            // Store it in the State object (which will prompt the mapview to draw it on the map).
+            let coordinate = location.coordinate
+            trackDatabase.storeCoordinate(coordinate: coordinate)
+            status.pendingTrack.append(coordinate)
+        }
+        locationManager.locations = [] // Todo too late now, Use mutex here and above.
     }
 }
