@@ -192,3 +192,11 @@ https://stackoverflow.com/questions/66037782/swiftui-how-do-i-lock-a-particular-
 Check what happens if location permission is refused.
 The app should then give a popup with information about that situation.
 
+
+
+
+
+Extra info, like:
+1. How many points the track consists of.
+2. How many areas have been marked complete.
+3. ...
