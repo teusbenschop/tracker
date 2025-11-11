@@ -61,6 +61,11 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        // Right at initialization it requests a single, one time location data point.
+        // This causes, through some logic elsewhere,
+        // the map to open at the user's locatin for convenience.
+        locationManager.requestLocation()
+        locationManager.startUpdatingLocation()
     }
 
     
@@ -69,12 +74,13 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
-            // Get a single, one time location data point.
+            // Needed to cause the map to open at the user's location.
             manager.requestLocation()
-            manager.startUpdatingLocation() // Todo out?
+            manager.startUpdatingLocation()
         case .authorizedAlways:
+            // Needed to cause the map to open at the user's location.
             manager.requestLocation()
-            manager.startUpdatingLocation() // Todo out?
+            manager.startUpdatingLocation()
         case .restricted:
             ()
         case .denied:

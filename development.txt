@@ -1,12 +1,3 @@
-No longer centers on users's position on startup.
-Perhaps to continue updating locations on startup as it did formerly.
-And if not tracking, then after a few seconds to turn that off again?
-
-
-
-
-
-
 Use a Mutex to access the list of locations from the location manager.
 
 In the background this list is populated.
@@ -200,3 +191,11 @@ Extra info, like:
 1. How many points the track consists of.
 2. How many areas have been marked complete.
 3. ...
+
+
+
+
+On startup, it starts updating locations.
+But this is not needed normally.
+Therefore make something like a timer that switches that off if not tracking.
+
