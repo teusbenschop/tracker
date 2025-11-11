@@ -33,9 +33,9 @@ struct MainView: View {
     @EnvironmentObject private var trackDatabase: TrackDatabase
     @Environment(\.scenePhase) var scenePhase
 
-
     @State var timer = Timer.publish(every: 1, tolerance: 0.5, on: .main, in: .common).autoconnect()
     @State private var lastLocation : CLLocation = CLLocation()
+    @State private var counter : Int = 0
 
     var body: some View {
         NavigationStack {
@@ -69,6 +69,8 @@ struct MainView: View {
             UIApplication.shared.isIdleTimerDisabled = false
         }
         .onReceive(timer) { time in
+            counter += 1
+            print (counter, "number of cached locations", locationManager.locations.count) // Todo
             if status.recordTrack {
                 if scenePhase == .active {
                     recordTrack()
@@ -111,11 +113,15 @@ struct MainView: View {
     }
 
     func recordTrack() {
-        // Iterate over the locations.
-        for location in locationManager.locations {
+        // Iterate over the locations. // Todo
+        while !locationManager.locations.isEmpty {
+            // Safely get and remove one location from the array.
+            let location = safelyGetOneLocation()
             // Get the distance from the previous location, whether it's large enough to draw it.
             let distanceMeters = location.distance(from: lastLocation)
-            if (distanceMeters < 2) { return }
+            if (distanceMeters < 2) {
+                continue
+            }
             lastLocation = location
             // Store the new coordinate in the database.
             // Store it in the State object (which will prompt the mapview to draw it on the map).
@@ -123,6 +129,29 @@ struct MainView: View {
             trackDatabase.storeCoordinate(coordinate: coordinate)
             status.pendingTrack.append(coordinate)
         }
-        locationManager.locations = [] // Todo too late now, Use mutex here and above.
+//        for location in locationManager.locations {
+//            // Get the distance from the previous location, whether it's large enough to draw it.
+//            let distanceMeters = location.distance(from: lastLocation)
+//            if (distanceMeters < 2) { return }
+//            lastLocation = location
+//            // Store the new coordinate in the database.
+//            // Store it in the State object (which will prompt the mapview to draw it on the map).
+//            let coordinate = location.coordinate
+//            trackDatabase.storeCoordinate(coordinate: coordinate)
+//            status.pendingTrack.append(coordinate)
+//        }
+//        locationManager.locations = [] // Todo too late now, Use mutex here and above.
     }
+
+    
+    func safelyGetOneLocation() -> CLLocation {
+        locationManager.lock.lock()
+        defer { locationManager.lock.unlock() }
+        let location = locationManager.locations.removeFirst()
+        return location
+    }
+    
+
+    
+    
 }

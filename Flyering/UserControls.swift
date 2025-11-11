@@ -88,10 +88,12 @@ struct ToggleRecordTrack: View {
         })
         .onChange(of: status.recordTrack) {
             if status.recordTrack {
+                locationManager.recording = true
                 locationManager.checkLocationAuthorization()
                 trackDatabase.openDatabase()
                 locationManager.startReceivingLocations()
             } else {
+                locationManager.recording = false
                 trackDatabase.closeDatabase()
                 locationManager.stopReceivingLocations()
             }

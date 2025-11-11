@@ -48,8 +48,12 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
     
     @Published var status : status = .none
     @Published var info : String = ""
+    // Most recent location, always updated, whether recording or not.
     @Published var location: CLLocation?
+    // The list of locations, updated when recording.
+    @Published var recording: Bool = false
     @Published var locations: [CLLocation] = []
+    @Published var lock = NSLock()
 
     private var locationManager = CLLocationManager()
     private var backgroundActivitySesion: CLBackgroundActivitySession? = nil
@@ -66,6 +70,9 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         // the map to open at the user's locatin for convenience.
         locationManager.requestLocation()
         locationManager.startUpdatingLocation()
+        // Keep receiving locations even if the app is in the background. Todo switch on if background only.
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.showsBackgroundLocationIndicator = true
     }
 
     
@@ -107,8 +114,14 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                          didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         self.location = location
-        self.locations.append(location)
-        updateFeedback()
+        if recording {
+            lock.lock()
+            defer { lock.unlock() }
+            self.locations.append(location)
+        }
+        if appInForeground {
+            updateFeedback()
+        }
     }
 
     
