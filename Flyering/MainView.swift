@@ -69,8 +69,8 @@ struct MainView: View {
             UIApplication.shared.isIdleTimerDisabled = false
         }
         .onReceive(timer) { time in
-            counter += 1
-            print (counter, "number of cached locations", locationManager.locations.count) // Todo
+            //counter += 1
+            //print (counter, "number of cached locations", locationManager.locations.count) // Todo
             if status.recordTrack {
                 if scenePhase == .active {
                     recordTrack()

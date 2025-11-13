@@ -67,9 +67,9 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         // Right at initialization it requests a single, one time location data point.
         // This causes, through some logic elsewhere,
-        // the map to open at the user's locatin for convenience.
-        locationManager.requestLocation()
+        // the map to open at the user's location for convenience.
         locationManager.startUpdatingLocation()
+        locationManager.requestLocation()
         // Keep receiving locations even if the app is in the background. Todo switch on if background only.
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.showsBackgroundLocationIndicator = true
@@ -82,12 +82,12 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
             // Needed to cause the map to open at the user's location.
-            manager.requestLocation()
             manager.startUpdatingLocation()
+            manager.requestLocation()
         case .authorizedAlways:
             // Needed to cause the map to open at the user's location.
-            manager.requestLocation()
             manager.startUpdatingLocation()
+            manager.requestLocation()
         case .restricted:
             ()
         case .denied:
@@ -245,7 +245,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         if (new == .background) {
             appInForeground = false
         }
-        print (recording, old, new)
+        //print (recording, old, new)
     }
     
     func startReceivingLocations() {

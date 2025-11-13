@@ -31,14 +31,6 @@ If drawing a new covered area, and it entirely overlays existing areas, then tho
 
 
 
-Make a label "About" and update it with diagnostics info, e.g. how many location updates were received, when the app goes to the foreground. Make sure to switch it off again.
-
-On move to foreground, update the "About" label with the location count.
-
-
-
-
-
 
 
 
