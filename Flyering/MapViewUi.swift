@@ -22,7 +22,7 @@ import MapKit
 struct MapViewUi: UIViewRepresentable {
 
     @EnvironmentObject var mapModel: MapViewModel
-    @EnvironmentObject var locationModel: LocationManager
+    @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var status: Status
     @EnvironmentObject var markAreaReady: MarkAreaReady
     
@@ -55,7 +55,7 @@ struct MapViewUi: UIViewRepresentable {
         mapView.showsUserTrackingButton = false
 
         // Let the map open at the user's location for convenience. // Todo fix this again.
-        if let location = locationModel.location {
+        if let location = locationManager.location {
             mapView.region = MKCoordinateRegion(
                 center: location.coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
@@ -71,7 +71,7 @@ struct MapViewUi: UIViewRepresentable {
     func updateUIView(_ uiView: MKMapView, context: Context) {
         
         // Handle focusing on user's location.
-        if status.goToUserLocation, let location = locationModel.location {
+        if status.goToUserLocation, let location = locationManager.location {
             uiView.setRegion(
                 MKCoordinateRegion(
                     center: location.coordinate,
