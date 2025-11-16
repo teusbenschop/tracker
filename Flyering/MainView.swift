@@ -69,11 +69,25 @@ struct MainView: View {
             UIApplication.shared.isIdleTimerDisabled = false
         }
         .onReceive(timer) { time in
-            //counter += 1
-            //print (counter, "number of cached locations", locationManager.locations.count) // Todo
             if status.recordTrack {
                 if scenePhase == .active {
                     recordTrack()
+                }
+            }
+            // A mechanism that detects if the map has not moved in a while.
+            // If that is the case, and the map tracks the user location,
+            // then this mechanism will reset the user tracking mode.
+            let interactionLimit = 10
+            if status.userMapInteractionCountDown < interactionLimit {
+                status.userMapInteractionCountDown += 1
+                if status.userMapInteractionCountDown == interactionLimit {
+                    if (status.userTrackingMode != .none) {
+                        let userTrackingMode = status.userTrackingMode
+                        status.userTrackingMode = .none
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            status.userTrackingMode = userTrackingMode
+                        }
+                    }
                 }
             }
         }

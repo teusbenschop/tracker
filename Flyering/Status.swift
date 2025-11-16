@@ -34,7 +34,9 @@ final class Status: ObservableObject {
     
     // How the map tracks the user location.
     @Published var userTrackingMode: MKUserTrackingMode = .none
-    
+    // Counting down after the user moved or panned the map.
+    @Published var userMapInteractionCountDown : Int = 0
+
     // Whether to record the traveled track.
     @Published var recordTrack : Bool = false
     // Cache of waypoints still to draw.

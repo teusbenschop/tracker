@@ -49,16 +49,11 @@ extension MapViewUi.Coordinator {
 
     // This function overload runs every time the user finishes moving or zooming the map.
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        // The code below will hide annotations if zooming out beyond a limit.
-        // The current annotations include the track, which should remain visible always.
-//        let latitudeDelta = mapView.region.span.latitudeDelta
-//        let threshold: CLLocationDegrees = 0.06
-//        for annotation in mapView.annotations {
-//            if let pointAnnotation = annotation as? MKPointAnnotation,
-//               let annotationView = mapView.view(for: pointAnnotation) {
-//                annotationView.isHidden = latitudeDelta > threshold
-//            }
-//        }
+        // After the user interacts with the map,
+        // and if the map were following the user's location,
+        // the map switches this off.
+        // Reset a counter to enable the app to switch it on again after a while.
+        parent.status.userMapInteractionCountDown = 0
     }
     
     
