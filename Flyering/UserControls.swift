@@ -235,7 +235,7 @@ extension Bundle {
 struct TextAboutApp: View {
     @EnvironmentObject var locationModel: LocationManager
     var body: some View {
-        Text("Flyering version \(Bundle.main.appVersionLong)")
+        Text("Flyering Tracker version \(Bundle.main.appVersionLong)")
             .font(.system(size: 12, weight: .thin))
             .multilineTextAlignment(.center)
     }

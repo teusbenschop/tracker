@@ -33,7 +33,7 @@ import SwiftUI
 
 
 @main
-struct FlyeringApp: App {
+struct FlyeringTracker: App {
     
     @StateObject private var mapModel = MapViewModel()
     @StateObject private var locationManager = LocationManager()
